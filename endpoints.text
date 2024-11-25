@@ -1,0 +1,202 @@
+General Endpoints
+Method: GET
+
+/home: Fetch the homepage.
+/menu: Retrieve the menu.
+/about: Get information about the restaurant.
+
+______________________________________________________________________________________________________
+
+User Endpoints
+Method: GET
+/user/cart: Retrieve the user's cart.
+/user/confirmation: Get order confirmation details.
+/user/payment: Retrieve payment details.
+/user/order: Fetch a user's current or past orders.
+/user/profile: Retrieve the user's profile information.
+
+Method: POST
+/user/register: Register a new user.
+Request Body:
+
+    {
+        "name": "johndoe",
+        "email": "johndoe@example.com",
+        "password": "securePassword123"
+    }
+Response Body:
+
+    {
+        "message": "User successfully registered",
+        "userId": 123,
+        "statusCode": "201 Created"
+    }
+
+/user/login: Log in an existing user.
+Request Body:
+
+    {
+        "email": "johndoe@email.com",
+        "password": "securePassword123"
+    }
+
+Response Body (on success):
+
+    {
+        "message": "Login successful",
+        "success": true,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    }
+
+Response Body (on failure):
+
+    {
+        "success": false,
+        "message": "Invalid credentials",
+        "errorCode": 400
+    }
+
+/user/logout: Log out the current user.
+Response Body:
+
+    {
+        "success": true,
+        "message": "You successfully logged out",
+        "statusCode": "200 OK"
+    }
+
+/user/order: Submit an order.
+Request Body:
+
+    {
+        "Item": ["Carbonara"],
+        "message": "Gluten-free"
+    }
+
+Response Body:
+
+    {
+        "message": "Order submitted successfully",
+        "statusCode": "201 Created"
+    }
+
+______________________________________________________________________________________________________
+
+Method: PUT
+/user/order/:orderId/overview: Update or view the overview of an order before submission.
+
+Request Body:
+
+    {
+        "item": ["Carbonara"],
+        "ingredients": ["Tomato", "Cheese"],
+        "quantity": [1]
+    }
+
+Response Body:
+
+    {
+        "message": "Order overview updated successfully",
+        "statusCode": "200 OK"
+    }
+
+Method: DELETE
+/user/order/{id}: Cancel or delete a specific order.
+
+Response Body:
+
+    {
+        "message": "Order successfully deleted",
+        "statusCode": "200 OK"
+    }
+
+______________________________________________________________________________________________________
+
+Admin Endpoints
+Method: GET
+/admin/orders: Retrieve all submitted orders.
+/admin/inventory: Fetch details about the inventory.
+
+Method: POST
+/admin/menu: Add a new item to the menu.
+
+Request Body:
+    
+    {
+        "id": 1,
+        "Item": "Carbonara",
+        "Price": 10,
+        "ingredient": ["Pasta", "Tomato Sauce", "Cheese"]
+    }
+
+Response Body:
+
+    {
+        "message": "Menu item added successfully",
+        "statusCode": "201 Created"
+    }
+
+Method: PUT
+/admin/orders/:orderId/lock: Lock an order so that it cannot be modified.
+
+Request Body:
+
+    {
+        "id": 1,
+        "locked": true
+    }
+
+Response Body:
+
+    {
+        "message": "This order is now locked",
+        "statusCode": "200 OK"
+    }
+
+/admin/menu/:itemId: Update an existing menu item.
+
+Request Body:
+
+    {
+        "id": 1,
+        "Item": "Carbonara",
+        "Price": 8,
+        "ingredient": ["Pasta", "Cheese"]
+    }
+
+Response Body:
+
+    {
+        "message": "Menu item updated successfully",
+        "statusCode": "200 OK"
+    }
+
+/admin/orders/:orderId/comment: Add a comment to an order for the kitchen.
+
+Request Body:
+
+    {
+        "comment": "Special instructions for the kitchen."
+    }
+
+Response Body:
+
+    {
+        "message": "Comment added successfully",
+        "statusCode": "200 OK"
+    }
+
+/admin/inventory/:itemId: Update inventory details.
+
+Request Body:
+
+    {
+        "stockLevel": 100
+    }
+
+Response Body:
+
+    {
+        "message": "Inventory updated successfully",
+        "statusCode": "200 OK"
+    }
