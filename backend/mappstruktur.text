@@ -1,0 +1,8 @@
+backend/
+├── controllers/      # Här placeras logiken för API-anropen
+├── routes/           # Här definieras alla API-rutter
+├── models/           # Databasmodeller
+├── middlewares/      # För hantering av autentisering, validering etc.
+├── config/           # Konfiguration av appen (t.ex. databaskoppling, JWT)
+├── server.js         # Huvudfilen för att starta servern
+└── .env              # För att lagra miljövariabler som API-nycklar

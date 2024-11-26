@@ -1,0 +1,9 @@
+frontend/
+├── src/
+│   ├── components/   # Alla React-komponenter
+│   ├── services/     # API-anrop till backend
+│   ├── pages/        # Sidor som Home, Menu, Checkout etc.
+│   ├── App.tsx       # Huvudkomponenten för applikationen
+│   └── index.tsx     # Startpunkten för React-appen
+├── public/
+└── package.json      # NPM-konfiguration för frontend
