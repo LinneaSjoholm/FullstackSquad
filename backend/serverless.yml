@@ -37,9 +37,6 @@ provider:
 
 package:
   individually: true
-
-plugins:
-  - serverless-plugin-typescript
       
 # General Endpoints
 functions:
