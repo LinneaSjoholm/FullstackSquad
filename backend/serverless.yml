@@ -4,9 +4,6 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: eu-north-1
-  environment:
-    JWT_SECRET: ${env:JWT_SECRET} 
-    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
   iam:
     role:
       statements:
