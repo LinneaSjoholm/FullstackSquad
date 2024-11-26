@@ -145,7 +145,7 @@ functions:
 
 # Post
 
-  login:
+  loginAdmin:
     handler: src/controllers/authController.login
     events:
       - httpApi:

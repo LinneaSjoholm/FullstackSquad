@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "target" : "ES6", // vilken JS version som ska användas
+        "outDir" : "./dist", // var ska JS-filen hamna? i vilken mapp?
+
+    },
+    "include" : ["./src"], // Vad för filer ska inkluderas?
+    "exclude": [] // Vad ska vi inte kompilera?
+}
+
