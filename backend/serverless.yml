@@ -6,6 +6,10 @@ provider:
   name: aws
   runtime: nodejs18.x  
   region: eu-north-1
+<<<<<<< HEAD
+=======
+  profile: IAMemma
+>>>>>>> origin/dev
   environment:
     API_KEY: ${env:API_KEY}  # API-nyckeln från miljövariabeln
 
