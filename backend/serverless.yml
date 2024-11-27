@@ -30,6 +30,29 @@ functions:
           path: /menu
           method: get
           cors: true  # CORS-konfiguration för denna specifika endpoint
+  getAbout:
+    handler: handler.getAbout
+    events:
+      - httpApi:
+          path: /about
+          method: get  
+          cors: true
+
+  getConfirmation:
+    handler: handler.getConfirmation
+    events:
+      - httpApi:
+          path: /user/confirmation
+          method: get
+          cors: true
+          
+  getContact:
+    handler: handler.getContact
+    events:
+      - httpApi:
+          path: /contact
+          method: get
+          cors: true
           
 resources:
   Resources:
