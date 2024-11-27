@@ -1,10 +1,20 @@
 {
     "compilerOptions": {
-        "target" : "ES6", // vilken JS version som ska användas
-        "outDir" : "./dist", // var ska JS-filen hamna? i vilken mapp?
-
+      "target": "ES6",                    // JavaScript-version
+      "module": "commonjs",               // För Node.js och Lambda
+      "strict": true,                     // Aktivera strikt typkontroll
+      "esModuleInterop": true,            // Gör att CommonJS-moduler kan importeras
+      "jsx": "react",                     // Om du använder React (både .tsx och .jsx)
+      "outDir": "./dist",                 // Var TypeScript-koden ska kompileras till
+      "rootDir": "./src",                 // Rotmappen för din kod
+      "skipLibCheck": true                // Undvik att kontrollera bibliotekens typer
     },
-    "include" : ["./src"], // Vad för filer ska inkluderas?
-    "exclude": [] // Vad ska vi inte kompilera?
-}
-
+    "include": [
+      "src/**/*.ts",                      // Inkludera alla TypeScript-filer
+      "src/**/*.tsx"                       // Inkludera alla TSX-filer (React-komponenter)
+    ],
+    "exclude": [
+      "node_modules"                      // Uteslut node_modules
+    ]
+  }
+  

@@ -1,12 +1,14 @@
-import './App.css'
+import React from 'react';
+import './App.css';
+import Menu from './components/menu'; // Importera Menu-komponenten
 
-function App() {
-
+const App = () => {
   return (
-    <>
-      <h1>Fullstack squad</h1>
-    </>
-  )
-}
+    <div className="App">
+      <h1>Welcome to the Takeaway Menu</h1>
+      <Menu /> {/* Använd Menu-komponenten här */}
+    </div>
+  );
+};
 
-export default App
+export default App;
