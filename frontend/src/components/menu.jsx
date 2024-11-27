@@ -7,7 +7,7 @@ const Menu = () => {
   // Hämta menyn från API:t
   const fetchMenu = async () => {
     try {
-      const response = await fetch('https://anq217szle.execute-api.eu-north-1.amazonaws.com/dev/menu', {
+      const response = await fetch('https://anq217szle.execute-api.eu-north-1.amazonaws.com/menu', {
         method: 'GET',
         headers: {
           'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',  // Din API-nyckel
