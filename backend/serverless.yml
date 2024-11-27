@@ -1,9 +1,15 @@
-service: restaurant-api
+service: take-away-backend
+
+frameworkVersion: "4"
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs18.x  
   region: eu-north-1
+  profile: IAMemma
+  environment:
+    API_KEY: ${env:API_KEY}  # API-nyckeln från miljövariabeln
+
   iam:
     role:
       statements:
@@ -16,207 +22,37 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource: "*"
-  httpApi:
-      cors:
-        allowedOrigins:
-          - '*'  
-        allowedMethods:
-          - GET
-          - POST
-          - PUT
-          - DELETE
-        allowedHeaders:
-          - Content-Type
-          - X-Amz-Date
-          - Authorization
-          - X-Api-Key
-          - X-Amz-Security-Token
 
-package:
-  individually: true
-      
-# General Endpoints
 functions:
-  getHome:
-    handler: src/pages/getHome.home
-    events:
-      - httpApi:
-          path: /home
-          method: get
-
   getMenu:
-    handler: src/pages/getMenu.menu
+    handler: handler.getMenu
     events:
       - httpApi:
           path: /menu
           method: get
-
-  getAbout:
-    handler: src/pages/getAbout.about
-    events:
-      - httpApi:
-          path: /about
-          method: get
-
-  getConfirmation:
-    handler: src/pages/getConfirmation.confirmation
-    events:
-      - httpApi:
-          path: /confirmation
-          method: get
-        
-  getContact:
-    handler: src/pages/getContact.contact
-    events:
-      - httpApi:
-          path: /contact
-          method: get
-
-# User Endpoints
-
-# Post
-  register:
-    handler: src/controllers/authController.register
-    events:
-      - httpApi:
-          path: user/register
-          method: post
-
-  login:
-    handler: src/controllers/authController.login
-    events:
-      - httpApi:
-          path: user/login
-          method: post
-
-  logout:
-    handler: src/controllers/authController.logout
-    events:
-      - httpApi:
-          path: user/logout
-          method: post
-
-  order:
-    handler: src/controllers/orderController.submitOrder
-    events:
-      - httpApi:
-          path: user/order
-          method: post
-
-# Put
-  updateOrderOverview:
-    handler: src/controllers/orderController.updateOrderOverview
-    events:
-      - httpApi:
-          path: user/order/{orderId}/overview
-          method: put
-
-# Delete
-  deleteOrder:
-    handler: src/controllers/orderController.deleteOrder
-    events:
-      - httpApi:
-          path: user/order/{id}
-          method: delete
-
-
-# Admin Endpoints
-
-# Get
-  getOrders:
-    handler: src/controllers/adminController.getOrders
-    events:
-      - httpApi:
-          path: admin/orders
-          method: get
-
-  getInventory:
-    handler: src/controllers/adminController.getInventory
-    events:
-      - httpApi:
-          path: admin/inventory
-          method: get
-
-# Post
-
-  loginAdmin:
-    handler: src/controllers/authController.login
-    events:
-      - httpApi:
-          path: admin/login
-          method: post
-  
-  addMenuItem:
-    handler: src/controllers/adminController.addMenuItem
-    events:
-      - httpApi:
-          path: admin/menu
-          method: post
-
-  addOrderComment:
-    handler: src/controllers/adminController.addOrderComment
-    events:
-      - httpApi:
-          path: admin/orders/{orderId}/comment
-          method: post
-
-# Put
-  updateMenuItem:
-    handler: src/controllers/adminController.updateMenuItem
-    events:
-      - httpApi:
-          path: admin/menu/{itemId}
-          method: put
-
-  lockOrder:
-    handler: src/controllers/adminController.lockOrder
-    events:
-      - httpApi:
-          path: admin/orders/{orderId}/lock
-          method: put
-
-  updateInventory:
-    handler: src/controllers/adminController.updateInventory
-    events:
-      - httpApi:
-          path: admin/inventory/{itemId}
-          method: put
-
+          cors: true  # CORS-konfiguration för denna specifika endpoint
+          
 resources:
   Resources:
     MenuTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Menu
+        TableName: MenuTable  # DynamoDB-tabellnamn
         AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
+          - AttributeName: "id"
+            AttributeType: "S"
         KeySchema:
-          - AttributeName: id
-            KeyType: HASH
+          - AttributeName: "id"
+            KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
-    OrdersTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: Orders
-        AttributeDefinitions:
-          - AttributeName: orderId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: orderId
-            KeyType: HASH
-        BillingMode: PAY_PER_REQUEST
-
-    UsersTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: Users
-        AttributeDefinitions:
-          - AttributeName: userId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: userId
-            KeyType: HASH
-        BillingMode: PAY_PER_REQUEST
-
+custom:
+  serverless-offline:
+    cors:
+      allowOrigins:
+        - "*"  # Tillåter alla origin
+      allowHeaders:
+        - Content-Type
+        - x-api-key  
+      allowMethods:
+        - GET   # Endast GET-metod för CORS
