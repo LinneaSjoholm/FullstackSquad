@@ -4,10 +4,10 @@ frameworkVersion: "4"
 
 provider:
   name: aws
-  runtime: nodejs18.x  
+  runtime: nodejs18.x
   region: eu-north-1
   environment:
-    API_KEY: ${env:API_KEY}  # API-nyckeln från miljövariabeln
+    API_KEY: ${env:API_KEY}  
 
   iam:
     role:
@@ -23,20 +23,66 @@ provider:
           Resource: "*"
 
 functions:
+  # Get the menu (fetch all menu items)
   getMenu:
-    handler: handler.getMenu
+    handler: src/handlers/getMenu.getMenu  
     events:
       - httpApi:
           path: /menu
           method: get
-          cors: true  # CORS-konfiguration för denna specifika endpoint
-          
+          cors: true
+
+  # Create an order
+  postOrder:
+    handler: src/handlers/createOrder.createOrder 
+    events:
+      - httpApi:
+          path: /order
+          method: post
+          cors: true
+
+  # Get an order by ID
+  getOrder:
+    handler: src/handlers/getOrder.getOrder  
+    events:
+      - httpApi:
+          path: /order/{id}
+          method: get
+          cors: true
+
+  # Review an order before sending
+  getOrderReview:
+    handler: src/handlers/getOrderReview.getOrderReview  
+    events:
+      - httpApi:
+          path: /order/{id}/review
+          method: get
+          cors: true
+
+  # Update an order 
+  postUpdateOrder:
+    handler: src/handlers/updateOrder.updateOrder  
+    events:
+      - httpApi:
+          path: /order/{id}/update
+          method: post
+          cors: true
+
+  # Cancel an order (before it is locked)
+  deleteCancelOrder:  
+    handler: src/handlers/cancelOrder.cancelOrder  
+    events:
+      - httpApi:
+          path: /order/{id}/cancel
+          method: delete  
+          cors: true
+
 resources:
   Resources:
     MenuTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: MenuTable  # DynamoDB-tabellnamn
+        TableName: MenuTable  # Tabell för menu
         AttributeDefinitions:
           - AttributeName: "id"
             AttributeType: "S"
@@ -45,13 +91,37 @@ resources:
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
+    OrdersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: OrdersTable  # Tabell för beställningar
+        AttributeDefinitions:
+          - AttributeName: "orderId"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "orderId"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
 custom:
+  # Configuration for ESBuild
+  esbuild:
+    target: 'node18'  
+    sourcemap: true  
+    minify: false  
+    bundle: true  
+    loader:
+      '.ts': 'ts'
+      '.tsx': 'tsx'  
+
   serverless-offline:
     cors:
       allowOrigins:
-        - "*"  # Tillåter alla origin
+        - "*"  
       allowHeaders:
         - Content-Type
-        - x-api-key  
+        - x-api-key
       allowMethods:
-        - GET   # Endast GET-metod för CORS
+        - GET
+        - POST
+        - DELETE  
