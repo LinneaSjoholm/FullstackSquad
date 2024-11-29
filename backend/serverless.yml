@@ -1,9 +1,14 @@
-service: restaurant-api
+service: take-away-backend
+
+frameworkVersion: "4"
 
 provider:
   name: aws
   runtime: nodejs18.x
   region: eu-north-1
+  environment:
+    API_KEY: ${env:API_KEY}  
+
   iam:
     role:
       statements:
@@ -16,207 +21,107 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource: "*"
-  httpApi:
-      cors:
-        allowedOrigins:
-          - '*'  
-        allowedMethods:
-          - GET
-          - POST
-          - PUT
-          - DELETE
-        allowedHeaders:
-          - Content-Type
-          - X-Amz-Date
-          - Authorization
-          - X-Api-Key
-          - X-Amz-Security-Token
 
-package:
-  individually: true
-      
-# General Endpoints
 functions:
-  getHome:
-    handler: src/pages/getHome.home
-    events:
-      - httpApi:
-          path: /home
-          method: get
-
+  # Get the menu (fetch all menu items)
   getMenu:
-    handler: src/pages/getMenu.menu
+    handler: src/handlers/getMenu.getMenu  
     events:
       - httpApi:
           path: /menu
           method: get
+          cors: true
 
-  getAbout:
-    handler: src/pages/getAbout.about
+  # Create an order
+  postOrder:
+    handler: src/handlers/createOrder.createOrder 
     events:
       - httpApi:
-          path: /about
+          path: /order
+          method: post
+          cors: true
+
+  # Get an order by ID
+  getOrder:
+    handler: src/handlers/getOrder.getOrder  
+    events:
+      - httpApi:
+          path: /order/{id}
           method: get
+          cors: true
 
-  getConfirmation:
-    handler: src/pages/getConfirmation.confirmation
+  # Review an order before sending
+  getOrderReview:
+    handler: src/handlers/getOrderReview.getOrderReview  
     events:
       - httpApi:
-          path: /confirmation
+          path: /order/{id}/review
           method: get
-        
-  getContact:
-    handler: src/pages/getContact.contact
+          cors: true
+
+  # Update an order 
+  postUpdateOrder:
+    handler: src/handlers/updateOrder.updateOrder  
     events:
       - httpApi:
-          path: /contact
-          method: get
-
-# User Endpoints
-
-# Post
-  register:
-    handler: src/controllers/authController.register
-    events:
-      - httpApi:
-          path: user/register
+          path: /order/{id}/update
           method: post
+          cors: true
 
-  login:
-    handler: src/controllers/authController.login
+  # Cancel an order (before it is locked)
+  deleteCancelOrder:  
+    handler: src/handlers/cancelOrder.cancelOrder  
     events:
       - httpApi:
-          path: user/login
-          method: post
-
-  logout:
-    handler: src/controllers/authController.logout
-    events:
-      - httpApi:
-          path: user/logout
-          method: post
-
-  order:
-    handler: src/controllers/orderController.submitOrder
-    events:
-      - httpApi:
-          path: user/order
-          method: post
-
-# Put
-  updateOrderOverview:
-    handler: src/controllers/orderController.updateOrderOverview
-    events:
-      - httpApi:
-          path: user/order/{orderId}/overview
-          method: put
-
-# Delete
-  deleteOrder:
-    handler: src/controllers/orderController.deleteOrder
-    events:
-      - httpApi:
-          path: user/order/{id}
-          method: delete
-
-
-# Admin Endpoints
-
-# Get
-  getOrders:
-    handler: src/controllers/adminController.getOrders
-    events:
-      - httpApi:
-          path: admin/orders
-          method: get
-
-  getInventory:
-    handler: src/controllers/adminController.getInventory
-    events:
-      - httpApi:
-          path: admin/inventory
-          method: get
-
-# Post
-
-  loginAdmin:
-    handler: src/controllers/authController.login
-    events:
-      - httpApi:
-          path: admin/login
-          method: post
-  
-  addMenuItem:
-    handler: src/controllers/adminController.addMenuItem
-    events:
-      - httpApi:
-          path: admin/menu
-          method: post
-
-  addOrderComment:
-    handler: src/controllers/adminController.addOrderComment
-    events:
-      - httpApi:
-          path: admin/orders/{orderId}/comment
-          method: post
-
-# Put
-  updateMenuItem:
-    handler: src/controllers/adminController.updateMenuItem
-    events:
-      - httpApi:
-          path: admin/menu/{itemId}
-          method: put
-
-  lockOrder:
-    handler: src/controllers/adminController.lockOrder
-    events:
-      - httpApi:
-          path: admin/orders/{orderId}/lock
-          method: put
-
-  updateInventory:
-    handler: src/controllers/adminController.updateInventory
-    events:
-      - httpApi:
-          path: admin/inventory/{itemId}
-          method: put
+          path: /order/{id}/cancel
+          method: delete  
+          cors: true
 
 resources:
   Resources:
     MenuTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Menu
+        TableName: MenuTable  # Tabell för menu
         AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
+          - AttributeName: "id"
+            AttributeType: "S"
         KeySchema:
-          - AttributeName: id
-            KeyType: HASH
+          - AttributeName: "id"
+            KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
     OrdersTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Orders
+        TableName: OrdersTable  # Tabell för beställningar
         AttributeDefinitions:
-          - AttributeName: orderId
-            AttributeType: S
+          - AttributeName: "orderId"
+            AttributeType: "S"
         KeySchema:
-          - AttributeName: orderId
-            KeyType: HASH
+          - AttributeName: "orderId"
+            KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
-    UsersTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: Users
-        AttributeDefinitions:
-          - AttributeName: userId
-            AttributeType: S
-        KeySchema:
-          - AttributeName: userId
-            KeyType: HASH
-        BillingMode: PAY_PER_REQUEST
+custom:
+  # Configuration for ESBuild
+  esbuild:
+    target: 'node18'  
+    sourcemap: true  
+    minify: false  
+    bundle: true  
+    loader:
+      '.ts': 'ts'
+      '.tsx': 'tsx'  
 
+  serverless-offline:
+    cors:
+      allowOrigins:
+        - "*"  
+      allowHeaders:
+        - Content-Type
+        - x-api-key
+      allowMethods:
+        - GET
+        - POST
+        - DELETE  
