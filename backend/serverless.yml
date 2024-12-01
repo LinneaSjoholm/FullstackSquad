@@ -79,6 +79,20 @@ functions:
 
 resources:
   Resources:
+    IngredientsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: IngredientsTable  # Tabell för ingredienser
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"  
+        BillingMode: PAY_PER_REQUEST
+
+resources:
+  Resources:
     MenuTable:
       Type: AWS::DynamoDB::Table
       Properties:
