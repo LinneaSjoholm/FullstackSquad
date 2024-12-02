@@ -7,7 +7,17 @@ provider:
   runtime: nodejs18.x  
   region: eu-north-1
   environment:
-    API_KEY: ${env:API_KEY}  # API-nyckeln från miljövariabeln
+    API_KEY: ${env:API_KEY}  # Hämta API-nyckeln från en miljövariabel
+
+  httpApi:
+    cors:
+      allowedOrigins:
+        - "*"  # Tillåter alla origin (kan specificeras om säkerhet behövs)
+      allowedHeaders:
+        - Content-Type
+        - x-api-key
+      allowedMethods:
+        - GET  # Tillåt endast GET-metoder
 
   iam:
     role:
@@ -20,7 +30,11 @@ provider:
             - dynamodb:PutItem
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
-          Resource: "*"
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/MenuTable"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/AboutTable"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/ContactTable"
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/ConfirmationTable"
 
 functions:
   getMenu:
@@ -29,30 +43,27 @@ functions:
       - httpApi:
           path: /menu
           method: get
-          cors: true  # CORS-konfiguration för denna specifika endpoint
+
   getAbout:
     handler: handler.getAbout
     events:
       - httpApi:
           path: /about
-          method: get  
-          cors: true
+          method: get
 
   getConfirmation:
     handler: handler.getConfirmation
     events:
       - httpApi:
-          path: /user/confirmation
+          path: /confirmation
           method: get
-          cors: true
-          
+
   getContact:
     handler: handler.getContact
     events:
       - httpApi:
           path: /contact
           method: get
-          cors: true
           
 resources:
   Resources:
@@ -68,13 +79,50 @@ resources:
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
+    AboutTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: AboutTable  # DynamoDB-tabellnamn
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    ContactTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ContactTable  # DynamoDB-tabellnamn
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    ConfirmationTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ConfirmationTable  # DynamoDB-tabellnamn
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
 custom:
   serverless-offline:
     cors:
       allowOrigins:
-        - "*"  # Tillåter alla origin
+        - "*"  # Tillåter alla origin (kan justeras för säkerhet)
       allowHeaders:
         - Content-Type
         - x-api-key  
       allowMethods:
-        - GET   # Endast GET-metod för CORS
+        - GET   # Endast GET-metod tillåts
+
