@@ -37,6 +37,7 @@ functions:
           path: /menu
           method: get
           cors: true
+
   postCreateUser:
     handler: src/handlers/postcreateUser.handler
     events:
@@ -44,6 +45,7 @@ functions:
           path: /create/user
           method: post
           cors: true
+
   postLoginUser:
     handler: src/handlers/postloginUser.handler
     events:
@@ -51,6 +53,7 @@ functions:
           path: /user/login
           method: post
           cors: true
+
   postLoginAdmin:
     handler: src/handlers/postloginAdmin.handler
     events:
@@ -58,6 +61,7 @@ functions:
           path: /admin/login
           method: post
           cors: true
+          
 resources:
   Resources:
     MenuTable:
