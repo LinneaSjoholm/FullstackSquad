@@ -1,14 +1,21 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Menu from './components/menu'; // Importera Menu-komponenten
+import Menu from '../src/components/menu';
+import HomePage from '../src/pages/HomePage';
 
 const App = () => {
   return (
-    <div className="App">
-      <h1>Welcome to the Takeaway Menu</h1>
-      <Menu /> {/* Använd Menu-komponenten här */}
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/menu" element={<Menu />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
 export default App;
+
