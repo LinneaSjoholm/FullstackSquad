@@ -30,7 +30,6 @@ functions:
       - httpApi:
           path: /menu
           method: get
-          cors: true
 
   # Create an order
   postOrder:
@@ -39,7 +38,6 @@ functions:
       - httpApi:
           path: /order
           method: post
-          cors: true
 
   # Get an order by ID
   getOrder:
@@ -48,7 +46,6 @@ functions:
       - httpApi:
           path: /order/{id}
           method: get
-          cors: true
 
   # Review an order before sending
   getOrderReview:
@@ -57,7 +54,6 @@ functions:
       - httpApi:
           path: /order/{id}/review
           method: get
-          cors: true
 
   # Update an order 
   postUpdateOrder:
@@ -66,7 +62,6 @@ functions:
       - httpApi:
           path: /order/{id}/update
           method: post
-          cors: true
 
   # Cancel an order (before it is locked)
   deleteCancelOrder:  
@@ -75,7 +70,17 @@ functions:
       - httpApi:
           path: /order/{id}/cancel
           method: delete  
-          cors: true
+  
+    # Get the menu with stock status
+  getMenuWithStockStatus:
+    handler: src/handlers/getMenuWithStockStatus.getMenuWithStockStatus
+    events:
+      - httpApi:
+          path: /admin/stock-status
+          method: get
+
+  initData:
+    handler: src/handlers/initData.initData
 
 resources:
   Resources:
@@ -91,8 +96,6 @@ resources:
             KeyType: "HASH"  
         BillingMode: PAY_PER_REQUEST
 
-resources:
-  Resources:
     MenuTable:
       Type: AWS::DynamoDB::Table
       Properties:

@@ -1,6 +1,4 @@
-import { db } from './db'; // Importera din DynamoDB-klient
-import { Dish } from '../models/dish';
-import { Ingredient } from '../models/ingredient';
+import { db } from './db';
 import { getMenu } from '../handlers/getMenu';
 
 // Funktion för att hämta lagerstatus för en ingrediens
@@ -12,12 +10,14 @@ const getStockForIngredient = async (ingredientId: string): Promise<number> => {
     },
   };
 
-  const result = await db.get(params);  // Hämta ingrediensdata
-  return result.Item ? parseInt(result.Item.stock.N) : 0;  // Returnera lagerstatus (eller 0 om inte finns)
+  const result = await db.get(params); 
+
+  // Returnera lagerstatus (eller 0 om inte finns)
+  return result.Item && result.Item.stock ? result.Item.stock : 0;  
 };
 
 // Funktion för att hämta lagerstatus för rätter
-const getMenuWithStockStatus = async (event: any): Promise<any> => {
+export const getMenuWithStockStatus = async (event: any): Promise<any> => {
   // Hämta menyn från din existerande getMenu-funktion
   const menuResponse = await getMenu(event);
 
