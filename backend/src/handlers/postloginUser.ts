@@ -65,18 +65,6 @@ export const handler = async (event: any) => {
       user.password = hashedPassword;
     }
 
-    // Jämför lösenord
-    // const isPasswordValid = await bcrypt.compare(password, user.password);
-    // console.log("Password valid:", isPasswordValid);
-
-    // if (!isPasswordValid) {
-      // return {
-        // statusCode: 401,
-        // body: JSON.stringify({ error: "Invalid credentials" }),
-     // };
-    // }
-
-
 const plainPassword = password; // Lösenordet från användarens inmatning
 const hashedPassword = user.password; // Det hashade lösenordet från databasen
 
