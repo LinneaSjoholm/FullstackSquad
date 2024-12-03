@@ -7,7 +7,10 @@
       "jsx": "react",                     // Om du använder React (både .tsx och .jsx)
       "outDir": "./dist",                 // Var TypeScript-koden ska kompileras till
       "rootDir": "./src",                 // Rotmappen för din kod
-      "skipLibCheck": true                // Undvik att kontrollera bibliotekens typer
+      "skipLibCheck": true,                // Undvik att kontrollera bibliotekens typer
+      "resolveJsonModule": true,              // Lägg till detta
+      "moduleResolution": "node",            // Lägg till detta
+      "allowSyntheticDefaultImports": true 
     },
     "include": [
       "src/**/*.ts",                      // Inkludera alla TypeScript-filer

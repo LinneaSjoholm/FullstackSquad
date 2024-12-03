@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #1F4E5F;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,15 +13,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+body, html {
+  margin: 0; /* Tar bort all standard-marginal */
+  padding: 0; /* Tar bort all standard-padding */
+  box-sizing: border-box; /* Gör att all padding och border inkluderas i elementens mått */
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}

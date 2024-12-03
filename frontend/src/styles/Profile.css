@@ -1,0 +1,92 @@
+.profile-header {
+    background-image: url('/src/assets/pasta.jpg'); /* Ändrat filnamn för att undvika mellanslag */
+    background-size: cover;
+    background-position: center;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Fixad header högst upp */
+    top: 0;
+    width: 100%; /* Täcker hela sidans bredd */
+    z-index: 10; /* Placera headern framför andra element */
+  }
+
+  .menu-icon {
+    position: absolute; /* Placera ikonen relativt till .profile-header */
+    top: 10px; /* Avstånd från toppen av headern */
+    left: 10px; /* Avstånd från vänsterkanten av headern */
+    width: 30px; /* Justera bredden på ikonen */
+    height: 30px; /* Justera höjden på ikonen */
+    z-index: 15; /* Placera ikonen över bakgrund och överlägg */
+  }
+  
+  .profile-header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(22, 61, 75, 0.75); /* Semi-transparent färg */
+    z-index: 1; /* Placera över bilden */
+  }
+  
+  .profile-header h1 {
+    color: #F4E7D3;
+    font-family: "Kolker Brush", cursive;
+    font-size: 150px;
+    position: relative;
+    z-index: 2; /* Placera texten över överlägget */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: -10px; /* Minska avståndet nedåt */
+    line-height: 1; /* Justerar radavståndet */
+    top: -45px;
+}
+
+.profile-header h2 {
+    color: #F4E7D3;
+    font-family: "Jost", sans-serif;
+    font-weight: 300;
+    font-size: 1.3rem;
+    z-index: 2;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-top: -15px; /* Minska avståndet uppåt */
+    line-height: 1; /* Justerar radavståndet */
+    position: relative; /* Gör det möjligt att finjustera position */
+    left: 60px; /* Flytta texten åt höger */
+    top: -60px;
+}
+  
+  .profile-section {
+    display: flex;
+    margin-top: 50px; /* Flytta ned innehållet under headern */
+    margin-left: 250px;
+    align-items: center;
+  }
+  
+  .profile-icon {
+    margin-top: -10px;
+    width: 30px; /* Minska storleken på ikonen */
+    height: 30px;
+  }
+  
+  .profile-section h2 {
+    font-family: 'Caveat', cursive;
+    font-size: 1.8rem; /* Textstorlek för "My Profile" */
+    color: #F4E7D3;
+    padding-left: 20px;
+  }
+
+  .profile-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 50%;
+    height: 250px;
+    padding: 20px;
+    border-radius: 10px;
+  }
