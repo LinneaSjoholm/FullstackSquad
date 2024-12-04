@@ -1,7 +1,8 @@
 import { db } from '../services/db';  
+import { updateStock } from './updateStock';
 
 export const createOrder = async (event: any): Promise<any> => {
-  const { name, customerName, customerPhone } = JSON.parse(event.body);
+  const { name, customerName, customerPhone, ingredients } = JSON.parse(event.body);
 
   // Skapa ett unikt orderId med endast siffror (timestamp)
   const orderId = Date.now().toString();  
@@ -19,8 +20,13 @@ export const createOrder = async (event: any): Promise<any> => {
   };
 
   try {
+
+    if(ingredients && ingredients.length > 0) {
+      await updateStock(ingredients);
+    }
+
     // Använd db.put för att sätta in en ny order i DynamoDB
-    await db.put(params);
+      await db.put(params);
 
     return {
       statusCode: 201,

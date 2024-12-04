@@ -8,8 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { db } from '../services/db';
+import { updateStock } from './updateStock';
 export const createOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, customerName, customerPhone } = JSON.parse(event.body);
+    const { name, customerName, customerPhone, ingredients } = JSON.parse(event.body);
     // Skapa ett unikt orderId med endast siffror (timestamp)
     const orderId = Date.now().toString();
     const params = {
@@ -24,6 +25,9 @@ export const createOrder = (event) => __awaiter(void 0, void 0, void 0, function
         },
     };
     try {
+        if (ingredients && ingredients.length > 0) {
+            yield updateStock(ingredients);
+        }
         // Använd db.put för att sätta in en ny order i DynamoDB
         yield db.put(params);
         return {
