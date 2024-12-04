@@ -1,11 +1,35 @@
-import { db } from '../services/db';
+import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 
-export const getMenu = async (event: any): Promise<any> => {
-  console.log('API_KEY in environment:', process.env.API_KEY);
+const dynamoDb = new DocumentClient();
 
+// Definiera en typ för alla fält som vi får från DynamoDB
+interface DynamoDBItem {
+  id: string;
+  name: string;
+  price: number;
+  popularity: number;
+  lactoseFree: boolean;
+  glutenFree: boolean;
+  category: string;
+  ingredients: string[];
+  description: string;
+}
+
+// Definiera en typ för varje menyobjekt som vi skickar till användaren
+interface MenuItem {
+  name: string;
+  price: number;
+  ingredients: string[];
+  lactoseFree: boolean;
+  glutenFree: boolean;
+  popularity: number;
+}
+
+export const getMenu = async (event: any) => {
+  // Hämta API-nyckeln från event.headers
   const apiKey = event.headers['x-api-key'];
-  console.log('Received API key:', apiKey);
 
+  // Kontrollera om API-nyckeln matchar den som finns i miljövariablerna
   if (apiKey !== process.env.API_KEY) {
     return {
       statusCode: 403,
@@ -13,83 +37,65 @@ export const getMenu = async (event: any): Promise<any> => {
     };
   }
 
-  const queryStringParameters = event.queryStringParameters || {};
-  const sortBy: string = queryStringParameters?.sortBy || 'id';  // Default sorting criterion
-  const categoryFilter: string = queryStringParameters?.category || '';  // Filter by category
-  const priceFilter: string | undefined = queryStringParameters?.price; // Filter by price if defined
-
   const params = {
     TableName: 'MenuTable',
   };
 
   try {
-    const data = await db.scan(params);
+    // Hämtar alla menyalternativ från DynamoDB
+    const result = await dynamoDb.scan(params).promise();
 
-    if (!data.Items || !Array.isArray(data.Items)) {
+    // Om det inte finns några rätter, returnera ett meddelande
+    if (!result.Items || result.Items.length === 0) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: 'No items found in the menu.' }),
+        body: JSON.stringify({ message: 'No menu items found' }),
       };
     }
 
-    // Filter by category if categoryFilter is defined
-    let filteredItems = data.Items;
-    if (categoryFilter) {
-      filteredItems = filteredItems.filter((item: any) => item.category && item.category === categoryFilter);
-    }
+    // Gruppindelning av menyn
+    const menuGroupedByCategory = result.Items.reduce((acc, item) => {
+      // Typa objektet som DynamoDBItem för att ha tillgång till alla fält
+      const dbItem = item as DynamoDBItem;
 
-    // Filter by price if priceFilter is defined
-    if (priceFilter) {
-      const [minPrice, maxPrice] = priceFilter.split('-').map((price) => parseFloat(price));
-      if (isNaN(minPrice) || isNaN(maxPrice)) {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({ message: 'Invalid price filter format. Use format minPrice-maxPrice (e.g. 10-20)' }),
-        };
+      // Hämta kategori och andra onödiga fält för att rensa bort dem senare
+      const { category, id, description, ...filteredItem } = dbItem;
+
+      // Om kategorin inte finns, använd "Others"
+      const itemCategory = category || "Others";
+
+      // Rensa och omorganisera fältens ordning
+      const reorderedItem: MenuItem = {
+        name: filteredItem.name,
+        price: filteredItem.price,
+        ingredients: filteredItem.ingredients,
+        lactoseFree: filteredItem.lactoseFree,
+        glutenFree: filteredItem.glutenFree,
+        popularity: filteredItem.popularity,
+      };
+
+      if (!acc[itemCategory]) {
+        acc[itemCategory] = [];
       }
-      filteredItems = filteredItems.filter((item: any) => {
-        const itemPrice = parseFloat(item.price);
-        return itemPrice >= minPrice && itemPrice <= maxPrice;
-      });
+
+      // Lägg till det rensade och omorganiserade objektet till rätt kategori
+      acc[itemCategory].push(reorderedItem);
+      return acc;
+    }, {} as { [key: string]: MenuItem[] });
+
+    // Sortera rätterna efter popularitet inom varje kategori
+    for (const category in menuGroupedByCategory) {
+      menuGroupedByCategory[category] = menuGroupedByCategory[category].sort((a: MenuItem, b: MenuItem) => (b.popularity || 0) - (a.popularity || 0));
     }
-
-    // Sort based on sortBy parameter
-    let sortedItems = filteredItems;
-
-    if (sortBy === 'price') {
-      sortedItems = sortedItems.sort((a: any, b: any) => parseFloat(a.price) - parseFloat(b.price));
-    } else if (sortBy === 'category') {
-      sortedItems = sortedItems.sort((a: any, b: any) => a.category.localeCompare(b.category));
-    } else if (sortBy === 'popularity') {
-      // Sort by popularity in descending order (ensure popularity is treated as a number)
-      sortedItems = sortedItems.sort((a: any, b: any) => {
-        // Ensure popularity is a valid number
-        const popA = Number(a.popularity) || 0; // If not a valid number, default to 0
-        const popB = Number(b.popularity) || 0; // If not a valid number, default to 0
-        return popB - popA; // Sort in descending order (more popular comes first)
-      });
-    } else if (sortBy === 'all') {
-      // Sort alphabetically by name
-      sortedItems = sortedItems.sort((a: any, b: any) => a.name.localeCompare(b.name));
-    } else {
-      sortedItems = sortedItems.sort((a: any, b: any) => a.id.localeCompare(b.id));
-    }
-
-    // Format prices with $ symbol
-    sortedItems = sortedItems.map((item: any) => ({
-      ...item,
-      price: `$${parseFloat(item.price).toFixed(2)}`, // Add dollar sign and format price
-    }));
 
     return {
       statusCode: 200,
-      body: JSON.stringify(sortedItems),
+      body: JSON.stringify({ menu: menuGroupedByCategory }),
     };
-  } catch (error: any) {
-    console.error('Error fetching menu:', error);
+  } catch (error) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'Failed to fetch menu', error: error.message }),
+      body: JSON.stringify({ message: 'Error fetching menu', error }),
     };
   }
 };
