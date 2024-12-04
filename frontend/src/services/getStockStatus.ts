@@ -1,4 +1,4 @@
-const apiUrl = 'https://0qjzlfpek7.execute-api.eu-north-1.amazonaws.com/admin/stock-status';
+const apiUrl = 'https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/stock-status';
 
 export const getStockStatus = async (): Promise<any> => {
   try {

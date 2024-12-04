@@ -47,6 +47,14 @@ functions:
           path: /order/{id}
           method: get
 
+  # Get the stock status for all ingredients
+  getStockStatus:
+    handler: src/handlers/getStockStatus.getStockStatus
+    events:
+      - httpApi:
+          path: /admin/stock-status
+          method: get
+
   # Review an order before sending
   getOrderReview:
     handler: src/handlers/getOrderReview.getOrderReview  
@@ -70,14 +78,6 @@ functions:
       - httpApi:
           path: /order/{id}/cancel
           method: delete  
-  
-    # Get the menu with stock status
-  getMenuWithStockStatus:
-    handler: src/handlers/getMenuWithStockStatus.getMenuWithStockStatus
-    events:
-      - httpApi:
-          path: /admin/stock-status
-          method: get
 
   initData:
     handler: src/handlers/initData.initData
