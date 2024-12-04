@@ -1,0 +1,118 @@
+.login-container {
+  position: relative; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Fyller hela höjden av sidan */
+  background-image: url('/src/assets/pasta.jpg'); /* Ange bakgrundsbilden */
+  background-size: cover; /* Täck hela sidan */
+  background-position: center; /* Centrera bilden */
+  }
+
+  .login-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(22, 61, 75, 0.75); /* Semi-transparent färg */
+    z-index: 1; /* Placera över bilden */
+  }
+
+  .headertext {
+    position: absolute; /* Placera den absolut i relation till föräldern */
+    top: 20px; /* Avstånd från toppen av sidan */
+    left: 50%; /* Centrera horisontellt */
+    transform: translateX(-50%); /* Justera för att få den perfekt centrerad */
+    text-align: center; /* Centrera texten */
+    color: #fff; /* Sätt textfärgen till vit (eller annan färg om bakgrunden är ljus) */
+    font-family: 'Kolker Brush', cursive; /* Din valda font */
+    z-index: 10; /* Sätt den framför andra element */
+  }
+
+  .headertext h1 {
+    color: #F4E7D3;
+    font-family: "Kolker Brush", cursive;
+    font-size: 150px;
+    position: relative;
+    z-index: 2; /* Placera texten över överlägget */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: -10px; /* Minska avståndet nedåt */
+    line-height: 1; /* Justerar radavståndet */
+    top: -75px;
+}
+
+.headertext h2 {
+    color: #F4E7D3;
+    font-family: "Jost", sans-serif;
+    font-weight: 300;
+    font-size: 1.3rem;
+    z-index: 2;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-top: -15px; /* Minska avståndet uppåt */
+    line-height: 1; /* Justerar radavståndet */
+    position: relative; /* Gör det möjligt att finjustera position */
+    left: 60px; /* Flytta texten åt höger */
+    top: -95px;
+}
+  
+.login-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.75); 
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Lätt skugga */
+    max-width: 400px; /* Bredd för rutan */
+    width: 250px; 
+    height: 350px;
+    z-index: 2;
+    margin-top: 85px; /* Flytta ner med 50px */
+}
+
+.login-box h2 {
+    color: #000;
+    font-weight: 400;
+}
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Lägger mellanrum mellan element i formuläret */
+    width: 300px; /* Gör formuläret lagom brett */
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    font-size: smaller;
+    font-weight: light;
+    color: #000;
+  }
+  
+  .form-group input {
+    padding: 10px;
+    font-size: 1rem;
+    color: #000;
+    background-color: lightyellow;
+    border: 1px solid #000;
+    border-radius: 5px;
+  }
+  
+  .login-button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #1E1E1E;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+  }
+  
