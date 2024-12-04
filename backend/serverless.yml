@@ -10,6 +10,7 @@ provider:
   environment:
     API_KEY: ${env:API_KEY}
     USERS_TABLE: UsersTable
+    PAYMENTS_TABLE: 
     JWT_SECRET: y7Gh@eN3!5PL!03HJaQe90^&*!s78Klo
   iam:
     role:
@@ -22,21 +23,17 @@ provider:
             - dynamodb:PutItem
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
-          Resource: "*"
+          Resource:
+            - arn:aws:dynamodb:eu-north-1:*:table/MenuTable
+            - arn:aws:dynamodb:eu-north-1:*:table/Payments
         - Effect: Allow
           Action:
             - logs:CreateLogGroup
             - logs:CreateLogStream
             - logs:PutLogEvents
           Resource: arn:aws:logs:eu-north-1:*:*
+
 functions:
-  getMenu:
-    handler: handler.getMenu
-    events:
-      - http:
-          path: /menu
-          method: get
-          cors: true
 
   postCreateUser:
     handler: src/handlers/postcreateUser.handler
@@ -61,20 +58,29 @@ functions:
           path: /admin/login
           method: post
           cors: true
-          
+
+  postPayment:
+    handler: src/handlers/postPayment.handler
+    events:
+      - http:
+          path: /payment
+          method: post
+          cors: true
+
 resources:
   Resources:
-    MenuTable:
+    PaymentsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: MenuTable
+        TableName: Payments
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: paymentId
             AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName: paymentId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
+
 custom:
   serverless-offline:
     cors:
@@ -84,5 +90,4 @@ custom:
         - Content-Type
         - x-api-key
       allowMethods:
-        - GET
         - POST
