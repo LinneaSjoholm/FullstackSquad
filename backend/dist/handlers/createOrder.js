@@ -10,25 +10,59 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { db } from '../services/db';
 import { updateStock } from './updateStock';
 export const createOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, customerName, customerPhone, ingredients } = JSON.parse(event.body);
+    const { name, customerName, customerPhone, dishNames } = JSON.parse(event.body);
+    if (!dishNames || dishNames.length === 0) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                message: 'Dish out of stock',
+            }),
+        };
+    }
     // Skapa ett unikt orderId med endast siffror (timestamp)
     const orderId = Date.now().toString();
-    const params = {
-        TableName: 'OrdersTable',
-        Item: {
-            orderId: orderId,
-            name: name,
-            customerName: customerName,
-            customerPhone: customerPhone,
-            status: 'pending', // Orderstatus vid skapande
-            createdAt: new Date().toISOString(),
-        },
-    };
+    const orderedDishes = [];
+    const ingredientsToUpdate = [];
     try {
-        if (ingredients && ingredients.length > 0) {
-            yield updateStock(ingredients);
+        // Hämta ingredienser för varje rätt och summera dem
+        for (const dishName of dishNames) {
+            const menuParams = {
+                TableName: 'MenuTable',
+                Key: { name: dishName },
+            };
+            const dish = yield db.get(menuParams);
+            if (!dish.Item) {
+                throw new Error(`Dish not found: ${dishName}`);
+            }
+            orderedDishes.push(dish.Item);
+            for (const ingredient of dish.Item.ingredients) {
+                const existingIngredient = ingredientsToUpdate.find(i => i.id === ingredient.id);
+                if (existingIngredient) {
+                    existingIngredient.quantity += ingredient.quantity;
+                }
+                else {
+                    ingredientsToUpdate.push({ id: ingredient.id, quantity: ingredient.quantity });
+                }
+            }
         }
-        // Använd db.put för att sätta in en ny order i DynamoDB
+        // Uppdatera lagerstatus
+        if (ingredientsToUpdate.length > 0) {
+            yield updateStock(ingredientsToUpdate);
+        }
+        // Skapa order
+        const params = {
+            TableName: 'OrdersTable',
+            Item: {
+                orderId: orderId,
+                name: name,
+                customerName: customerName,
+                customerPhone: customerPhone,
+                status: 'pending', // Orderstatus vid skapande
+                createdAt: new Date().toISOString(),
+                dishes: orderedDishes, // Lägg till rätter i ordern
+            },
+        };
+        // Spara order i databasen
         yield db.put(params);
         return {
             statusCode: 201,

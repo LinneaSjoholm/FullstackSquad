@@ -25,6 +25,7 @@ provider:
 functions:
   # Get the menu (fetch all menu items)
   getMenu:
+  
     handler: src/handlers/getMenu.getMenu  
     events:
       - httpApi:
