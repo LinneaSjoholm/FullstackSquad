@@ -1,0 +1,100 @@
+.create-account-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('/src/assets/pasta.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  
+  .create-account-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(22, 61, 75, 0.75);
+    z-index: 1;
+  }
+  
+  .headertext {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #F4E7D3;
+    z-index: 2;
+  }
+  
+  .create-account-box {
+    position: relative;
+    top: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    
+  }
+  
+  .create-account-box h2 {
+    font-weight: 400;
+    color: #000;
+    margin-bottom: 10px;
+  }
+  
+  .create-account-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 300px;
+  }
+  
+  .form-group label {
+    font-size: smaller;
+    font-weight: light;
+    color: #000;
+  }
+  
+  .form-group input {
+    padding: 10px;
+    font-size: 1rem;
+    color: #000;
+    background-color: lightyellow;
+    border: 1px solid #000;
+    border-radius: 5px;
+  }
+  
+  .create-account-button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #1E1E1E;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .create-account-button:hover {
+    background-color: #333;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+  
+  .success-message {
+    color: green;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
