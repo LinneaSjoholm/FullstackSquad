@@ -26,6 +26,7 @@ provider:
           Resource:
             - arn:aws:dynamodb:eu-north-1:*:table/MenuTable
             - arn:aws:dynamodb:eu-north-1:*:table/Payments
+            - arn:aws:dynamodb:eu-north-1:*:table/UsersTable
         - Effect: Allow
           Action:
             - logs:CreateLogGroup

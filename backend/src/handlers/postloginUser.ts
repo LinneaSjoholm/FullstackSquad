@@ -12,6 +12,10 @@ export const handler = async (event: any) => {
     if (!email || !password) {
       return {
         statusCode: 400,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "Content-Type",
+        },
         body: JSON.stringify({ error: "Email and password are required" }),
       };
     }
@@ -36,13 +40,15 @@ export const handler = async (event: any) => {
       console.log("User not found");
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "Content-Type",
+        },
         body: JSON.stringify({ error: "User not found" }),
       };
     }
 
     console.log("Found user:", user);
-
-    const bcrypt = require("bcryptjs");
 
     // Kontrollera om lösenordet är hashat
     if (!user.password.startsWith("$2a$10$")) {
@@ -65,21 +71,25 @@ export const handler = async (event: any) => {
       user.password = hashedPassword;
     }
 
-const plainPassword = password; // Lösenordet från användarens inmatning
-const hashedPassword = user.password; // Det hashade lösenordet från databasen
+    const plainPassword = password; // Lösenordet från användarens inmatning
+    const hashedPassword = user.password; // Det hashade lösenordet från databasen
 
-console.log("Plain password:", plainPassword);
-console.log("Hashed password from DB:", hashedPassword);
+    console.log("Plain password:", plainPassword);
+    console.log("Hashed password from DB:", hashedPassword);
 
-const isMatch = bcrypt.compareSync(plainPassword, hashedPassword);
-console.log("Do passwords match?", isMatch);
+    const isMatch = bcrypt.compareSync(plainPassword, hashedPassword);
+    console.log("Do passwords match?", isMatch);
 
-if (!isMatch) {
-  return {
-    statusCode: 401,
-    body: JSON.stringify({ error: "Invalid credentials" }),
-  };
-}
+    if (!isMatch) {
+      return {
+        statusCode: 401,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "Content-Type",
+        },
+        body: JSON.stringify({ error: "Invalid credentials" }),
+      };
+    }
 
     // Generera JWT-token
     const token = jwt.sign(
@@ -92,6 +102,10 @@ if (!isMatch) {
 
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
       body: JSON.stringify({
         message: "Login successful!",
         name: user.name,
@@ -103,6 +117,10 @@ if (!isMatch) {
 
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
       body: JSON.stringify({ error: error.message }),
     };
   }
