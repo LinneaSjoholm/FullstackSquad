@@ -1,0 +1,46 @@
+/* src/styles/Header.css */
+.header {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+  }
+  
+  /* src/styles/MainContent.css */
+  .main-content {
+    padding: 20px;
+    background-color: #f4f4f4;
+    text-align: center;
+  }
+  
+  /* src/styles/Footer.css */
+  .footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+    text-align: left;
+  }
+  
+  /* src/styles/AddressSection.css */
+  address {
+    font-style: normal;
+    line-height: 1.5;
+  }
+  
+  /* src/styles/SocialIconsSection.css */
+  .social-icons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .social-icon {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+  }
+  

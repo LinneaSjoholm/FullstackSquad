@@ -9,16 +9,6 @@ provider:
   environment:
     API_KEY: ${env:API_KEY}  # Hämta API-nyckeln från en miljövariabel
 
-  httpApi:
-    cors:
-      allowedOrigins:
-        - "*"  # Tillåter alla origin (kan specificeras om säkerhet behövs)
-      allowedHeaders:
-        - Content-Type
-        - x-api-key
-      allowedMethods:
-        - GET  # Tillåt endast GET-metoder
-
   iam:
     role:
       statements:
@@ -30,36 +20,25 @@ provider:
             - dynamodb:PutItem
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
-          Resource:
-            - "arn:aws:dynamodb:${self:provider.region}:*:table/MenuTable"
-            - "arn:aws:dynamodb:${self:provider.region}:*:table/AboutTable"
-            - "arn:aws:dynamodb:${self:provider.region}:*:table/ContactTable"
-            - "arn:aws:dynamodb:${self:provider.region}:*:table/ConfirmationTable"
+          Resource: "*"
 
 functions:
-  getMenu:
-    handler: handler.getMenu
-    events:
-      - httpApi:
-          path: /menu
-          method: get
-
   getAbout:
-    handler: handler.getAbout
+    handler: src/handlers/getAbout.handler
     events:
       - httpApi:
           path: /about
           method: get
 
   getConfirmation:
-    handler: handler.getConfirmation
+    handler: src/handlers/getConfirmation.handler
     events:
       - httpApi:
           path: /confirmation
           method: get
 
   getContact:
-    handler: handler.getContact
+    handler: src/handlers/getContact.handler
     events:
       - httpApi:
           path: /contact

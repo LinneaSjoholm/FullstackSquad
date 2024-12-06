@@ -1,42 +1,39 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* Gör app-container till en flexbox med kolumnlayout */
+html, body {
+  margin: 0; /* Ta bort eventuell margin */
+  padding: 0; /* Ta bort eventuell padding */
+  height: 100%; /* Gör att hela webbläsarfönstrets höjd används */
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Säkerställer att appen täcker hela höjden på skärmen */
+}
+
+main {
+  flex-grow: 1; /* Fyller ut det utrymme som finns kvar */
+  padding: 20px; /* Lägg till padding för lite avstånd runt innehållet */
+  box-sizing: border-box; /* Gör så att padding inte påverkar totalhöjden */
+}
+
+/* Header-styling */
+header {
+  background-color: #333;
+  color: white;
+  padding: 20px;
   text-align: center;
+  width: 100%; /* Se till att header täcker hela bredden */
+  box-sizing: border-box; /* Gör så att padding inte påverkar bredden */
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+/* Footer-styling */
+footer {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  width: 100%; /* Se till att footer täcker hela bredden */
+  box-sizing: border-box; /* Gör så att padding inte påverkar bredden */
+  margin-top: auto; /* Tvingar footern att alltid vara längst ner */
 }

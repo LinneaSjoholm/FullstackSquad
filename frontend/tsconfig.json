@@ -12,7 +12,7 @@
     "include": [
       "src/**/*.ts",                      // Inkludera alla TypeScript-filer
       "src/**/*.tsx"                       // Inkludera alla TSX-filer (React-komponenter)
-    ],
+, "src/App.jsx"    ],
     "exclude": [
       "node_modules"                      // Uteslut node_modules
     ]

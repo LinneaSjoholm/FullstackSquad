@@ -1,7 +1,8 @@
-const AWS = require('aws-sdk');
+import AWS from 'aws-sdk';
+
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-module.exports.handler = async (event: any) => {
+export const handler = async (event: any) => {
   const apiKey = event.headers?.['x-api-key'];
 
   if (apiKey !== process.env.API_KEY) {
@@ -20,7 +21,7 @@ module.exports.handler = async (event: any) => {
     const data = await docClient.get(params).promise();
     return {
       statusCode: 200,
-      body: JSON.stringify(data.Item || {}), // Returnera "about"-data som JSON
+      body: JSON.stringify(data.Item || {}),
     };
   } catch (error) {
     console.error('Error fetching about data:', error);

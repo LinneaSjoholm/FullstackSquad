@@ -1,35 +1,32 @@
-import React from 'react';
-import About from './About'; // Importera About-komponenten
-import Confirmation from './Confirmation'; // Importera Confirmation-komponenten
-import Contact from './Contact'; // Importera Contact-komponenten
-import Menu from './menu'; // Importera Menu-komponenten
-import './App.css';
-
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import HomePage from "./pages/HomePage";
+import About from "./components/About";
+import Contact from "./components/Contact";
+import Confirmation from "./components/Confirmation";
 
 const App = () => {
   return (
-    <div>
-      <header>
-        <h1>Welcome to Our App</h1>
-      </header>
-      
-      <main>
-        <section>
-          <h2>About</h2>
-          <About />
-        </section>
+    <Router>
+      <div className="app">
+        {/* Header visas på alla sidor */}
+        <Header />
+        
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/confirmation" element={<Confirmation />} />
+          </Routes>
+        </main>
 
-        <section>
-          <h2>Confirmation</h2>
-          <Confirmation />
-        </section>
-
-        <section>
-          <h2>Contact</h2>
-          <Contact />
-        </section>
-      </main>
-    </div>
+        {/* Footer visas på alla sidor */}
+        <Footer />
+      </div>
+    </Router>
   );
 };
 
