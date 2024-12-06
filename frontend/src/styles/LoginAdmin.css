@@ -1,0 +1,90 @@
+.admin-login-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('/src/assets/pasta.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .admin-login-container::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(22, 61, 75, 0.75);
+    z-index: 1;
+  }
+  
+  .admin-login-container h2 {
+    position: absolute;
+    top: 20px; 
+    left: 50%;
+    transform: translateX(-50%); 
+    text-align: center;
+    color: #fff3c4;
+    font-family: "Jost", sans-serif;
+    font-size: 2.5rem; 
+    z-index: 10; 
+  }
+  
+  .admin-login-form {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.75);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .admin-login-form .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  .admin-login-form label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #000;
+  }
+  
+  .admin-login-form input {
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #fff3c4;
+    color: #000;
+  }
+  
+  .admin-login-button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #1E1E1E;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .error-message {
+    position: absolute;
+    top: 150px; 
+    left: 50%;
+    transform: translateX(-50%); 
+    text-align: center;
+    color: red;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+    
