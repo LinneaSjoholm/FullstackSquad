@@ -20,12 +20,13 @@ provider:
             - dynamodb:PutItem
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
+            - dynamodb:BatchGetItem
           Resource: "*"
 
 functions:
   # Get the menu (fetch all menu items)
   getMenu:
-  
+
     handler: src/handlers/getMenu.getMenu  
     events:
       - httpApi:
@@ -48,14 +49,6 @@ functions:
           path: /order/{id}
           method: get
 
-  # Get the stock status for all ingredients
-  getStockStatus:
-    handler: src/handlers/getStockStatus.getStockStatus
-    events:
-      - httpApi:
-          path: /admin/stock-status
-          method: get
-
   # Review an order before sending
   getOrderReview:
     handler: src/handlers/getOrderReview.getOrderReview  
@@ -71,6 +64,31 @@ functions:
       - httpApi:
           path: /order/{id}/update
           method: post
+
+  # Get the stock status for all ingredients
+  getStockStatus:
+    handler: src/handlers/getStockStatus.getStockStatus
+    events:
+      - httpApi:
+          path: /admin/stock-status
+          method: get
+
+  # Get all orders for admin
+  adminGetOrders:
+    handler: src/handlers/adminGetOrders.adminGetOrders
+    events:
+      - httpApi:
+          path: /admin/orders
+          method: get
+
+  # Update order details (admin/employees)
+  updateOrderDetails:
+    handler: src/handlers/adminUpdateOrderDetails.adminUpdateOrder
+    events:
+      - httpApi:
+          path: /admin/order/{id}
+          method: patch
+          
 
   # Cancel an order (before it is locked)
   deleteCancelOrder:  

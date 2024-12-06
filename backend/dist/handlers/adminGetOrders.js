@@ -8,30 +8,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { db } from '../services/db';
-export const createOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, customerName, customerPhone } = JSON.parse(event.body);
-    // Skapa ett unikt orderId med endast siffror (timestamp)
-    const orderId = Date.now().toString();
+export const adminGetOrders = () => __awaiter(void 0, void 0, void 0, function* () {
     const params = {
         TableName: 'OrdersTable',
-        Item: {
-            orderId: orderId,
-            name: name,
-            customerName: customerName,
-            customerPhone: customerPhone,
-            status: 'pending', // Orderstatus vid skapande
-            createdAt: new Date().toISOString(),
-        },
     };
     try {
-        // Använd db.put för att sätta in en ny order i DynamoDB
-        yield db.put(params);
+        const data = yield db.scan(params);
+        if (!data.Items || data.Items.length === 0) {
+            return {
+                statusCode: 404,
+                body: JSON.stringify({ message: 'No orders found' }),
+            };
+        }
         return {
-            statusCode: 201,
-            body: JSON.stringify({
-                message: 'Order created successfully',
-                orderId: orderId,
-            }),
+            statusCode: 200,
+            body: JSON.stringify(data.Items),
         };
     }
     catch (error) {
@@ -39,7 +30,7 @@ export const createOrder = (event) => __awaiter(void 0, void 0, void 0, function
             return {
                 statusCode: 500,
                 body: JSON.stringify({
-                    message: 'Failed to create order',
+                    message: 'Failed to fetch orders',
                     error: error.message,
                 }),
             };
@@ -48,7 +39,7 @@ export const createOrder = (event) => __awaiter(void 0, void 0, void 0, function
             return {
                 statusCode: 500,
                 body: JSON.stringify({
-                    message: 'Failed to create order',
+                    message: 'Failed to fetch orders',
                     error: 'Unknown error occurred',
                 }),
             };
