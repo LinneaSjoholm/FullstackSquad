@@ -71,6 +71,16 @@ functions:
           method: delete
           cors: true
 
+  putMenuAdmin:
+    handler: src/handlers/putMenuAdmin.putMenuAdmin
+    events:
+      - httpApi:
+          path: /menu/admin
+          method: put
+          cors: true
+          headers:
+            x-api-key: true  
+
 resources:
   Resources:
     MenuTable:

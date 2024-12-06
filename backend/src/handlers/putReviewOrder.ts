@@ -1,45 +1,15 @@
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import { DynamoDBItem, MenuItem } from '../interfaces';
 
 const dynamoDb = new DocumentClient();
 
-// API-nyckeln (kan hämtas från miljövariabler för att vara mer säker)
-const API_KEY = process.env.API_KEY || 'your-default-api-key';
-
-// Define interface for menu item
-interface MenuItem {
-  id: string;
-  name: string;
-  quantity: number;
-  ingredients: string[];
-  ingredientsToAdd?: string[];
-  ingredientsToRemove?: string[];
-  lactoseFree?: boolean;
-  glutenFree?: boolean;
-  description?: string;
-  price?: number;
-}
+// Utility function to normalize ingredients
+const normalizeIngredients = (ingredients: any[]): string[] => {
+  return ingredients ? ingredients.map((ingredient) => ingredient.S) : [];
+};
 
 export const putReviewOrder = async (event: any) => {
-  // Kontrollera om API-nyckeln finns i begäran
-  const apiKey = event.headers['x-api-key'];
-  if (!apiKey || apiKey !== API_KEY) {
-    return {
-      statusCode: 403, // Forbidden om nyckeln inte är rätt
-      body: JSON.stringify({ message: 'Forbidden: Invalid API key' }),
-    };
-  }
-
-  console.log("Received event:", JSON.stringify(event, null, 2));
-
-  const orderId = event.pathParameters?.id;
-
-  if (!event.body) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ message: 'Request body is missing' }),
-    };
-  }
-
+  // API key validation and initial checks
   let items: { id: string; quantity: number; ingredientsToAdd: string[]; ingredientsToRemove: string[]; lactoseFree?: boolean; glutenFree?: boolean }[] = [];
   let customerName: string;
   let customerPhone: string;
@@ -57,24 +27,11 @@ export const putReviewOrder = async (event: any) => {
     };
   }
 
+  const orderId = event.pathParameters?.id;
   if (!orderId) {
     return {
       statusCode: 400,
       body: JSON.stringify({ message: 'Order ID is required' }),
-    };
-  }
-
-  if (!customerName || !customerPhone) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ message: 'Customer name and phone number are required' }),
-    };
-  }
-
-  if (!items || !Array.isArray(items)) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ message: 'Items are required for review' }),
     };
   }
 
@@ -85,8 +42,6 @@ export const putReviewOrder = async (event: any) => {
 
   try {
     const orderResult = await dynamoDb.get(orderParams).promise();
-    console.log("Fetched order:", JSON.stringify(orderResult, null, 2));
-
     if (!orderResult.Item) {
       return {
         statusCode: 404,
@@ -108,9 +63,7 @@ export const putReviewOrder = async (event: any) => {
     const updatedItemsDetails: string[] = [];
     let totalPrice = 0;
 
-    // Loop through items to update
     for (const itemToUpdate of items) {
-      console.log(`Processing item: ${itemToUpdate.id}`);
       itemToUpdate.ingredientsToAdd = itemToUpdate.ingredientsToAdd || [];
       itemToUpdate.ingredientsToRemove = itemToUpdate.ingredientsToRemove || [];
 
@@ -119,43 +72,53 @@ export const putReviewOrder = async (event: any) => {
       if (originalItemIndex !== -1) {
         const originalItem = originalItems[originalItemIndex];
 
-        // Ensure ingredients is always an array
-        originalItem.ingredients = originalItem.ingredients || [];
+        // Get ingredients from the menu (the full list of ingredients)
+        const menuItem = menuResult.Items?.find((item: any) => item.id === itemToUpdate.id);
+        const menuIngredients = menuItem?.ingredients || [];
 
-        const addedIngredients = itemToUpdate.ingredientsToAdd || [];
-        const removedIngredients = itemToUpdate.ingredientsToRemove || [];
+        // Start with the ingredients from the menu
+        originalItem.ingredients = originalItem.ingredients || [...menuIngredients];
 
-        if (addedIngredients.length > 0) updatedItemsDetails.push(`Added ingredients: ${addedIngredients.join(', ')}`);
-        if (removedIngredients.length > 0) updatedItemsDetails.push(`Removed ingredients: ${removedIngredients.join(', ')}`);
+        // Add new ingredients
+        originalItem.ingredients = [
+          ...new Set([...originalItem.ingredients, ...itemToUpdate.ingredientsToAdd]), // Add ingredients, ensuring no duplicates
+        ];
+
+        // Remove specified ingredients
+        originalItem.ingredients = originalItem.ingredients.filter(
+          ingredient => !itemToUpdate.ingredientsToRemove.includes(ingredient) // Remove ingredients
+        );
+
+        // Track the changes to ingredients
+        if (itemToUpdate.ingredientsToAdd.length > 0) updatedItemsDetails.push(`Added ingredients: ${itemToUpdate.ingredientsToAdd.join(', ')}`);
+        if (itemToUpdate.ingredientsToRemove.length > 0) updatedItemsDetails.push(`Removed ingredients: ${itemToUpdate.ingredientsToRemove.join(', ')}`);
 
         originalItem.quantity = itemToUpdate.quantity || originalItem.quantity;
-        const price = originalItem.price ?? 0;
+        const price = originalItem.price ?? 0; 
         totalPrice += price * originalItem.quantity;
 
-        originalItem.ingredients = [...new Set([...originalItem.ingredients, ...addedIngredients])];
-        originalItem.ingredients = originalItem.ingredients.filter(ingredient => !removedIngredients.includes(ingredient));
-
-        // Ensure lactoseFree and glutenFree are properly updated
+        // Update lactose-free and gluten-free properties
         originalItem.lactoseFree = itemToUpdate.lactoseFree ?? originalItem.lactoseFree;
         originalItem.glutenFree = itemToUpdate.glutenFree ?? originalItem.glutenFree;
 
-        // Add the changes for tracking
-        originalItem.ingredientsToAdd = addedIngredients;
-        originalItem.ingredientsToRemove = removedIngredients;
+        originalItem.ingredientsToAdd = itemToUpdate.ingredientsToAdd;
+        originalItem.ingredientsToRemove = itemToUpdate.ingredientsToRemove;
 
       } else {
+        // New item: Add from the MenuTable
         const menuItem = menuResult.Items?.find((item: any) => item.id === itemToUpdate.id);
         const newItem: MenuItem = {
           id: itemToUpdate.id,
           name: menuItem?.name || 'Unknown Item',
           quantity: itemToUpdate.quantity || 1,
-          ingredients: itemToUpdate.ingredientsToAdd || [],
+          ingredients: itemToUpdate.ingredientsToAdd || [...(menuItem?.ingredients || [])],  // Use ingredients from menu by default
           ingredientsToAdd: itemToUpdate.ingredientsToAdd || [],
           ingredientsToRemove: [],
           description: menuItem?.description,
           price: menuItem?.price ?? 0,
           lactoseFree: itemToUpdate.lactoseFree,
           glutenFree: itemToUpdate.glutenFree,
+          popularity: menuItem?.popularity ?? 0,
         };
 
         originalItems.push(newItem);
@@ -179,10 +142,10 @@ export const putReviewOrder = async (event: any) => {
         lactoseFree: item.lactoseFree,
         glutenFree: item.glutenFree,
         description: item.description,
-        ingredients: item.ingredients,
+        ingredients: item.ingredients,  // Include all ingredients here
         ingredientsToAdd: item.ingredientsToAdd || [],
         ingredientsToRemove: item.ingredientsToRemove || [],
-        itemMessage: item.ingredientsToAdd?.length || item.ingredientsToRemove?.length ? `Updated with changes` : `No changes`
+        itemMessage: item.ingredientsToAdd?.length || item.ingredientsToRemove?.length ? `Updated with changes` : `No changes`,
       })),
       status: 'pending',
       customerName,
@@ -190,8 +153,6 @@ export const putReviewOrder = async (event: any) => {
       lactoseFreeMessage,
       glutenFreeMessage,
     };
-
-    console.log("Updated order:", JSON.stringify(updatedOrder, null, 2));
 
     const updateParams = {
       TableName: 'OrdersTable',
@@ -206,7 +167,7 @@ export const putReviewOrder = async (event: any) => {
         message: 'Order updated successfully',
         updatedOrder: {
           ...updatedOrder,
-          totalPrice,
+          totalPrice,  // Include total price in the updated order response
         },
         details: updatedItemsDetails,
       }),

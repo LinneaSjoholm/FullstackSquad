@@ -1,35 +1,12 @@
+import { DynamoDBItem, MenuItem } from '../interfaces';
 import { DocumentClient } from 'aws-sdk/clients/dynamodb';
 
 const dynamoDb = new DocumentClient();
 
-// Definiera en typ för alla fält som vi får från DynamoDB
-interface DynamoDBItem {
-  id: string;
-  name: string;
-  price: number;
-  popularity: number;
-  lactoseFree: boolean;
-  glutenFree: boolean;
-  category: string;
-  ingredients: string[];
-  description: string;
-}
-
-// Definiera en typ för varje menyobjekt som vi skickar till användaren
-interface MenuItem {
-  name: string;
-  price: number;
-  ingredients: string[];
-  lactoseFree: boolean;
-  glutenFree: boolean;
-  popularity: number;
-}
-
 export const getMenu = async (event: any) => {
-  // Hämta API-nyckeln från event.headers
   const apiKey = event.headers['x-api-key'];
+  const sortBy = event.queryStringParameters?.sortBy || 'popularity'; // Sorteringsparameter från användaren
 
-  // Kontrollera om API-nyckeln matchar den som finns i miljövariablerna
   if (apiKey !== process.env.API_KEY) {
     return {
       statusCode: 403,
@@ -42,10 +19,8 @@ export const getMenu = async (event: any) => {
   };
 
   try {
-    // Hämtar alla menyalternativ från DynamoDB
     const result = await dynamoDb.scan(params).promise();
 
-    // Om det inte finns några rätter, returnera ett meddelande
     if (!result.Items || result.Items.length === 0) {
       return {
         statusCode: 404,
@@ -53,39 +28,49 @@ export const getMenu = async (event: any) => {
       };
     }
 
-    // Gruppindelning av menyn
+    // Sorteringsfunktion
+    const sortMenuItems = (items: MenuItem[], sortBy: 'popularity' | 'price' | 'name') => {
+      return items.sort((a, b) => {
+        if (sortBy === 'popularity') {
+          return (b.popularity || 0) - (a.popularity || 0);
+        } else if (sortBy === 'price') {
+          return a.price - b.price;
+        } else {
+          return a.name.localeCompare(b.name);
+        }
+      });
+    };
+
+    // Gruppera menyn per kategori
     const menuGroupedByCategory = result.Items.reduce((acc, item) => {
-      // Typa objektet som DynamoDBItem för att ha tillgång till alla fält
       const dbItem = item as DynamoDBItem;
-
-      // Hämta kategori och andra onödiga fält för att rensa bort dem senare
       const { category, id, description, ...filteredItem } = dbItem;
-
-      // Om kategorin inte finns, använd "Others"
       const itemCategory = category || "Others";
 
-      // Rensa och omorganisera fältens ordning
       const reorderedItem: MenuItem = {
+        id: dbItem.id,               // Lägg till id
+        quantity: dbItem.quantity || 1,  // Lägg till quantity (om den inte finns, sätt ett defaultvärde)
         name: filteredItem.name,
         price: filteredItem.price,
         ingredients: filteredItem.ingredients,
         lactoseFree: filteredItem.lactoseFree,
         glutenFree: filteredItem.glutenFree,
         popularity: filteredItem.popularity,
+        description: dbItem.description || '',  // Lägg till description
       };
+      
 
       if (!acc[itemCategory]) {
         acc[itemCategory] = [];
       }
 
-      // Lägg till det rensade och omorganiserade objektet till rätt kategori
       acc[itemCategory].push(reorderedItem);
       return acc;
     }, {} as { [key: string]: MenuItem[] });
 
-    // Sortera rätterna efter popularitet inom varje kategori
+    // Sortera per användarens val av sorteringsparameter
     for (const category in menuGroupedByCategory) {
-      menuGroupedByCategory[category] = menuGroupedByCategory[category].sort((a: MenuItem, b: MenuItem) => (b.popularity || 0) - (a.popularity || 0));
+      menuGroupedByCategory[category] = sortMenuItems(menuGroupedByCategory[category], sortBy);
     }
 
     return {
