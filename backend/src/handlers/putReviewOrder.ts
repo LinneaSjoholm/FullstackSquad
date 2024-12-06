@@ -9,8 +9,15 @@ const normalizeIngredients = (ingredients: any[]): string[] => {
 };
 
 export const putReviewOrder = async (event: any) => {
-  // API key validation and initial checks
-  let items: { id: string; quantity: number; ingredientsToAdd: string[]; ingredientsToRemove: string[]; lactoseFree?: boolean; glutenFree?: boolean }[] = [];
+  let items: { 
+    id: string; 
+    quantity: number; 
+    ingredientsToAdd: string[]; 
+    ingredientsToRemove: string[]; 
+    lactoseFree?: boolean; 
+    glutenFree?: boolean;
+    drinkId?: string;  // Lägg till drinkId
+  }[] = [];
   let customerName: string;
   let customerPhone: string;
 
@@ -72,46 +79,44 @@ export const putReviewOrder = async (event: any) => {
       if (originalItemIndex !== -1) {
         const originalItem = originalItems[originalItemIndex];
 
-        // Get ingredients from the menu (the full list of ingredients)
         const menuItem = menuResult.Items?.find((item: any) => item.id === itemToUpdate.id);
         const menuIngredients = menuItem?.ingredients || [];
 
-        // Start with the ingredients from the menu
         originalItem.ingredients = originalItem.ingredients || [...menuIngredients];
 
-        // Add new ingredients
         originalItem.ingredients = [
-          ...new Set([...originalItem.ingredients, ...itemToUpdate.ingredientsToAdd]), // Add ingredients, ensuring no duplicates
+          ...new Set([...originalItem.ingredients, ...itemToUpdate.ingredientsToAdd]),
         ];
 
-        // Remove specified ingredients
         originalItem.ingredients = originalItem.ingredients.filter(
-          ingredient => !itemToUpdate.ingredientsToRemove.includes(ingredient) // Remove ingredients
+          ingredient => !itemToUpdate.ingredientsToRemove.includes(ingredient)
         );
 
-        // Track the changes to ingredients
         if (itemToUpdate.ingredientsToAdd.length > 0) updatedItemsDetails.push(`Added ingredients: ${itemToUpdate.ingredientsToAdd.join(', ')}`);
         if (itemToUpdate.ingredientsToRemove.length > 0) updatedItemsDetails.push(`Removed ingredients: ${itemToUpdate.ingredientsToRemove.join(', ')}`);
 
         originalItem.quantity = itemToUpdate.quantity || originalItem.quantity;
-        const price = originalItem.price ?? 0; 
+        const price = originalItem.price ?? 0;
         totalPrice += price * originalItem.quantity;
 
-        // Update lactose-free and gluten-free properties
         originalItem.lactoseFree = itemToUpdate.lactoseFree ?? originalItem.lactoseFree;
         originalItem.glutenFree = itemToUpdate.glutenFree ?? originalItem.glutenFree;
+
+        // Lägg till drinkId om det finns
+        if (itemToUpdate.drinkId) {
+          originalItem.drinkId = itemToUpdate.drinkId;
+        }
 
         originalItem.ingredientsToAdd = itemToUpdate.ingredientsToAdd;
         originalItem.ingredientsToRemove = itemToUpdate.ingredientsToRemove;
 
       } else {
-        // New item: Add from the MenuTable
         const menuItem = menuResult.Items?.find((item: any) => item.id === itemToUpdate.id);
         const newItem: MenuItem = {
           id: itemToUpdate.id,
           name: menuItem?.name || 'Unknown Item',
           quantity: itemToUpdate.quantity || 1,
-          ingredients: itemToUpdate.ingredientsToAdd || [...(menuItem?.ingredients || [])],  // Use ingredients from menu by default
+          ingredients: itemToUpdate.ingredientsToAdd || [...(menuItem?.ingredients || [])],
           ingredientsToAdd: itemToUpdate.ingredientsToAdd || [],
           ingredientsToRemove: [],
           description: menuItem?.description,
@@ -121,6 +126,11 @@ export const putReviewOrder = async (event: any) => {
           popularity: menuItem?.popularity ?? 0,
         };
 
+        // Lägg till drinkId om det finns
+        if (itemToUpdate.drinkId) {
+          newItem.drinkId = itemToUpdate.drinkId;
+        }
+
         originalItems.push(newItem);
 
         const price = newItem.price ?? 0;
@@ -128,7 +138,6 @@ export const putReviewOrder = async (event: any) => {
       }
     }
 
-    // Generate the lactose-free and gluten-free messages
     const lactoseFreeMessage = items.some(item => item.lactoseFree) ? "Lactose-free selected." : "No lactose-free items selected.";
     const containsGlutenFree = items.some(item => item.glutenFree === true);
     const glutenFreeMessage = containsGlutenFree ? "Gluten-free selected." : "No gluten-free items selected.";
@@ -142,10 +151,12 @@ export const putReviewOrder = async (event: any) => {
         lactoseFree: item.lactoseFree,
         glutenFree: item.glutenFree,
         description: item.description,
-        ingredients: item.ingredients,  // Include all ingredients here
+        ingredients: item.ingredients,
         ingredientsToAdd: item.ingredientsToAdd || [],
         ingredientsToRemove: item.ingredientsToRemove || [],
         itemMessage: item.ingredientsToAdd?.length || item.ingredientsToRemove?.length ? `Updated with changes` : `No changes`,
+        // Lägg till drinkId om det finns
+        drinkId: item.drinkId || null,
       })),
       status: 'pending',
       customerName,
@@ -167,7 +178,7 @@ export const putReviewOrder = async (event: any) => {
         message: 'Order updated successfully',
         updatedOrder: {
           ...updatedOrder,
-          totalPrice,  // Include total price in the updated order response
+          totalPrice,
         },
         details: updatedItemsDetails,
       }),
