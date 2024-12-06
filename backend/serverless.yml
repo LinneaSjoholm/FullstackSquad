@@ -88,6 +88,22 @@ functions:
       - httpApi:
           path: /admin/order/{id}
           method: patch
+
+  adminMarkOrderAsCompleted:
+    handler: src/handlers/adminMarkOrderAsCompleted.adminMarkOrderAsCompleted
+    events:
+      - http:
+          path: /admin/order/{id}/mark-as-completed
+          method: post
+          cors: true
+
+  adminLockOrder:
+    handler: src/handlers/adminLockOrder.adminLockOrder
+    events:
+      - http:
+          path: /admin/order/{id}/lock
+          method: post
+          cors: true
           
 
   # Cancel an order (before it is locked)
