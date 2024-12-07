@@ -1,31 +1,19 @@
-import React, { useState } from 'react';
-import { lockOrder } from '../api/AdminOrderApi';
+import React from 'react';
 
-const OrderRow: React.FC<{ orderId: string }> = ({ orderId }) => {
-  const [loading, setLoading] = useState(false);
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
+interface OrderRowProps {
+  orderId: string;
+  locked?: boolean;
+  onLock?: (orderId: string) => void; 
+}
 
-  const handleLockClick = async () => {
-    setLoading(true);
-    setStatusMessage(null); // Rensa tidigare meddelande
-    try {
-      await lockOrder(orderId);
-      setStatusMessage('Order locked successfully!');
-    } catch (error) {
-      console.error('Error locking order:', error);
-      setStatusMessage('Failed to lock the order. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+const OrderRow: React.FC<OrderRowProps> = ({ orderId, locked = false, onLock }) => {
   return (
-    <div style={{ border: '1px solid #ccc', padding: '10px', margin: '10px 0' }}>
+    <div>
       <h3>Order ID: {orderId}</h3>
-      <button onClick={handleLockClick} disabled={loading}>
-        {loading ? 'Locking...' : 'Lock Order'}
-      </button>
-      {statusMessage && <p>{statusMessage}</p>}
+      {!locked && onLock && (
+        <button onClick={() => onLock(orderId)}>Lock Order</button>
+      )}
+      {locked && <span>Order is locked</span>}
     </div>
   );
 };
