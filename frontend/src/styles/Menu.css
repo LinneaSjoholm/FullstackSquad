@@ -1,0 +1,54 @@
+/* menu.css */
+
+.menu-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.menu-header {
+  font-size: 2rem;
+}
+
+.sort-container {
+  margin-bottom: 1rem;
+}
+
+.menu-category {
+  margin-top: 2rem;
+}
+
+.menu-item {
+  margin-bottom: 1rem;
+}
+
+.menu-item-title {
+  font-size: 1.5rem;
+}
+
+.menu-item-img {
+  width: 100px;
+  height: auto;
+}
+
+.inline-text {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.icon-container {
+  display: flex;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.icon-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.icon-button + .icon-button {
+  margin-left: 10px;
+}

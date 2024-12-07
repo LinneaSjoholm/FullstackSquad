@@ -45,7 +45,7 @@ const ReviewOrder: React.FC = () => {
       0
     );
     setUpdatedTotalPrice(newTotalPrice); // Uppdatera totalpriset
-  }, [updatedItems]); // Kör denna effekt när updatedItems förändras
+  }, [updatedItems]);
 
   // Uppdatera priset för en enskild dryck
   const updateTotalPrice = (itemId: string, drinkId: string) => {
@@ -121,25 +121,24 @@ const ReviewOrder: React.FC = () => {
     preference: 'lactoseFree' | 'glutenFree',
     value: boolean
   ) => {
-    console.log(`Toggling ${preference} for item ${itemId} to ${value}`); // Logga ändring
-  
     setUpdatedItems((prevItems) =>
       prevItems.map((item) => {
         if (item.id === itemId) {
           const updatedItem = {
             ...item,
-            [preference]: !item[preference],  // Toggla värdet
+            [preference]: !item[preference], // Toggla värdet
           };
-  
-          console.log(`Updated item after toggling:`, updatedItem); // Logga det uppdaterade objektet
           return updatedItem;
         }
         return item;
       })
     );
   };
-  
-  
+
+  // Ta bort artikel från beställningen
+  const handleRemoveItem = (itemId: string) => {
+    setUpdatedItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+  };
 
   // Uppdatera beställning
   const handleUpdateOrder = async () => {
@@ -228,12 +227,12 @@ const ReviewOrder: React.FC = () => {
               <div>
                 <p>{item.lactoseFree ? 'Lactose Free' : 'Not Lactose Free'}</p>
                 <button onClick={() => handleDietaryPreferenceChange(item.id, 'lactoseFree', !item.lactoseFree)}>
-                  Toggle Lactose Free
+                  Lactose Free / Not Lactose Free
                 </button>
 
                 <p>{item.glutenFree ? 'Gluten Free' : 'Not Gluten Free'}</p>
                 <button onClick={() => handleDietaryPreferenceChange(item.id, 'glutenFree', !item.glutenFree)}>
-                  Toggle Gluten Free
+                  Gluten Free / Not Gluten Free
                 </button>
               </div>
 
@@ -255,6 +254,9 @@ const ReviewOrder: React.FC = () => {
                   )}
                 </select>
               </div>
+
+              {/* Lägg till knapp för att ta bort artikel */}
+              <button onClick={() => handleRemoveItem(item.id)}>Remove Item</button>
             </div>
           </li>
         ))}

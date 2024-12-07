@@ -1,6 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { MenuItem, OrderItem, CartItem } from '../interfaces/index';
 import Cart from '../components/cart';
+import '../styles/Menu.css';
+import shoppingBagIcon from '../assets/shopping-bag.png'; 
+import heartIcon from '../assets/Vector (1).png';          
+import arrabbiataPenne from '../assets/ArrabbiataPenne.png';
+import carbonaraClassic from '../assets/CarbonaraClassic.png';
+import creamyAlfredo from '../assets/CreamyAlfredo.png';
+import fourCheeseTortellini from '../assets/FourCheeseTortellini.png';
+import gardenPestoDelight from '../assets/GardenPestoDelight.png';
+import LasagnaAlForno from '../assets/LasagnaAlForno.png';
+import LemonHerbChickenPasta from '../assets/LemonHerbChickenPasta.png';
+import ravioliFlorentine from '../assets/RavioliFlorentine.png';
+import seafoodMarinara from '../assets/SeafoodMarinara.png';
+import spaghettiBolognese from '../assets/SpaghettiBolognese.png';
+
+const pastaImages: { [key: string]: string } = {
+  'Arrabbiata Penne': arrabbiataPenne,
+  'Carbonara Classic': carbonaraClassic,
+  'Creamy Alfredo': creamyAlfredo,
+  'Four Cheese Tortellini': fourCheeseTortellini,
+  'Garden Pesto Delight': gardenPestoDelight,
+  'Lasagna Al Forno': LasagnaAlForno,
+  'Lemon Herb Chicken Pasta': LemonHerbChickenPasta,
+  'Ravioli Florentine': ravioliFlorentine,
+  'Seafood Marinara': seafoodMarinara,
+  'Spaghetti Bolognese': spaghettiBolognese,
+};
 
 interface MenuProps {
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
@@ -13,6 +39,7 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<'popularity' | 'price' | 'name'>('popularity');
+  const [cartVisible, setCartVisible] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -46,18 +73,17 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
     fetchMenu();
   }, []);
 
-  // Lägg till en maträtt till beställningen, eller öka kvantiteten om den redan finns
   const addToOrder = (itemId: string) => {
     setOrderItems((prevState) => {
       const itemIndex = prevState.findIndex((item) => item.id === itemId);
-  
+
       if (itemIndex !== -1) {
         const updatedOrder = prevState.map((item, index) => {
           if (index === itemIndex) {
             return { 
               ...item, 
               quantity: item.quantity + 1 
-            }; // Öka kvantiteten om den redan finns
+            };
           }
           return item;
         });
@@ -70,29 +96,28 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
             { 
               ...item, 
               quantity: 1, 
-              lactoseFree: false, // Standard till false
-              glutenFree: false   // Standard till false
+              lactoseFree: false, 
+              glutenFree: false  
             }
           ];
         }
-        return prevState; // No changes if item is not found
+        return prevState;
       }
     });
+    setCartVisible(true);
   };
-  
 
-  // Ta bort en maträtt från beställningen, minska kvantiteten eller ta bort helt
   const removeFromOrder = (itemId: string) => {
     setOrderItems((prevState) => {
       const updatedOrder = prevState.map((item) => {
         if (item.id === itemId) {
           if (item.quantity > 1) {
-            return { ...item, quantity: item.quantity - 1 }; // Minska kvantiteten
+            return { ...item, quantity: item.quantity - 1 };
           }
-          return null; // Ta bort objektet helt när kvantiteten når 1
+          return null;
         }
         return item;
-      }).filter((item) => item !== null); // Filtrera bort null (objekt som tas bort)
+      }).filter((item) => item !== null);
 
       return updatedOrder;
     });
@@ -119,6 +144,13 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
     return acc;
   }, {} as { [key: string]: MenuItem[] });
 
+  const renderStars = (popularity: number) => {
+    const starCount = Math.round(popularity / 20);
+    return Array.from({ length: 5 }, (_, index) => (
+      <span key={index} style={{ color: index < starCount ? 'gold' : 'gray' }}>★</span>
+    ));
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
@@ -144,16 +176,42 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
             <h2>{category}</h2>
             <ul>
               {sortedMenuItems[category].map((item) => (
-                <li key={item.id}>
+                <li key={item.id} style={{ marginBottom: '1rem' }}>
                   <h3>{item.name} - ${item.price}</h3>
+                  
+                  {/* Display the pasta image dynamically based on the item name */}
+                  {category === 'pasta' && (
+                    <img 
+                      src={pastaImages[item.name]} 
+                      alt={item.name} 
+                      style={{ width: '', height: '' }} 
+                    />
+                  )}
+
                   <p>{item.description}</p>
                   <p>Ingredients: {item.ingredients.join(', ')}</p>
 
-                  {/* Överstyr laktos- och glutenfritt till false */}
-                  <p>{item.lactoseFree ? 'L/' : ''}</p>
-                  <p>{item.glutenFree ? 'G' : ''}</p>
+                  <div>
+                    <p className="inline-text">{item.lactoseFree ? 'L/' : ''}</p>
+                    <p className="inline-text">{item.glutenFree ? 'G' : ''}</p>
+                  </div>
 
-                  <button onClick={() => addToOrder(item.id)}>Add to order</button>
+                  {category === 'pasta' && (
+                    <div>{renderStars(item.popularity || 0)}</div>
+                  )}
+
+                  {category !== 'drink' && (
+                    <button 
+                      style={{ marginRight: '10px' }} 
+                      onClick={() => console.log(`Added ${item.name} to favorites`)}
+                    >
+                      <img src={heartIcon} alt="Heart icon" style={{ width: '20px', height: '20px' }} />
+                    </button>
+                  )}
+
+                  {category !== 'drink' && (
+                    <button onClick={() => addToOrder(item.id)}>Add to order</button>
+                  )}
                 </li>
               ))}
             </ul>
@@ -161,13 +219,52 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
         ))}
       </div>
 
-      <Cart
-        orderItems={orderItems}
-        calculateTotalPrice={calculateTotalPrice}
-        removeFromOrder={removeFromOrder}
-      />
+      <div style={iconContainerStyles}>
+        <button
+          style={heartButtonStyles}
+          onClick={() => console.log('Heart icon clicked')}
+        >
+          <img src={heartIcon} alt="Heart icon" style={{ width: '20px', height: '20px' }} />
+        </button>
+
+        <button 
+          onClick={() => setCartVisible(!cartVisible)} 
+          style={cartButtonStyles}
+        >
+          <img src={shoppingBagIcon} alt="Cart icon" style={{ width: '30px', height: '30px' }} />
+        </button>
+      </div>
+
+      {cartVisible && (
+        <Cart
+          orderItems={orderItems}
+          calculateTotalPrice={calculateTotalPrice}
+          removeFromOrder={removeFromOrder}
+        />
+      )}
     </div>
   );
+};
+
+const iconContainerStyles: React.CSSProperties = {
+  display: 'flex',
+  position: 'absolute',
+  top: '20px',
+  right: '20px',
+  zIndex: 1000,
+};
+
+const cartButtonStyles: React.CSSProperties = {
+  backgroundColor: 'transparent',
+  border: 'none',
+  cursor: 'pointer',
+};
+
+const heartButtonStyles: React.CSSProperties = {
+  backgroundColor: 'transparent',
+  border: 'none',
+  cursor: 'pointer',
+  marginLeft: '10px',
 };
 
 export default Menu;

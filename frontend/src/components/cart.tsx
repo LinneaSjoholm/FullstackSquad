@@ -1,10 +1,10 @@
 import React from 'react';
 import { OrderItem } from '../interfaces/index';  // Add this import for OrderItem
 import { useNavigate } from 'react-router-dom';
+import '../styles/Cart.css';
 
-// Modify Cart component to accept OrderItem[] instead of CartItem[]
 interface CartProps {
-  orderItems: OrderItem[];  // Change from CartItem[] to OrderItem[]
+  orderItems: OrderItem[];
   calculateTotalPrice: () => number;
   removeFromOrder: (itemId: string) => void;
 }
@@ -12,9 +12,7 @@ interface CartProps {
 const Cart: React.FC<CartProps> = ({ orderItems, calculateTotalPrice, removeFromOrder }) => {
   const navigate = useNavigate();
 
-  // Proceed to checkout and send the order to the CreateOrder page
   const proceedToCheckout = () => {
-    // Skicka orderItems och totalPrice till CreateOrder-sidan via navigate
     navigate('/createOrder', { state: { orderItems, totalPrice: calculateTotalPrice() } });
   };
 
@@ -37,7 +35,7 @@ const Cart: React.FC<CartProps> = ({ orderItems, calculateTotalPrice, removeFrom
 
 const cartStyles: React.CSSProperties = {
   position: 'fixed',
-  top: '20px',
+  top: '60px',
   right: '20px',
   width: '300px',
   padding: '20px',
