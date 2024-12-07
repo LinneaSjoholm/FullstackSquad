@@ -121,17 +121,17 @@ const ReviewOrder: React.FC = () => {
     preference: 'lactoseFree' | 'glutenFree',
     value: boolean
   ) => {
-    console.log(`Setting ${preference} for item ${itemId} to ${value}`); // Logga ändring
-    
+    console.log(`Toggling ${preference} for item ${itemId} to ${value}`); // Logga ändring
+  
     setUpdatedItems((prevItems) =>
       prevItems.map((item) => {
         if (item.id === itemId) {
           const updatedItem = {
             ...item,
-            [preference]: true, // Sätt det specifika preferensvärdet till true eller false
+            [preference]: !item[preference],  // Toggla värdet
           };
   
-          console.log(`Item after forced update:`, updatedItem); // Logga det uppdaterade objektet
+          console.log(`Updated item after toggling:`, updatedItem); // Logga det uppdaterade objektet
           return updatedItem;
         }
         return item;
