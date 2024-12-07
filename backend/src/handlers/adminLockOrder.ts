@@ -1,22 +1,36 @@
 import { db } from '../services/db';
 import { UpdateCommand, UpdateCommandInput } from '@aws-sdk/lib-dynamodb';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
-export const adminLockOrder = async (event: any): Promise<any> => {
-  const orderId = event.pathParameters.id;
+export const adminLockOrder = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+  const orderId = event.pathParameters?.id;
+
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'OPTIONS, POST',
+  };
+
+  if (!orderId) {
+    return {
+      statusCode: 400,
+      headers: corsHeaders,
+      body: JSON.stringify({ message: 'Order ID is required.' }),
+    };
+  }
 
   try {
-    // Hämta den aktuella beställningen
     const getOrderParams = { TableName: 'OrdersTable', Key: { orderId } };
     const orderData = await db.get(getOrderParams);
 
     if (!orderData.Item) {
       return {
         statusCode: 404,
+        headers: corsHeaders,
         body: JSON.stringify({ message: 'Order not found.' }),
       };
     }
 
-    // Uppdatera beställningen och sätt "locked" till true
     const updateParams: UpdateCommandInput = {
       TableName: 'OrdersTable',
       Key: { orderId },
@@ -26,7 +40,7 @@ export const adminLockOrder = async (event: any): Promise<any> => {
         '#updatedAt': 'updatedAt',
       },
       ExpressionAttributeValues: {
-        ':locked': true,  // Lås beställningen
+        ':locked': true,
         ':updatedAt': new Date().toISOString(),
       },
       ReturnValues: 'ALL_NEW',
@@ -37,6 +51,7 @@ export const adminLockOrder = async (event: any): Promise<any> => {
 
     return {
       statusCode: 200,
+      headers: corsHeaders,
       body: JSON.stringify({
         message: 'Order locked successfully.',
         updatedOrder: updatedOrder.Attributes,
@@ -44,15 +59,14 @@ export const adminLockOrder = async (event: any): Promise<any> => {
     };
   } catch (error) {
     console.error('Error locking order:', error);
-    let errorMessage = 'Failed to lock order.';
-
-    if (error instanceof Error) {
-      errorMessage = error.message;
-    }
 
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: errorMessage }),
+      headers: corsHeaders,
+      body: JSON.stringify({
+        message: 'Failed to lock order.',
+        error: error instanceof Error ? error.message : 'Unknown error occurred.',
+      }),
     };
   }
 };

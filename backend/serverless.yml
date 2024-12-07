@@ -80,6 +80,14 @@ functions:
       - httpApi:
           path: /admin/orders
           method: get
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - Authorization
+            methods:
+              - GET
+              - OPTIONS
 
   # Update order details (admin/employees)
   updateOrderDetails:
@@ -176,4 +184,5 @@ custom:
       allowMethods:
         - GET
         - POST
+        - PATCH
         - DELETE  

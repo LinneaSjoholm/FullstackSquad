@@ -8,7 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { db } from '../services/db';
-export const adminGetOrders = () => __awaiter(void 0, void 0, void 0, function* () {
+export const adminGetOrders = (event) => __awaiter(void 0, void 0, void 0, function* () {
+    const corsHeaders = {
+        'Access-Control-Allow-Origin': '*', // Tillåter alla ursprung, kan begränsas till din frontend-URL
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    };
+    // Hantera preflight OPTIONS-begäran
+    if (event.httpMethod === 'OPTIONS') {
+        return {
+            statusCode: 200,
+            headers: corsHeaders,
+            body: JSON.stringify({ message: 'CORS preflight passed.' }),
+        };
+    }
     const params = {
         TableName: 'OrdersTable',
     };
@@ -17,32 +30,25 @@ export const adminGetOrders = () => __awaiter(void 0, void 0, void 0, function* 
         if (!data.Items || data.Items.length === 0) {
             return {
                 statusCode: 404,
+                headers: corsHeaders,
                 body: JSON.stringify({ message: 'No orders found' }),
             };
         }
         return {
             statusCode: 200,
+            headers: corsHeaders,
             body: JSON.stringify(data.Items),
         };
     }
     catch (error) {
-        if (error instanceof Error) {
-            return {
-                statusCode: 500,
-                body: JSON.stringify({
-                    message: 'Failed to fetch orders',
-                    error: error.message,
-                }),
-            };
-        }
-        else {
-            return {
-                statusCode: 500,
-                body: JSON.stringify({
-                    message: 'Failed to fetch orders',
-                    error: 'Unknown error occurred',
-                }),
-            };
-        }
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        return {
+            statusCode: 500,
+            headers: corsHeaders,
+            body: JSON.stringify({
+                message: 'Failed to fetch orders',
+                error: errorMessage,
+            }),
+        };
     }
 });

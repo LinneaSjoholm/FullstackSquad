@@ -10,18 +10,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { db } from '../services/db';
 import { UpdateCommand } from '@aws-sdk/lib-dynamodb';
 export const adminLockOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
-    const orderId = event.pathParameters.id;
+    var _a;
+    const orderId = (_a = event.pathParameters) === null || _a === void 0 ? void 0 : _a.id;
+    const corsHeaders = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'OPTIONS, POST',
+    };
+    if (!orderId) {
+        return {
+            statusCode: 400,
+            headers: corsHeaders,
+            body: JSON.stringify({ message: 'Order ID is required.' }),
+        };
+    }
     try {
-        // Hämta den aktuella beställningen
         const getOrderParams = { TableName: 'OrdersTable', Key: { orderId } };
         const orderData = yield db.get(getOrderParams);
         if (!orderData.Item) {
             return {
                 statusCode: 404,
+                headers: corsHeaders,
                 body: JSON.stringify({ message: 'Order not found.' }),
             };
         }
-        // Uppdatera beställningen och sätt "locked" till true
         const updateParams = {
             TableName: 'OrdersTable',
             Key: { orderId },
@@ -31,7 +43,7 @@ export const adminLockOrder = (event) => __awaiter(void 0, void 0, void 0, funct
                 '#updatedAt': 'updatedAt',
             },
             ExpressionAttributeValues: {
-                ':locked': true, // Lås beställningen
+                ':locked': true,
                 ':updatedAt': new Date().toISOString(),
             },
             ReturnValues: 'ALL_NEW',
@@ -40,6 +52,7 @@ export const adminLockOrder = (event) => __awaiter(void 0, void 0, void 0, funct
         const updatedOrder = yield db.send(updateCommand);
         return {
             statusCode: 200,
+            headers: corsHeaders,
             body: JSON.stringify({
                 message: 'Order locked successfully.',
                 updatedOrder: updatedOrder.Attributes,
@@ -48,13 +61,13 @@ export const adminLockOrder = (event) => __awaiter(void 0, void 0, void 0, funct
     }
     catch (error) {
         console.error('Error locking order:', error);
-        let errorMessage = 'Failed to lock order.';
-        if (error instanceof Error) {
-            errorMessage = error.message;
-        }
         return {
             statusCode: 500,
-            body: JSON.stringify({ message: errorMessage }),
+            headers: corsHeaders,
+            body: JSON.stringify({
+                message: 'Failed to lock order.',
+                error: error instanceof Error ? error.message : 'Unknown error occurred.',
+            }),
         };
     }
 });
