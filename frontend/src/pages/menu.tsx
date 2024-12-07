@@ -45,31 +45,40 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
 
     fetchMenu();
   }, []);
-    // Lägg till en maträtt till beställningen, eller öka kvantiteten om den redan finns
-    const addToOrder = (itemId: string) => {
-        setOrderItems((prevState) => {
-        // Find if the item already exists in the order
-        const itemIndex = prevState.findIndex((item) => item.id === itemId);
-    
-        // If the item already exists, just increase the quantity
-        if (itemIndex !== -1) {
-            const updatedOrder = prevState.map((item, index) => {
-            if (index === itemIndex) {
-                return { ...item, quantity: item.quantity + 1 }; // Increase quantity
-            }
-            return item;
-            });
-            return updatedOrder;
-        } else {
-            // If the item doesn't exist, find it in the menu and add it to the order
-            const item = Object.values(menuItems).flat().find((item) => item.id === itemId);
-            if (item) {
-            return [...prevState, { ...item, quantity: 1 }];
-            }
-            return prevState; // No changes if item is not found
-        }
+
+  // Lägg till en maträtt till beställningen, eller öka kvantiteten om den redan finns
+  const addToOrder = (itemId: string) => {
+    setOrderItems((prevState) => {
+      const itemIndex = prevState.findIndex((item) => item.id === itemId);
+  
+      if (itemIndex !== -1) {
+        const updatedOrder = prevState.map((item, index) => {
+          if (index === itemIndex) {
+            return { 
+              ...item, 
+              quantity: item.quantity + 1 
+            }; // Öka kvantiteten om den redan finns
+          }
+          return item;
         });
-    };
+        return updatedOrder;
+      } else {
+        const item = Object.values(menuItems).flat().find((item) => item.id === itemId);
+        if (item) {
+          return [
+            ...prevState, 
+            { 
+              ...item, 
+              quantity: 1, 
+              lactoseFree: false, // Standard till false
+              glutenFree: false   // Standard till false
+            }
+          ];
+        }
+        return prevState; // No changes if item is not found
+      }
+    });
+  };
   
 
   // Ta bort en maträtt från beställningen, minska kvantiteten eller ta bort helt
@@ -84,7 +93,7 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
         }
         return item;
       }).filter((item) => item !== null); // Filtrera bort null (objekt som tas bort)
-      
+
       return updatedOrder;
     });
   };
@@ -139,8 +148,11 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
                   <h3>{item.name} - ${item.price}</h3>
                   <p>{item.description}</p>
                   <p>Ingredients: {item.ingredients.join(', ')}</p>
-                  <p>{item.lactoseFree ? 'Lactose Free' : ''}</p>
-                  <p>{item.glutenFree ? 'Gluten Free' : ''}</p>
+
+                  {/* Överstyr laktos- och glutenfritt till false */}
+                  <p>{item.lactoseFree ? 'L/' : ''}</p>
+                  <p>{item.glutenFree ? 'G' : ''}</p>
+
                   <button onClick={() => addToOrder(item.id)}>Add to order</button>
                 </li>
               ))}

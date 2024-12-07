@@ -121,15 +121,25 @@ const ReviewOrder: React.FC = () => {
     preference: 'lactoseFree' | 'glutenFree',
     value: boolean
   ) => {
+    console.log(`Setting ${preference} for item ${itemId} to ${value}`); // Logga ändring
+    
     setUpdatedItems((prevItems) =>
       prevItems.map((item) => {
         if (item.id === itemId) {
-          return { ...item, [preference]: value }; // Uppdatera kostpreferensfältet
+          const updatedItem = {
+            ...item,
+            [preference]: true, // Sätt det specifika preferensvärdet till true eller false
+          };
+  
+          console.log(`Item after forced update:`, updatedItem); // Logga det uppdaterade objektet
+          return updatedItem;
         }
         return item;
       })
     );
   };
+  
+  
 
   // Uppdatera beställning
   const handleUpdateOrder = async () => {
@@ -214,24 +224,19 @@ const ReviewOrder: React.FC = () => {
                   ))}
                 </div>
               )}
+
               <div>
-                <label>
-                  Lactose-Free:
-                  <input
-                    type="checkbox"
-                    checked={item.lactoseFree || false}
-                    onChange={(e) => handleDietaryPreferenceChange(item.id, 'lactoseFree', e.target.checked)}
-                  />
-                </label>
-                <label>
-                  Gluten-Free:
-                  <input
-                    type="checkbox"
-                    checked={item.glutenFree || false}
-                    onChange={(e) => handleDietaryPreferenceChange(item.id, 'glutenFree', e.target.checked)}
-                  />
-                </label>
+                <p>{item.lactoseFree ? 'Lactose Free' : 'Not Lactose Free'}</p>
+                <button onClick={() => handleDietaryPreferenceChange(item.id, 'lactoseFree', !item.lactoseFree)}>
+                  Toggle Lactose Free
+                </button>
+
+                <p>{item.glutenFree ? 'Gluten Free' : 'Not Gluten Free'}</p>
+                <button onClick={() => handleDietaryPreferenceChange(item.id, 'glutenFree', !item.glutenFree)}>
+                  Toggle Gluten Free
+                </button>
               </div>
+
               <div>
                 <h4>Choose Drink:</h4>
                 <select

@@ -10,7 +10,9 @@ export interface MenuItem {
   category?: string;
   popularity?: number;
   updatedAt?: string;
+  drinkId?: string; 
 }
+
 
 // Define an interface for an order item
 export interface OrderItem {
