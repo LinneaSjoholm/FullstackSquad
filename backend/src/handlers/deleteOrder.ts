@@ -1,9 +1,21 @@
 import { db } from '../services/db';
 import { UpdateCommand, UpdateCommandInput } from '@aws-sdk/lib-dynamodb';
 
-export const cancelOrder = async (event: any): Promise<any> => {
-  const orderId = event.pathParameters.id; 
-  
+// API-nyckeln (kan hämtas från miljövariabler för att vara mer säker)
+const API_KEY = process.env.API_KEY || 'your-default-api-key';
+
+export const deleteOrder = async (event: any): Promise<any> => {
+  // Kontrollera om API-nyckeln finns i begäran
+  const apiKey = event.headers['x-api-key'];
+  if (!apiKey || apiKey !== API_KEY) {
+    return {
+      statusCode: 403, // Forbidden om nyckeln inte är rätt
+      body: JSON.stringify({ message: 'Forbidden: Invalid API key' }),
+    };
+  }
+
+  const orderId = event.pathParameters.id;
+
   try {
     // Hämta den aktuella ordern
     const getOrderParams = { TableName: 'OrdersTable', Key: { orderId } };

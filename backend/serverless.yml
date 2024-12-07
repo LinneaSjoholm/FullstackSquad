@@ -24,42 +24,36 @@ provider:
           Resource: "*"
 
 functions:
-  # Get the menu (fetch all menu items)
   getMenu:
-
-    handler: src/handlers/getMenu.getMenu  
+    handler: src/handlers/getMenu.getMenu
     events:
       - httpApi:
           path: /menu
           method: get
 
-  # Create an order
   postOrder:
-    handler: src/handlers/createOrder.createOrder 
+    handler: src/handlers/postOrder.postOrder
     events:
       - httpApi:
           path: /order
           method: post
 
-  # Get an order by ID
   getOrder:
-    handler: src/handlers/getOrder.getOrder  
+    handler: src/handlers/getOrder.getOrder
     events:
       - httpApi:
           path: /order/{id}
           method: get
 
-  # Review an order before sending
   getOrderReview:
-    handler: src/handlers/getOrderReview.getOrderReview  
+    handler: src/handlers/getOrderReview.getOrderReview
     events:
       - httpApi:
-          path: /order/{id}/review
+          path: /order/review/{id}
           method: get
 
-  # Update an order 
-  postUpdateOrder:
-    handler: src/handlers/updateOrder.updateOrder  
+  putReviewOrder:
+    handler: src/handlers/putReviewOrder.putReviewOrder
     events:
       - httpApi:
           path: /order/{id}/update
@@ -124,6 +118,27 @@ functions:
 
   initData:
     handler: src/handlers/initData.initData
+          path: /order/reviewOrder/{id}
+          method: put
+          cors: true
+
+  deleteOrder:  
+    handler: src/handlers/deleteOrder.deleteOrder
+    events:
+      - httpApi:
+          path: /order/delete/{id}
+          method: delete
+          cors: true
+
+  putMenuAdmin:
+    handler: src/handlers/putMenuAdmin.putMenuAdmin
+    events:
+      - httpApi:
+          path: /menu/admin
+          method: put
+          cors: true
+          headers:
+            x-api-key: true  
 
 resources:
   Resources:
@@ -142,7 +157,7 @@ resources:
     MenuTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: MenuTable  # Tabell för menu
+        TableName: MenuTable
         AttributeDefinitions:
           - AttributeName: "id"
             AttributeType: "S"
@@ -154,7 +169,7 @@ resources:
     OrdersTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: OrdersTable  # Tabell för beställningar
+        TableName: OrdersTable
         AttributeDefinitions:
           - AttributeName: "orderId"
             AttributeType: "S"
@@ -164,20 +179,19 @@ resources:
         BillingMode: PAY_PER_REQUEST
 
 custom:
-  # Configuration for ESBuild
   esbuild:
-    target: 'node18'  
-    sourcemap: true  
-    minify: false  
-    bundle: true  
+    target: 'node18'
+    sourcemap: true
+    minify: false
+    bundle: true
     loader:
       '.ts': 'ts'
-      '.tsx': 'tsx'  
+      '.tsx': 'tsx'
 
   serverless-offline:
     cors:
       allowOrigins:
-        - "*"  
+        - "*"
       allowHeaders:
         - Content-Type
         - x-api-key
@@ -185,4 +199,5 @@ custom:
         - GET
         - POST
         - PATCH
-        - DELETE  
+        - DELETE 
+        - PUT
