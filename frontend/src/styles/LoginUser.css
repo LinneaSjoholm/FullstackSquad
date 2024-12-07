@@ -123,3 +123,53 @@
     text-align: center;
   }
   
+  @media (max-width: 768px) {
+    .login-container {
+      padding: 10px;
+    }
+  
+    .headertext {
+      top: 10px; 
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+  
+    .headertext h1 {
+      font-size: 3rem; 
+      top: 0;
+    }
+  
+    .headertext h2 {
+      font-size: 1rem; 
+      left: 10; 
+      top: 5px; 
+    }
+  
+    .login-box {
+      width: 90%; 
+      max-width: 400px;
+      height: auto; 
+      margin: auto; 
+      padding: 20px; 
+    }
+  
+    .login-box h2 {
+      font-size: 1.5rem; 
+    }
+  
+    .login-form {
+      width: 100%; 
+      gap: 10px; 
+    }
+  
+    .form-group input {
+      padding: 8px; 
+      font-size: 1rem; 
+    }
+  
+    .login-button {
+      padding: 12px;
+      font-size: 1rem; 
+    }
+  }

@@ -87,4 +87,36 @@
     text-align: center;
     margin-bottom: 15px;
   }
-    
+
+  @media (max-width: 768px) {
+    .admin-login-container {
+      padding: 20px; 
+      background-image: none;
+      background-color: #1F4E5F;
+    }
+  
+    .admin-login-container h2 {
+      font-size: 2rem; 
+      top: 10px; 
+    }
+  
+    .admin-login-form {
+      max-width: 90%; 
+      padding: 20px; 
+    }
+  
+    .admin-login-form input {
+      font-size: 0.9rem; 
+      padding: 8px; 
+    }
+  
+    .admin-login-button {
+      font-size: 0.9rem; 
+      padding: 8px 12px; 
+    }
+  
+    .error-message {
+      font-size: 0.8rem; 
+      top: 120px; 
+    }
+  }

@@ -1,5 +1,5 @@
 .profile-header {
-    background-image: url('/src/assets/pasta.jpg'); /* Ändrat filnamn för att undvika mellanslag */
+    background-image: url('/src/assets/pasta.jpg'); 
     background-size: cover;
     background-position: center;
     height: 200px;
@@ -7,19 +7,19 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative; /* Fixad header högst upp */
+    position: relative; 
     top: 0;
-    width: 100%; /* Täcker hela sidans bredd */
-    z-index: 10; /* Placera headern framför andra element */
+    width: 100%; 
+    z-index: 10; 
   }
 
   .menu-icon {
-    position: absolute; /* Placera ikonen relativt till .profile-header */
-    top: 10px; /* Avstånd från toppen av headern */
-    left: 10px; /* Avstånd från vänsterkanten av headern */
-    width: 30px; /* Justera bredden på ikonen */
-    height: 30px; /* Justera höjden på ikonen */
-    z-index: 15; /* Placera ikonen över bakgrund och överlägg */
+    position: absolute; 
+    top: 10px; 
+    left: 10px; 
+    width: 30px; 
+    height: 30px; 
+    z-index: 15; 
   }
   
   .profile-header::after {
@@ -29,8 +29,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(22, 61, 75, 0.75); /* Semi-transparent färg */
-    z-index: 1; /* Placera över bilden */
+    background-color: rgba(22, 61, 75, 0.75); 
+    z-index: 1; 
   }
   
   .profile-header h1 {
@@ -38,10 +38,10 @@
     font-family: "Kolker Brush", cursive;
     font-size: 150px;
     position: relative;
-    z-index: 2; /* Placera texten över överlägget */
+    z-index: 2; 
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin-bottom: -10px; /* Minska avståndet nedåt */
-    line-height: 1; /* Justerar radavståndet */
+    margin-bottom: -10px; 
+    line-height: 1; 
     top: -45px;
 }
 
@@ -52,29 +52,29 @@
     font-size: 1.3rem;
     z-index: 2;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin-top: -15px; /* Minska avståndet uppåt */
-    line-height: 1; /* Justerar radavståndet */
-    position: relative; /* Gör det möjligt att finjustera position */
-    left: 60px; /* Flytta texten åt höger */
+    margin-top: -15px; 
+    line-height: 1; 
+    position: relative; 
+    left: 60px; 
     top: -60px;
 }
   
   .profile-section {
     display: flex;
-    margin-top: 50px; /* Flytta ned innehållet under headern */
+    margin-top: 50px; 
     margin-left: 250px;
     align-items: center;
   }
   
   .profile-icon {
     margin-top: -10px;
-    width: 30px; /* Minska storleken på ikonen */
+    width: 30px; 
     height: 30px;
   }
   
   .profile-section h2 {
     font-family: 'Caveat', cursive;
-    font-size: 1.8rem; /* Textstorlek för "My Profile" */
+    font-size: 1.8rem; 
     color: #F4E7D3;
     padding-left: 20px;
   }
@@ -89,4 +89,56 @@
     height: 250px;
     padding: 20px;
     border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .profile-header {
+      height: 150px; 
+      padding: 10px;
+    }
+  
+    .menu-icon {
+      top: 5px; 
+      left: 5px; 
+      width: 25px; 
+      height: 25px;
+    }
+  
+    .profile-header h1 {
+      font-size: 2.5rem; 
+      top: 0; 
+      margin-bottom: -5px; 
+    }
+  
+    .profile-header h2 {
+      font-size: 1rem; 
+      left: 10; 
+      top: -2px; 
+      margin-top: 0; 
+    }
+  
+    .profile-section {
+      flex-direction: column; 
+      margin-top: 20px; 
+      margin-left: 0; 
+      align-items: center;
+    }
+  
+    .profile-icon {
+      margin-top: 0;
+      width: 20px; 
+      height: 20px;
+    }
+  
+    .profile-section h2 {
+      font-size: 1.5rem; 
+      padding-left: 0; 
+      text-align: center; 
+    }
+  
+    .profile-content {
+      width: 90%; 
+      height: auto; 
+      padding: 15px; 
+    }
   }
