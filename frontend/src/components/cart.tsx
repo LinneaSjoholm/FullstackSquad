@@ -35,7 +35,7 @@ const Cart: React.FC<CartProps> = ({ orderItems, calculateTotalPrice, removeFrom
 
 const cartStyles: React.CSSProperties = {
   position: 'fixed',
-  top: '60px',
+  top: '30rem',
   right: '20px',
   width: '300px',
   padding: '20px',
@@ -47,7 +47,7 @@ const cartStyles: React.CSSProperties = {
 
 const removeButtonStyles: React.CSSProperties = {
   marginLeft: '10px',
-  backgroundColor: 'gray',
+  backgroundColor: '#0881A3',
   color: 'white',
   border: 'none',
   borderRadius: '5px',
@@ -56,7 +56,7 @@ const removeButtonStyles: React.CSSProperties = {
 
 const checkoutButtonStyles: React.CSSProperties = {
   marginTop: '10px',
-  backgroundColor: 'gray',
+  backgroundColor: '#0881A3',
   color: 'white',
   border: 'none',
   borderRadius: '5px',

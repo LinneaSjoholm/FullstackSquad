@@ -1,33 +1,57 @@
-/* menu.css */
-
-.menu-container {
+/* Grundläggande stil för body */
+body {
+  margin: 0;
+  padding: 0;  
+  font-family: Arial, sans-serif;
+  background-color: #1E4C5D;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: flex-start; 
+  min-height: 100vh; 
+  position: relative;
+  width: 100%; 
+  overflow-x: hidden; 
 }
 
-.menu-header {
-  font-size: 2rem;
+/* För headern högst upp på sidan */
+.header {
+  background-color: #fff;
+  height: 400px; 
+  width: 100vw; 
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
 }
 
+/* För sorteringscontainer */
 .sort-container {
-  margin-bottom: 1rem;
+  margin-left: 15rem;
+  position: relative; 
+  margin-top: 20px;  
 }
 
-.menu-category {
-  margin-top: 2rem;
+/* För etiketten */
+.sort-container label {
+  font-size: 16px; 
+  margin-bottom: 8px; 
+  color: #000000; 
 }
 
-.menu-item {
-  margin-bottom: 1rem;
+
+/* För select när användaren väljer */
+.sort-container select:focus {
+  border-color: #0881A3; 
+  outline: none; 
 }
 
-.menu-item-title {
-  font-size: 1.5rem;
+.hidden {
+  display: none;
 }
 
-.menu-item-img {
-  width: 100px;
-  height: auto;
+/* För att placera sort-container ovanför .menu-item */
+.menu-left {
+  margin-top: 50px; 
 }
 
 .inline-text {
@@ -35,20 +59,154 @@
   margin-right: 5px;
 }
 
-.icon-container {
-  display: flex;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
+.menu-left h1 {
+  margin: 0;  
+  text-align: center; 
+  color: #000000;
 }
 
-.icon-button {
+/* Skapa ett avstånd mellan sorteringscontainer och menyn */
+.menu-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Skapar två kolumner */
+  gap: 20px;
+  padding: 0;
+  list-style: none;
+  width: 100%; 
+  max-width: 1200px; 
+  margin: 20px auto; 
+}
+
+/* För att anpassa varje menypunkt */
+.menu-item {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: black;
+  margin-top: 10px; 
+}
+
+/* För knapparna */
+button {
+  background-color: #0881A3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  max-width: 200px; 
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* För att styla bilden av varje rätt */
+.menu-item-image {
+  width: 70%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover; /* För att inte förvränga bilden */
+  margin-left: 5rem;
+}
+.menu-list h3{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.description-text {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.ingredients-text {
+  font-size: 14px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.diet-info {
+  margin-top: 20px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.diet-info .lactose-free {
+  color: red; /* Laktosfritt */
+}
+
+.diet-info .gluten-free {
+  color: green; /* Glutenfritt */
+}
+
+.centered-container {
+  display: flex;
+  justify-content: center; /* Centrerar horisontellt */
+  align-items: center; /* Centrerar vertikalt */
+}
+
+
+.button-container {
+  display: flex; /* Gör knapparna till flexobjekt */
+}
+
+.favorite-button, .add-to-order-button {
+  padding: 10px 15px; /* Justera knapparnas inre padding för bättre utseende */
+  font-size: 14px; /* Justera textstorlek om det behövs */
+  cursor: pointer; /* Gör att knapparna ser klickbara ut */
+}
+
+.favorite-button{
+    background-color: #fff;
+}
+/* Ikoner för hjärta och shoppingbag */
+.icon-container {
+  position: absolute; 
+  top: 25rem; 
+  right: 20px; 
+  display: flex;
+}
+
+/* För shoppingBagIcon */
+img.cart-icon {
+  filter: grayscale(100%) brightness(0) invert(0); 
+}
+
+img.heart-icon {
+    color: black;
+    width: 30px;
+
+}
+
+/* För hjärta-ikonen */
+.heart-button, .cart-button {
   background-color: transparent;
   border: none;
   cursor: pointer;
+  color: black;
 }
 
-.icon-button + .icon-button {
-  margin-left: 10px;
+/* För Cart popup */
+.cart {
+  position: fixed;
+  top: 100px;
+  right: 50px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100; /* Se till att den ligger ovanpå andra element */
 }
