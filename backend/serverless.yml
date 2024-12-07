@@ -6,7 +6,6 @@ provider:
   name: aws
   runtime: nodejs18.x
   region: eu-north-1
-  profile: IAMvickanS
   environment:
     API_KEY: ${env:API_KEY}
     USERS_TABLE: UsersTable
