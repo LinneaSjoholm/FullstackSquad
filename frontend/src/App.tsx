@@ -4,7 +4,7 @@ import Home from './pages/HomePage';
 import Menu from './pages/menu';
 import CreateOrder from './pages/Customer/CreateOrder';
 import ReviewOrder from './pages/Customer/ReviewOrder';
-import AdminPage from './pages/AdminPage';
+import OrderDashboard from './pages/admin/OrderDashboard';
 import { CartItem } from './interfaces/index'; 
 
 const App: React.FC = () => {
@@ -20,7 +20,7 @@ const App: React.FC = () => {
           element={<CreateOrder />} // No need to pass props here since we are using location.state in CreateOrder
         />
         <Route path="/review-Order" element={<ReviewOrder />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin/dashboard" element={<OrderDashboard />} />
       </Routes>
     </Router>
   );

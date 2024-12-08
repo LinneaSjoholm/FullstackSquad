@@ -2,36 +2,39 @@ import React, { useState, useEffect } from 'react';
 import { lockOrder, adminGetOrders } from '../api/AdminOrderApi';  
 
 const AdminOrderList: React.FC = () => {
-  const [orders, setOrders] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [orders, setOrders] = useState<any[]>([]);  // För att hålla ordrarna
+  const [loading, setLoading] = useState<boolean>(false);  // Laddningstillstånd
+  const [error, setError] = useState<string | null>(null);  // Felmeddelanden
 
+  // Hämtar alla ordrar när komponenten laddas
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const response = await adminGetOrders();  
+        const response = await adminGetOrders();  // Hämtar ordrar från API
         if (response.statusCode === 200) {
-          setOrders(response.body); 
+          setOrders(response.body);  // Sätt ordrarna om hämtningen är framgångsrik
         } else {
-          setError(response.body.message);  
+          setError(response.body.message);  // Om det är något fel, sätt felmeddelande
         }
       } catch (err) {
-        setError('An error occurred while fetching orders.');
+        setError('An error occurred while fetching orders.');  // Fångar eventuella fel
       } finally {
-        setLoading(false);
+        setLoading(false);  // Slå av laddningstilstånd
       }
     };
 
     fetchOrders();  
   }, []);
 
+  // Hanterar att låsa en order (skickar en POST-förfrågan till backend)
   const handleLockOrder = async (orderId: string) => {
     try {
-      await lockOrder(orderId);  
+      await lockOrder(orderId);  // Låser ordern via API
+      // Optimistisk uppdatering av UI:t
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.id === orderId ? { ...order, locked: true } : order 
+          order.orderId === orderId ? { ...order, locked: true } : order  // Uppdatera den låsta ordern lokalt
         )
       );
     } catch (error) {
@@ -40,39 +43,57 @@ const AdminOrderList: React.FC = () => {
     }
   };
 
+  if (loading) return <p>Loading orders...</p>;  // Visa laddningstext medan ordrarna hämtas
+  if (error) return <p>{error}</p>;  // Visa felmeddelande om något gick fel
+
+  // Filtrera ordrar i nya och låsta
+  const newOrders = orders.filter((order) => !order.locked).map((order) => ({
+    orderId: order.orderId,
+    dishName: order.items?.[0]?.name || 'Dish not specified',  // Namn på maträtt
+    messageToChef: order.messageToChef || 'No message provided',  // Meddelande till kocken
+    locked: order.locked,
+  }));
+
+  const lockedOrders = orders.filter((order) => order.locked).map((order) => ({
+    orderId: order.orderId,
+    dishName: order.items?.[0]?.name || 'Dish not specified',
+    messageToChef: order.messageToChef || 'No message provided',
+    locked: order.locked,
+  }));
+
   return (
     <div>
       <h1>Admin Order List</h1>
-      {loading && <p>Loading orders...</p>}
-      {error && <p>{error}</p>}
+
       <h2>New Orders</h2>
-      <ul>
-        {orders.filter(order => !order.locked).map((order) => (
-          <li key={order.id}>
+      {newOrders.length === 0 ? (
+        <p>No new orders.</p>
+      ) : (
+        newOrders.map((order, index) => (
+          <div key={order.orderId}>
             <div>
-              <span>{order.name}</span>
-              {!order.locked && (
-                <button onClick={() => handleLockOrder(order.id)}>Lock Order</button>
-              )}
+              <span>{index + 1}. Order ID: {order.orderId}</span> - <span>{order.dishName}</span> - <span>{order.messageToChef}</span>
+              <button onClick={() => handleLockOrder(order.orderId)}>Lock Order</button>
             </div>
-          </li>
-        ))}
-      </ul>
+          </div>
+        ))
+      )}
 
       <h2>Locked Orders</h2>
-      <ul>
-        {orders.filter(order => order.locked).map((order) => (
-          <li key={order.id}>
+      {lockedOrders.length === 0 ? (
+        <p>No locked orders.</p>
+      ) : (
+        lockedOrders.map((order, index) => (
+          <div key={order.orderId}>
             <div>
-              <span>{order.name}</span>
+              <span>{index + 1}. Order ID: {order.orderId}</span> - <span>{order.dishName}</span> - <span>{order.messageToChef}</span>
               <span>Order is locked</span>
             </div>
-          </li>
-        ))}
-      </ul>
+          </div>
+        ))
+      )}
     </div>
   );
 };
 
 export default AdminOrderList;
-
