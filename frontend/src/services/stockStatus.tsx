@@ -48,8 +48,14 @@ const StockStatus = () => {
             }}
           >
             <h3 style={{ margin: '0' }}>{item.name}</h3>
-            <p><strong>Stock:</strong> {item.stock !== 'NaN' ? item.stock : 'Out of Stock'}</p>
-            <p><strong>Dish Names:</strong> {item.dishNames ? item.dishNames.join(', ') : 'No dishes available'}</p>
+            <p>
+              <strong>Stock:</strong> {item.stock !== 'NaN' ? item.stock : 'Out of Stock'}
+              {item.unit && (
+                <span style={{ marginLeft: '5px' }}>
+                  {item.unit}
+                </span>
+              )}
+            </p>
           </li>
         ))}
       </ul>

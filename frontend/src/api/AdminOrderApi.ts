@@ -13,6 +13,31 @@
       return { statusCode: 500, body: { message: error instanceof Error ? error.message : 'Unknown error' } };
     }
   };
+
+  export const updateOrder = async (orderId: string, updatedStatus: string) => {
+    const apiUrl = `https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/order/${orderId}/update`;
+  
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',  // Använd din API-nyckel
+        },
+        body: JSON.stringify({ status: updatedStatus }),  // Skicka med den uppdaterade statusen
+      });
+  
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to update order.');
+      }
+  
+      return await response.json(); // Om API:et är framgångsrikt, returnera det uppdaterade ordredatat
+    } catch (error) {
+      console.error('Error updating order:', error);
+      throw error; // Kasta felet vidare så att det kan hanteras i frontend
+    }
+  };
   
 
 export const lockOrder = async (orderId: string) => {

@@ -84,13 +84,21 @@ functions:
               - GET
               - OPTIONS
 
-  # Update order details (admin/employees)
   updateOrderDetails:
     handler: src/handlers/adminUpdateOrderDetails.adminUpdateOrder
     events:
       - httpApi:
           path: /admin/order/{id}
           method: patch
+          cors:
+            origin: '*'  # Tillåter alla ursprung (kan vara mer restriktivt för produktion)
+            headers:
+              - Content-Type
+              - Authorization
+              - x-api-key
+            methods:
+              - PATCH
+              - OPTIONS
 
   adminMarkOrderAsCompleted:
     handler: src/handlers/adminMarkOrderAsCompleted.adminMarkOrderAsCompleted

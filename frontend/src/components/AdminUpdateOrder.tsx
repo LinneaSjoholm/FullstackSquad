@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { updateOrder } from '../api/AdminOrderApi';
 
 const UpdateOrder: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
@@ -49,23 +50,12 @@ const UpdateOrder: React.FC = () => {
 
   const updateOrderStatus = async (updatedStatus: string) => {
     try {
-      const response = await fetch(`https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/order/${orderId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
-        },
-        body: JSON.stringify({ status: updatedStatus }),
-      });
+      // Använd den nya updateOrder-funktionen för att uppdatera ordern
+      const updatedOrder = await updateOrder(orderId!, updatedStatus);  // Vi säkerställer att orderId finns
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to update order.');
-      }
-
-      const data = await response.json();
-      console.log('Order updated successfully:', data);
+      console.log('Order updated successfully:', updatedOrder);
       alert('Order updated successfully!');
+      navigate(`/admin/orders/${orderId}`);  // Navigera tillbaka till orderdetaljer eller lista
     } catch (err) {
       console.error('Error updating order:', err);
       alert(`Error updating order: ${err instanceof Error ? err.message : 'Unknown error'}`);
@@ -80,7 +70,7 @@ const UpdateOrder: React.FC = () => {
       <h1>Update Order</h1>
       <form onSubmit={(e) => {
         e.preventDefault();
-        updateOrderStatus(status);
+        updateOrderStatus(status);  // Skicka uppdaterad status till API
       }}>
         <div>
           <label>Status:</label>
