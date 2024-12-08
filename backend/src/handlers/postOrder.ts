@@ -5,6 +5,21 @@ const dynamoDb = new DocumentClient();
 // API-nyckeln (kan hämtas från miljövariabler för att vara mer säker)
 const API_KEY = process.env.API_KEY || 'your-default-api-key';
 
+// Definiera typerna för order och item
+interface Item {
+  id: string;
+  quantity: number;
+  name: string;
+  price: number;
+  ingredients: string[];
+}
+
+interface OrderDetails {
+  customerName: string;
+  customerPhone: string;
+  items: Item[];
+}
+
 export const postOrder = async (event: any) => {
   // Kontrollera om API-nyckeln finns i begäran
   const apiKey = event.headers['x-api-key'];
@@ -23,7 +38,7 @@ export const postOrder = async (event: any) => {
     };
   }
 
-  let orderDetails;
+  let orderDetails: OrderDetails;
   try {
     // Försök att parsa JSON-begäran
     orderDetails = JSON.parse(event.body);
@@ -47,11 +62,26 @@ export const postOrder = async (event: any) => {
   // Skapa ett numeriskt order-ID (kombinerar tidsstämpel och ett slumpmässigt tal)
   const numericOrderId = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
 
+  let finalItems: Item[] = [];  // För att lagra de slutliga artiklarna
+  let itemMap: { [key: string]: Item } = {};  // En karta för att gruppera artiklar baserat på id
+
+  // Iterera över artiklarna för att gruppera samma maträtter och addera deras kvantiteter
+  items.forEach(item => {
+    if (itemMap[item.id]) {
+      itemMap[item.id].quantity += item.quantity;  // Lägg till kvantiteter för samma artikel
+    } else {
+      itemMap[item.id] = { ...item };  // Lägg till artikeln om den inte finns
+    }
+  });
+
+  // Skapa finalItems från itemMap
+  finalItems = Object.values(itemMap);
+
   const order = {
     orderId: numericOrderId,
     customerName,
     customerPhone,  // Lägg till telefonnummer i beställningen
-    items,          // Rätt objektsstruktur som skickas från frontend
+    items: finalItems,  // Använd grupperade artiklar här
     status: 'pending',  // Status kan vara "pending", "processed", etc.
     createdAt: new Date().toISOString(),  // Tidpunkt för beställning
   };
@@ -73,7 +103,7 @@ export const postOrder = async (event: any) => {
         orderId: numericOrderId,
         customerName,
         customerPhone,
-        items,
+        items: finalItems,  // Sätt de grupperade artiklarna som skickas tillbaka
       }),
     };
   } catch (error) {

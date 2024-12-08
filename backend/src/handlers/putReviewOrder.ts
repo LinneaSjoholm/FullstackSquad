@@ -76,6 +76,7 @@ export const putReviewOrder = async (event: any) => {
 
       const originalItemIndex = originalItems.findIndex((original: MenuItem) => original.id === itemToUpdate.id);
 
+      // If item exists in the original order, update it
       if (originalItemIndex !== -1) {
         const originalItem = originalItems[originalItemIndex];
 
@@ -84,6 +85,7 @@ export const putReviewOrder = async (event: any) => {
 
         originalItem.ingredients = originalItem.ingredients || [...menuIngredients];
 
+        // Add new ingredients and remove the specified ones
         originalItem.ingredients = [
           ...new Set([...originalItem.ingredients, ...itemToUpdate.ingredientsToAdd]),
         ];
@@ -91,6 +93,13 @@ export const putReviewOrder = async (event: any) => {
         originalItem.ingredients = originalItem.ingredients.filter(
           ingredient => !itemToUpdate.ingredientsToRemove.includes(ingredient)
         );
+
+        // If the quantity is zero or the item is explicitly removed, remove it
+        if (itemToUpdate.quantity === 0 || itemToUpdate.ingredientsToRemove.includes(originalItem.id)) {
+          originalItems.splice(originalItemIndex, 1);
+          updatedItemsDetails.push(`Removed item: ${originalItem.name}`);
+          continue; // Skip the rest of the processing for removed items
+        }
 
         if (itemToUpdate.ingredientsToAdd.length > 0) updatedItemsDetails.push(`Added ingredients: ${itemToUpdate.ingredientsToAdd.join(', ')}`);
         if (itemToUpdate.ingredientsToRemove.length > 0) updatedItemsDetails.push(`Removed ingredients: ${itemToUpdate.ingredientsToRemove.join(', ')}`);
@@ -102,15 +111,17 @@ export const putReviewOrder = async (event: any) => {
         originalItem.lactoseFree = itemToUpdate.lactoseFree ?? originalItem.lactoseFree;
         originalItem.glutenFree = itemToUpdate.glutenFree ?? originalItem.glutenFree;
 
-        // Lägg till drinkId om det finns
+        // Add drinkId if provided and look up the drink name
         if (itemToUpdate.drinkId) {
-          originalItem.drinkId = itemToUpdate.drinkId;
+          const drink = menuResult.Items?.find((item: any) => item.id === itemToUpdate.drinkId);
+          originalItem.drinkName = drink?.name || 'Unknown Drink';  // Set the drink name, not ID
         }
 
         originalItem.ingredientsToAdd = itemToUpdate.ingredientsToAdd;
         originalItem.ingredientsToRemove = itemToUpdate.ingredientsToRemove;
 
       } else {
+        // If the item doesn't exist in the original order, add it as a new item
         const menuItem = menuResult.Items?.find((item: any) => item.id === itemToUpdate.id);
         const newItem: MenuItem = {
           id: itemToUpdate.id,
@@ -126,9 +137,10 @@ export const putReviewOrder = async (event: any) => {
           popularity: menuItem?.popularity ?? 0,
         };
 
-        // Lägg till drinkId om det finns
+        // Add drinkId if provided and look up the drink name
         if (itemToUpdate.drinkId) {
-          newItem.drinkId = itemToUpdate.drinkId;
+          const drink = menuResult.Items?.find((item: any) => item.id === itemToUpdate.drinkId);
+          newItem.drinkName = drink?.name || 'Unknown Drink';  // Set the drink name, not ID
         }
 
         originalItems.push(newItem);
@@ -155,14 +167,14 @@ export const putReviewOrder = async (event: any) => {
         ingredientsToAdd: item.ingredientsToAdd || [],
         ingredientsToRemove: item.ingredientsToRemove || [],
         itemMessage: item.ingredientsToAdd?.length || item.ingredientsToRemove?.length ? `Updated with changes` : `No changes`,
-        // Lägg till drinkId om det finns
-        drinkId: item.drinkId || null,
+        drinkName: item.drinkName || null,  // Use the drink name here
       })),
       status: 'pending',
       customerName,
       customerPhone,
       lactoseFreeMessage,
       glutenFreeMessage,
+      updatedAt: new Date().toISOString(),  // Adding updated timestamp
     };
 
     const updateParams = {
@@ -179,6 +191,7 @@ export const putReviewOrder = async (event: any) => {
         updatedOrder: {
           ...updatedOrder,
           totalPrice,
+          updatedAt: updatedOrder.updatedAt,  // Include updated timestamp in the response
         },
         details: updatedItemsDetails,
       }),

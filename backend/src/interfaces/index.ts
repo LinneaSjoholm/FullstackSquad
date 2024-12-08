@@ -11,6 +11,7 @@ export interface DynamoDBItem {
   ingredients: string[];
   description: string;
   drinkId?: string;  
+  drinkName?: string; 
 }
   
   // Definiera en typ för varje menyobjekt som vi skickar till användaren
@@ -27,4 +28,5 @@ export interface DynamoDBItem {
   popularity: number;
   description: string;
   drinkId?: string; 
+  drinkName?: string; 
 }
