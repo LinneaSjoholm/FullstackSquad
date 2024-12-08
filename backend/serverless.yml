@@ -105,7 +105,16 @@ functions:
       - http:
           path: /admin/order/{id}/lock
           method: post
-          cors: true
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - Authorization
+              - X-Amz-Date
+              - X-Amz-Security-Token
+          methods:
+            - POST
+            - OPTIONS
           
 
   # Cancel an order (before it is locked)
@@ -118,6 +127,8 @@ functions:
 
   initData:
     handler: src/handlers/initData.initData
+    events:
+      - httpApi:
           path: /order/reviewOrder/{id}
           method: put
           cors: true
@@ -201,3 +212,4 @@ custom:
         - PATCH
         - DELETE 
         - PUT
+        - OPTIONS

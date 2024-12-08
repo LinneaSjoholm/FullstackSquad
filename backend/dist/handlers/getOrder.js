@@ -7,46 +7,69 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { db } from '../services/db';
+import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+const dynamoDb = new DocumentClient();
+// API-nyckeln (kan hämtas från miljövariabler för att vara mer säker)
+const API_KEY = process.env.API_KEY || 'your-default-api-key';
 export const getOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
-    const orderId = event.pathParameters.id;
+    var _a;
+    // Kontrollera om API-nyckeln finns i begäran
+    const apiKey = event.headers['x-api-key'];
+    if (!apiKey || apiKey !== API_KEY) {
+        return {
+            statusCode: 403, // Forbidden om nyckeln inte är rätt
+            body: JSON.stringify({ message: 'Forbidden: Invalid API key' }),
+        };
+    }
+    const orderId = (_a = event.pathParameters) === null || _a === void 0 ? void 0 : _a.id; // Hämta orderId från URL (pathParameters)
+    if (!orderId) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ message: 'Order ID is required' }),
+        };
+    }
     const params = {
         TableName: 'OrdersTable',
         Key: {
-            orderId: orderId,
+            orderId, // Använd orderId för att hämta rätt objekt
         },
     };
     try {
-        const data = yield db.get(params);
-        if (!data.Item) {
+        const result = yield dynamoDb.get(params).promise();
+        if (!result.Item) {
             return {
                 statusCode: 404,
                 body: JSON.stringify({ message: 'Order not found' }),
             };
         }
+        // Hämta originalbeställning
+        const order = result.Item;
+        // Uppdatera ingredienser genom att sammanfoga 'ingredients' med 'ingredientsToAdd' och ta bort 'ingredientsToRemove'
+        order.items.forEach((item) => {
+            // Lägg till ingredienser från 'ingredientsToAdd' om de finns
+            if (item.ingredientsToAdd && item.ingredientsToAdd.length > 0) {
+                item.ingredients = [...new Set([...item.ingredients, ...item.ingredientsToAdd])];
+            }
+            // Ta bort ingredienser från 'ingredientsToRemove' om de finns
+            if (item.ingredientsToRemove && item.ingredientsToRemove.length > 0) {
+                item.ingredients = item.ingredients.filter((ingredient) => !item.ingredientsToRemove.includes(ingredient));
+            }
+            // Ta bort tillfälliga fält som inte längre behövs
+            delete item.ingredientsToAdd;
+            delete item.ingredientsToRemove;
+        });
         return {
             statusCode: 200,
-            body: JSON.stringify(data.Item),
+            body: JSON.stringify({
+                message: 'Order retrieved successfully',
+                order,
+            }),
         };
     }
     catch (error) {
-        if (error instanceof Error) {
-            return {
-                statusCode: 500,
-                body: JSON.stringify({
-                    message: 'Failed to fetch order',
-                    error: error.message,
-                }),
-            };
-        }
-        else {
-            return {
-                statusCode: 500,
-                body: JSON.stringify({
-                    message: 'Failed to fetch order',
-                    error: 'Unknown error occurred',
-                }),
-            };
-        }
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: 'Error fetching order', error }),
+        };
     }
 });

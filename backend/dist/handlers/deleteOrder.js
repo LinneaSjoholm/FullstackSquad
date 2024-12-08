@@ -9,46 +9,46 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { db } from '../services/db';
 import { UpdateCommand } from '@aws-sdk/lib-dynamodb';
-export const adminLockOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const orderId = (_a = event.pathParameters) === null || _a === void 0 ? void 0 : _a.id;
-    if (!orderId) {
+// API-nyckeln (kan hämtas från miljövariabler för att vara mer säker)
+const API_KEY = process.env.API_KEY || 'your-default-api-key';
+export const deleteOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
+    // Kontrollera om API-nyckeln finns i begäran
+    const apiKey = event.headers['x-api-key'];
+    if (!apiKey || apiKey !== API_KEY) {
         return {
-            statusCode: 400,
-            body: JSON.stringify({ message: 'Order ID is required.' }),
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-            }
+            statusCode: 403, // Forbidden om nyckeln inte är rätt
+            body: JSON.stringify({ message: 'Forbidden: Invalid API key' }),
         };
     }
+    const orderId = event.pathParameters.id;
     try {
+        // Hämta den aktuella ordern
         const getOrderParams = { TableName: 'OrdersTable', Key: { orderId } };
         const orderData = yield db.get(getOrderParams);
+        // Om ordern inte finns, returnera 404
         if (!orderData.Item) {
             return {
                 statusCode: 404,
                 body: JSON.stringify({ message: 'Order not found.' }),
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-                }
             };
         }
+        // Om ordern redan är låst, returnera 403
+        if (orderData.Item.status === 'locked' || orderData.Item.status === 'completed') {
+            return {
+                statusCode: 403,
+                body: JSON.stringify({ message: 'Order cannot be canceled because it is locked or already completed.' }),
+            };
+        }
+        // Uppdatera orderstatusen till "canceled" (med alias för status)
         const updateParams = {
             TableName: 'OrdersTable',
             Key: { orderId },
-            UpdateExpression: 'SET #locked = :locked, #status = :status, #updatedAt = :updatedAt',
+            UpdateExpression: 'SET #status = :status, updatedAt = :updatedAt',
             ExpressionAttributeNames: {
-                '#locked': 'locked',
-                '#status': 'status',
-                '#updatedAt': 'updatedAt',
+                '#status': 'status', // Alias för reserverat ord "status"
             },
             ExpressionAttributeValues: {
-                ':locked': true,
-                ':status': 'locked',
+                ':status': 'canceled',
                 ':updatedAt': new Date().toISOString(),
             },
             ReturnValues: 'ALL_NEW',
@@ -58,25 +58,21 @@ export const adminLockOrder = (event) => __awaiter(void 0, void 0, void 0, funct
         return {
             statusCode: 200,
             body: JSON.stringify({
-                message: 'Order locked successfully.',
+                message: 'Order canceled successfully.',
                 updatedOrder: updatedOrder.Attributes,
             }),
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-            }
         };
     }
     catch (error) {
+        console.error('Error canceling order:', error);
+        // Felhantering av okänt fel
+        let errorMessage = 'Failed to cancel order.';
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
         return {
             statusCode: 500,
-            body: JSON.stringify({ message: 'Failed to lock order.' }),
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-            }
+            body: JSON.stringify({ message: errorMessage }),
         };
     }
 });

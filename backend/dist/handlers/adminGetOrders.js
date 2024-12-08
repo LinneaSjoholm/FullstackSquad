@@ -10,11 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { db } from '../services/db';
 export const adminGetOrders = (event) => __awaiter(void 0, void 0, void 0, function* () {
     const corsHeaders = {
-        'Access-Control-Allow-Origin': '*', // Tillåter alla ursprung, kan begränsas till din frontend-URL
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'GET, OPTIONS',
     };
-    // Hantera preflight OPTIONS-begäran
     if (event.httpMethod === 'OPTIONS') {
         return {
             statusCode: 200,
