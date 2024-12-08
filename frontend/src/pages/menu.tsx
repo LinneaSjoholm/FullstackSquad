@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { MenuItem, OrderItem, CartItem } from '../interfaces/index';
-import Cart from '../components/cart';
+import Cart from '../../src/components/cart';
 import '../styles/Menu.css'; 
 import shoppingBagIcon from '../assets/shopping-bag.png'; 
 import heartIcon from '../assets/Vector (1).png';          
-import pastaImages from '../interfaces/pastaImages'; // Importera korrekt här
+import pastaImages from '../interfaces/pastaImages'; 
 import '../styles/Cart.css';
 
 interface MenuProps {

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CartItem } from '../../interfaces'; // Importera dina interfaces
+import { CartItem } from '../../interfaces'; 
 import '../../styles/ReviewOrder.css';
+import DeleteOrder from '../../components/DeleteOrder'; 
+
 
 
 const ReviewOrder: React.FC = () => {
@@ -353,6 +355,8 @@ const ReviewOrder: React.FC = () => {
       <button onClick={handleUpdateOrder} className="review-update-order-button">
       Confirmation
       </button>
+       {/* Display DeleteOrder component */}
+      <DeleteOrder orderId={orderId} /> {/* Passing orderId to DeleteOrder */}
     </div>
       {/* Footer */}
       <footer className="footer">

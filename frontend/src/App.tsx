@@ -5,6 +5,7 @@ import Menu from './pages/menu';
 import CreateOrder from './pages/Customer/CreateOrder';
 import ReviewOrder from './pages/Customer/ReviewOrder';
 import { CartItem } from './interfaces/index'; 
+import MenuAdmin from './pages/Employed/MenuAdmin'
 
 
 const App: React.FC = () => {
@@ -20,6 +21,7 @@ const App: React.FC = () => {
           element={<CreateOrder />} // No need to pass props here since we are using location.state in CreateOrder
         />
         <Route path="/review-Order" element={<ReviewOrder />} />
+        <Route path="/menu-admin" element={<MenuAdmin setCart={setCart} cart={cart}/>} />
       </Routes>
     </Router>
   );
