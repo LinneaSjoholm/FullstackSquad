@@ -1,5 +1,5 @@
    // För att hämta alla orders
-export const adminGetOrders = async (): Promise<any> => {
+   export const adminGetOrders = async (): Promise<any> => {
     try {
       const response = await fetch('https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/orders'); 
       const data = await response.json();

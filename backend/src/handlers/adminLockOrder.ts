@@ -12,7 +12,7 @@ export const adminLockOrder = async (event: APIGatewayProxyEvent): Promise<APIGa
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
       }
     };
   }
@@ -28,7 +28,7 @@ export const adminLockOrder = async (event: APIGatewayProxyEvent): Promise<APIGa
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
         }
       };
     }
@@ -62,7 +62,7 @@ export const adminLockOrder = async (event: APIGatewayProxyEvent): Promise<APIGa
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
       }
     };
   } catch (error) {
@@ -72,7 +72,7 @@ export const adminLockOrder = async (event: APIGatewayProxyEvent): Promise<APIGa
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
       }
     };
   }

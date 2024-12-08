@@ -79,6 +79,7 @@ functions:
             headers:
               - Content-Type
               - Authorization
+              - x-api-key
             methods:
               - GET
               - OPTIONS
@@ -112,9 +113,10 @@ functions:
               - Authorization
               - X-Amz-Date
               - X-Amz-Security-Token
-          methods:
-            - POST
-            - OPTIONS
+              - x-api-key
+            methods:
+              - POST
+              - OPTIONS
           
 
   # Cancel an order (before it is locked)

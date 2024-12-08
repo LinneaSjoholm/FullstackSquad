@@ -63,7 +63,6 @@ const AdminOrderList: React.FC = () => {
 
   return (
     <div>
-      <h1>Admin Order List</h1>
 
       <h2>New Orders</h2>
       {newOrders.length === 0 ? (
