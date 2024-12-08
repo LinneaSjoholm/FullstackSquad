@@ -19,7 +19,7 @@ export const adminLockOrder = (event) => __awaiter(void 0, void 0, void 0, funct
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
             }
         };
     }
@@ -33,7 +33,7 @@ export const adminLockOrder = (event) => __awaiter(void 0, void 0, void 0, funct
                 headers: {
                     'Access-Control-Allow-Origin': '*',
                     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                    'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
+                    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
                 }
             };
         }
@@ -64,7 +64,7 @@ export const adminLockOrder = (event) => __awaiter(void 0, void 0, void 0, funct
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
             }
         };
     }
@@ -75,7 +75,7 @@ export const adminLockOrder = (event) => __awaiter(void 0, void 0, void 0, funct
             headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
             }
         };
     }

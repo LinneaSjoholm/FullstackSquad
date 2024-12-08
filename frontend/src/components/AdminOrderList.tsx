@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { lockOrder, adminGetOrders } from '../api/AdminOrderApi';  
+import { lockOrder, adminGetOrders } from '../api/AdminOrderApi';
 
 const AdminOrderList: React.FC = () => {
   const [orders, setOrders] = useState<any[]>([]);  // För att hålla ordrarna
@@ -63,7 +63,6 @@ const AdminOrderList: React.FC = () => {
 
   return (
     <div>
-
       <h2>New Orders</h2>
       {newOrders.length === 0 ? (
         <p>No new orders.</p>

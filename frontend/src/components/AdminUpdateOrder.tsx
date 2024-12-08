@@ -15,7 +15,7 @@ const UpdateOrder: React.FC = () => {
     console.log("Fetching order with ID:", orderId);  
     const fetchOrder = async () => {
       try {
-        const response = await fetch(`https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/order/`, {
+        const response = await fetch(`https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/order/${orderId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -48,7 +48,7 @@ const StockStatus = () => {
             }}
           >
             <h3 style={{ margin: '0' }}>{item.name}</h3>
-            <p><strong>Stock:</strong> {item.stock !== 'NaN' ? item.stock : 'Out of Stock'}</p> {/* Hantera "NaN"*/}
+            <p><strong>Stock:</strong> {item.stock !== 'NaN' ? item.stock : 'Out of Stock'}</p>
             <p><strong>Dish Names:</strong> {item.dishNames ? item.dishNames.join(', ') : 'No dishes available'}</p>
           </li>
         ))}
