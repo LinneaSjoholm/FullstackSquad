@@ -1,20 +1,26 @@
-/* Grundläggande stil för body */
-body {
+*{
   margin: 0;
-  padding: 0;  
-  font-family: Arial, sans-serif;
-  background-color: #1E4C5D;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; 
-  min-height: 100vh; 
-  position: relative;
-  width: 100%; 
-  overflow-x: hidden; 
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* Menu-specific body style */
+.menu-container {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #1E4C5D;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+
 /* För headern högst upp på sidan */
-.header {
+.menu-header {
   background-color: #fff;
   height: 400px; 
   width: 100vw; 
@@ -25,25 +31,27 @@ body {
 }
 
 /* För sorteringscontainer */
-.sort-container {
-  margin-left: 15rem;
+.menu-sort-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto; /* Ger en top-marginal och centrering horisontellt */
   position: relative; 
-  margin-top: 20px;  
 }
 
 /* För etiketten */
-.sort-container label {
+.menu-sort-container label {
   font-size: 16px; 
-  margin-bottom: 8px; 
+  margin-right: 8px; /* Gör lite utrymme mellan etikett och select */
   color: #000000; 
 }
 
-
 /* För select när användaren väljer */
-.sort-container select:focus {
+.menu-sort-container select:focus {
   border-color: #0881A3; 
   outline: none; 
 }
+
 
 .hidden {
   display: none;
@@ -54,7 +62,7 @@ body {
   margin-top: 50px; 
 }
 
-.inline-text {
+.menu-inline-text {
   display: inline-block;
   margin-right: 5px;
 }
@@ -63,8 +71,16 @@ body {
   margin: 0;  
   text-align: center; 
   color: #000000;
+  margin-bottom: 30px;
+  font-size: 30px;
 }
-
+.menu-left h2 {
+  margin: 0;  
+  text-align: center; 
+  color: #000000;
+  margin-bottom: 30px;
+  font-size: 20px;
+}
 /* Skapa ett avstånd mellan sorteringscontainer och menyn */
 .menu-list {
   display: grid;
@@ -86,127 +102,136 @@ body {
   color: black;
   margin-top: 10px; 
 }
-
-/* För knapparna */
-button {
-  background-color: #0881A3;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 10px 15px;
-  cursor: pointer;
-  margin-top: 10px;
-  width: 100%;
-  max-width: 200px; 
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+.menu-list h3{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
 }
+
 
 /* För att styla bilden av varje rätt */
 .menu-item-image {
   width: 70%;
   height: auto;
-  max-height: 200px;
   object-fit: cover; /* För att inte förvränga bilden */
   margin-left: 5rem;
 }
-.menu-list h3{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.description-text {
-  font-size: 16px;
+
+.menu-description-text, .menu-ingredients-text {
+  font-size: 14px;
   color: #333;
   line-height: 1.5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+  max-width: 410px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
 }
 
-.ingredients-text {
-  font-size: 14px;
-  color: #555;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
-}
-
-.diet-info {
+.menu-diet-info {
   margin-top: 20px;
   font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-
+  margin-bottom: 20px;
 }
 
-.diet-info .lactose-free {
+.menu-diet-info .lactose-free {
   color: red; /* Laktosfritt */
 }
 
-.diet-info .gluten-free {
+.menu-diet-info .gluten-free {
   color: green; /* Glutenfritt */
 }
 
-.centered-container {
+.menu-centered-container {
   display: flex;
   justify-content: center; /* Centrerar horisontellt */
   align-items: center; /* Centrerar vertikalt */
+  margin-bottom: 20px;
 }
 
 
-.button-container {
-  display: flex; /* Gör knapparna till flexobjekt */
+.menu-button-container {
+  display: flex; 
+  justify-content: center;
+  padding: 20px;
 }
 
-.favorite-button, .add-to-order-button {
-  padding: 10px 15px; /* Justera knapparnas inre padding för bättre utseende */
-  font-size: 14px; /* Justera textstorlek om det behövs */
-  cursor: pointer; /* Gör att knapparna ser klickbara ut */
+.menu-favorite-button {
+  padding: 10px 15px; 
+  font-size: 14px; 
+  cursor: pointer; 
+  border: none; 
+  outline: none; 
+  background-color: transparent;  
 }
 
-.favorite-button{
-    background-color: #fff;
+.menu-add-to-order-button{
+  background-color: #0881A3;
+  border: none; 
+  outline: none; 
+  padding: 1rem;
+  color: #fff;
 }
+
 /* Ikoner för hjärta och shoppingbag */
-.icon-container {
+.menu-icon-container {
   position: absolute; 
   top: 25rem; 
   right: 20px; 
   display: flex;
+  gap: 1rem;
 }
-
+.menu-heart-icon{
+  width: 150%;
+}
 /* För shoppingBagIcon */
-img.cart-icon {
+.menu-cart-button {
   filter: grayscale(100%) brightness(0) invert(0); 
 }
 
-img.heart-icon {
+.menu-img.heart-icon {
     color: black;
     width: 30px;
 
 }
 
 /* För hjärta-ikonen */
-.heart-button, .cart-button {
+.menu-heart-button, .menu-cart-button {
   background-color: transparent;
   border: none;
   cursor: pointer;
   color: black;
 }
 
-/* För Cart popup */
-.cart {
-  position: fixed;
-  top: 100px;
-  right: 50px;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 100; /* Se till att den ligger ovanpå andra element */
+
+/* Footer längst ner */
+.footer {
+  background-color: #000000;
+  height: 200px; /* Höjd på footern */
+  width: 100vw;
+  bottom: 0; /* Fäster footern längst ner */
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Skugga för att separera från innehåll */
+}
+
+.footer p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+
+
+
+@media (max-width: 768px) {
+  .menu-list {
+    grid-template-columns: 1fr;  /* Gör det till en kolumn på mindre skärmar */
+  }
 }

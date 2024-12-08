@@ -1,0 +1,321 @@
+/* ReviewOrder.css */
+
+/* Container för hela sidan */
+.review-container {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #1E4C5D;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    position: relative;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Rubrik för hela beställningen */
+.review-order-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Subtitel för beställningsdetaljer */
+.review-order-subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Varje artikel i listan */
+.review-order-item {
+  background-color: #f9f9f9;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  width: 80%; 
+  max-width: 600px; 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+
+/* Artikelns namn, mängd och pris */
+.review-order-item-details {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Namn på artikeln */
+.review-order-item-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Pris på artikeln */
+.review-order-item-price {
+  font-size: 1.1rem;
+  color: #0881A3;
+  margin-top: 5px;
+}
+
+/* Information om vald dryck */
+.review-order-item-drink-name {
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* Sektion för ingredienser */
+.review-order-item-heading {
+  font-size: 20px;
+  font-weight: bold;
+  color: #0881A3;
+  text-align: center;
+  margin-top: 20px; /* Lägg till mellanrum ovanför texten */
+  margin-bottom: 20px; /* Lägg till mellanrum under texten */
+  text-decoration: underline;
+  font-family: 'Arial', sans-serif;
+}
+
+
+.modify-ingredient {
+  display: flex; /* Gör att alla element (ingredienser och knappar) ligger på samma rad */
+  align-items: center; /* Centrerar alla element vertikalt */
+  gap: 10px; /* Skapar ett jämnt avstånd mellan varje element */
+  margin-bottom: 10px; /* Lägger till lite mellanrum mellan ingrediensraderna */
+}
+
+.review-modify-ingredient-name {
+  flex: 1; /* Gör så att ingrediensen får lika stor plats som knapparna */
+  font-size: 14px; /* Anpassa storleken på ingrediensen */
+  margin-bottom: 10px;
+}
+
+.review-modify-ingredient-button {
+  background-color: #0881A3;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.review-modify-ingredient-button:hover {
+  background-color: #066b85;
+}
+
+/* Visa tillagda och borttagna ingredienser */
+.review-ingredient-add,
+.review-ingredient-remove {
+  display: inline-block;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+.review-ingredient-add {
+  color: #4CAF50; /* Grön för tillagda ingredienser */
+}
+
+.review-ingredient-remove {
+  color: #FF5722; /* Röd för borttagna ingredienser */
+}
+
+.review-order-item-dietary-preferences {
+  display: flex;
+  flex-direction: column; /* Ordnar alla dietary-preference-item vertikalt */
+  align-items: center; /* Centrerar alla dietary-preference-item horisontellt */
+  gap: 0px; /* Avstånd mellan varje dietary-preference-item */
+  margin-top: 10px;
+}
+
+.dietary-preference-item {
+  display: flex;
+  flex-direction: column; /* Ordnar texten och knappen vertikalt */
+  align-items: center; /* Centrerar texten och knappen horisontellt */
+  gap: 10px; /* Avstånd mellan text och knapp */
+  margin-top: 20px;
+}
+
+.review-dietary-button {
+  background-color: #0881A3;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.review-dietary-button:hover {
+  background-color: #066b85;
+}
+
+.review-order-item-dietary-preferences {
+  display: flex;
+  flex-direction: column; /* Ordnar alla dietary-preference-item vertikalt */
+  align-items: center; /* Centrerar alla dietary-preference-item horisontellt */
+  gap: 20px; /* Avstånd mellan varje dietary-preference-item */
+}
+
+.dietary-preference-item {
+  display: flex;
+  flex-direction: column; /* Ordnar texten och knappen vertikalt */
+  align-items: center; /* Centrerar texten och knappen horisontellt */
+  gap: 10px; /* Avstånd mellan text och knapp */
+}
+
+.review-dietary-button {
+  background-color: #0881A3;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.review-dietary-button:hover {
+  background-color: #066b85;
+}
+
+
+
+.dietary-preference-item p {
+  margin: 0; /* Ta bort margin för att få bättre kontroll över layouten */
+  font-size: 14px; /* Justera fontstorleken för texten */
+}
+
+
+.review-dietary-preference-text {
+  font-size: 14px; /* Justera fontstorleken för texten */
+  margin-right: 10px; /* Lägg till avstånd mellan texten och knappen */
+}
+
+
+/* Välj dryck-sektion */
+.review-order-item-drink-selection {
+  margin-top: 20px;
+}
+
+.review-drink-select {
+  padding: 10px;
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Ta bort artikel-knapp */
+.review-remove-item-button {
+  background-color: #FF5722;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.review-remove-item-button:hover {
+  background-color: #9e0d03;
+}
+
+/* Totalt pris */
+.review-total-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0881A3;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Omslutande container för kunddetaljer */
+.review-customer-details-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horisontell centrering */
+  justify-content: center; /* Vertikal centrering */
+  background-color: #f9f9f9; /* Valfritt: bakgrundsfärg */
+  padding: 20px; /* Undvik att innehåll kommer för nära kanterna */
+  max-width: 600px; /* Begränsa bredden */
+  margin: auto; /* Gör att containern centreras horisontellt */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Valfritt: Snyggare design med skugga */
+  border-radius: 8px;
+}
+
+/* Kunddetaljer rubrik */
+.review-customer-details-heading {
+  font-size: 1.5rem;
+  margin-bottom: 20px; /* Avstånd under rubriken */
+  font-weight: bold;
+  color: #0881A3;
+  text-align: center;
+}
+
+/* Etikett för inmatningsfält */
+.review-customer-details-label {
+  display: block; /* Gör att etiketten visas ovanför inmatningsfältet */
+  margin-bottom: 5px; /* Avstånd mellan etikett och inmatningsfält */
+  font-size: 1rem; /* Justera storleken om det behövs */
+  font-weight: bold;
+  color: #333; /* En neutral färg för etiketten */
+}
+
+/* Inmatningsfält och grupper */
+.review-customer-details-input-group {
+  margin-top: 20px; /* Avstånd mellan varje inmatningsgrupp */
+  width: 100%; /* Säkerställ att fältet och etiketten har tillräckligt med utrymme */
+}
+
+/* Input-grupper för kunduppgifter */
+.review-customer-details-input-group {
+  margin-bottom: 15px; /* Avstånd mellan input-grupper */
+  width: 100%; /* Fyll bredden inom förälder */
+  max-width: 400px; /* Maximal bredd för inputs */
+}
+
+.review-customer-details-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Uppdatera beställning-knapp */
+.review-update-order-button {
+  background-color: #0881A3;
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 400px; /* Anpassa maxbredd för knappen */
+  font-size: 1.2rem;
+  margin-top: 20px; /* Avstånd ovanför knappen */
+  cursor: pointer;
+}
+
+.review-update-order-button:hover {
+  background-color: #066b85;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px 0;
+  background-color: #000000;
+  font-size: 0.9rem;
+}
+
+.footer p {
+  margin: 0;
+  color: #555;
+}

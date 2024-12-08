@@ -1,43 +1,67 @@
-/* cart.css */
-
-.cart-container {
+/* Cart container styling */
+.cart {
   position: fixed;
-  top: 50px;
+  top: 30rem; /* Justera detta beroende på var du vill att den ska visas */
   right: 20px;
-  width: 300px;
-  padding: 20px;
+  width: 400px;
+  padding: 30px;
   background-color: black;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  color: rgb(255, 255, 255);
+  max-height: 80vh; /* Förhindrar att varukorgen blir för stor */
+  overflow-y: auto; /* Gör att varukorgen blir scrollbar om innehållet är för stort */
 }
-
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+.cart h2{
+  color: #fff;
 }
-
-.cart-item button {
-  background-color: gray;
+.cart h3{
+  color: #fff;
+}
+/* Styling for the remove button */
+.cart .cart-remove-button {
+  margin-left: 10px;
+  background-color: #0881A3;
   color: white;
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
-.cart-total {
-  font-size: 1.2rem;
+/* Styling for the checkout button */
+.cart .cart-checkout-button {
   margin-top: 10px;
-}
-
-.cart-checkout-button {
-  margin-top: 10px;
-  background-color: gray;
+  background-color: #0881A3;
   color: white;
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
   width: 100%;
+  cursor: pointer;
+}
+
+/* Optional: Add some hover effects for buttons */
+.cart .cart-remove-button:hover,
+.cart .cart-checkout-button:hover {
+  background-color: #076b85;
+}
+
+/* Stängningsknapp (X) */
+.cart .cart-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: #fff;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+/* Hover-effekt på stängknappen */
+.cart .cart-close-button:hover {
+  color: #ff0000; /* Ändrar färg vid hover */
 }
