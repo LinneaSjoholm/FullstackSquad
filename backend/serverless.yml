@@ -85,13 +85,13 @@ functions:
               - OPTIONS
 
   updateOrderDetails:
-    handler: src/handlers/adminUpdateOrderDetails.adminUpdateOrder
+    handler: src/handlers/adminUpdateOrder.adminUpdateOrder
     events:
       - httpApi:
-          path: /admin/order/{id}
+          path: /admin/order/{id}/update
           method: patch
           cors:
-            origin: '*'  # Tillåter alla ursprung (kan vara mer restriktivt för produktion)
+            origin: '*'
             headers:
               - Content-Type
               - Authorization

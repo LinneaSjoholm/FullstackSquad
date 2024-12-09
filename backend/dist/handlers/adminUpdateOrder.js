@@ -12,12 +12,12 @@ import { UpdateCommand } from '@aws-sdk/lib-dynamodb';
 export const adminUpdateOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
     const orderId = event.pathParameters.id;
     const body = JSON.parse(event.body);
-    const { items, status, customerDetails, messageToChef, dishName } = body;
+    const { status, messageToChef } = body;
     // Validera input
-    if (!items || items.length === 0) {
+    if (!status || !messageToChef) {
         return {
             statusCode: 400,
-            body: JSON.stringify({ message: 'Items are required to update the order.' }),
+            body: JSON.stringify({ message: 'Both status and messageToChef are required to update the order.' }),
         };
     }
     try {
@@ -31,53 +31,17 @@ export const adminUpdateOrder = (event) => __awaiter(void 0, void 0, void 0, fun
             };
         }
         // Uppdatera ordern med ny information
-        const updatedItems = [];
-        for (const item of items) {
-            const productData = yield db.get({
-                TableName: 'MenuTable',
-                Key: { id: item.id },
-            });
-            if (!productData.Item) {
-                return {
-                    statusCode: 404,
-                    body: JSON.stringify({ message: `Product with id ${item.id} not found.` }),
-                };
-            }
-            updatedItems.push({
-                id: item.id,
-                name: productData.Item.name,
-                quantity: item.quantity,
-                price: parseFloat(productData.Item.price),
-            });
-        }
         const updateExpression = [];
         const expressionAttributeNames = {};
         const expressionAttributeValues = {
-            ':items': updatedItems,
+            ':status': status,
+            ':messageToChef': messageToChef,
             ':updatedAt': new Date().toISOString(),
         };
-        updateExpression.push('#items = :items');
-        expressionAttributeNames['#items'] = 'items';
-        if (status) {
-            updateExpression.push('#status = :status');
-            expressionAttributeNames['#status'] = 'status';
-            expressionAttributeValues[':status'] = status;
-        }
-        if (customerDetails) {
-            updateExpression.push('#customerDetails = :customerDetails');
-            expressionAttributeNames['#customerDetails'] = 'customerDetails';
-            expressionAttributeValues[':customerDetails'] = customerDetails;
-        }
-        if (messageToChef) {
-            updateExpression.push('#messageToChef = :messageToChef');
-            expressionAttributeNames['#messageToChef'] = 'messageToChef';
-            expressionAttributeValues[':messageToChef'] = messageToChef;
-        }
-        if (dishName) {
-            updateExpression.push('#dishName = :dishName');
-            expressionAttributeNames['#dishName'] = 'dishName';
-            expressionAttributeValues[':dishName'] = dishName;
-        }
+        updateExpression.push('#status = :status');
+        expressionAttributeNames['#status'] = 'status';
+        updateExpression.push('#messageToChef = :messageToChef');
+        expressionAttributeNames['#messageToChef'] = 'messageToChef';
         updateExpression.push('#updatedAt = :updatedAt');
         expressionAttributeNames['#updatedAt'] = 'updatedAt';
         const updateParams = {
