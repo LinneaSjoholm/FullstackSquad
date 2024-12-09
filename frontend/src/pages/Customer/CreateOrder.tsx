@@ -78,7 +78,7 @@ const CreateOrder: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-        navigate('/review-order', {
+        navigate('/review/order', {
           state: { customerName, customerPhone, orderItems: updatedOrderItems, totalPrice: updatedTotalPrice, orderId: data.orderId },
         });
       } else {
