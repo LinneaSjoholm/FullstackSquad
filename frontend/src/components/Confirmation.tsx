@@ -3,14 +3,19 @@ import "../styles/Confirmation.css";
 
 const Confirmation: React.FC = () => {
   return (
-    <div>{/* Main Content */}
-      <div className="thank-you-message">
-        <h2>Thank you for choosing Gusto to Go</h2>
-        <p>your order is on its way!</p>
+    <div className="container">
+
+      <div className="container-message">
+        <p className="message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptas? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisq
+        </p>
+        <h2 className="thank-you-message">Thank you for choosing Gusto to Go</h2>
+        <p className="confirmation-message">your order is on its way!</p>
       </div>
     
-    <main className="order-details">
-      <div className="order-summary">
+    {/* Main Content */}
+    <main className="order-content">
+    {/* The Order Summary */}
+      <section className="order-summary">
         <div className="order-number">
         <h3>Order #12345</h3>
         </div>
@@ -38,8 +43,8 @@ const Confirmation: React.FC = () => {
         <p className="delivery-icon">🚗</p>
         <button className="back-to-menu">Go Back to Menu</button>
         </div>
-        
-      </div>
+      </section>
+
       <p className="contact-info">
         Need help? Contact us at <a href="mailto:support@gustotogo.com">support@gustotogo.com</a> or call <br /> +123 456 789
       </p>

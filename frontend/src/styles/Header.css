@@ -1,46 +1,25 @@
-/* src/styles/Header.css */
-.header {
-    background-color: #333;
-    color: white;
-    padding: 20px;
-    text-align: center;
-    width: 100%;
-  }
+ .header {
+  background-color: #333; /* Reservfärg om bilden inte laddas */
+  color: white;
   
-  /* src/styles/MainContent.css */
-  .main-content {
-    padding: 20px;
-    background-color: #f4f4f4;
-    text-align: center;
-  }
+  width: 100%;
+  height: 315px;
+  flex-shrink: 0; /* Förhindrar att header krymper */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
-  /* src/styles/Footer.css */
-  .footer {
-    background-color: #333;
-    color: white;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    width: 100%;
-    text-align: left;
-  }
+  /* Korrekt sökväg för React */
+  background-image: url('/images/background-header.jpg'); /* Lägg bilden i public/images */
+  background-size: cover; /* Gör att bilden täcker hela ytan */
+  background-position: center; /* Centrerar bilden */
+  background-repeat: no-repeat; /* Förhindrar att bilden upprepas */
+  backface-visibility:hidden;
+}
   
-  /* src/styles/AddressSection.css */
-  address {
-    font-style: normal;
-    line-height: 1.5;
-  }
-  
-  /* src/styles/SocialIconsSection.css */
-  .social-icons {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .social-icon {
-    color: white;
-    text-decoration: none;
-    font-size: 1rem;
-  }
-  
+/* Main Content Styling */
+.main-content {
+  padding: 20px;
+  background-color: #f4f4f4;
+  text-align: center;
+}

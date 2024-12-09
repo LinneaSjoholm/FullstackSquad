@@ -1,21 +1,20 @@
 import React from "react";
 import "../styles/About.css/";
 
+
+
 const About: React.FC = () => {
   return (
-    <div className="about-container">
-      {/* Hero Section */}
-      <header className="hero-section">
-        <h1 className="logo">Gusto To Go</h1>
-      </header>
-
+    <div className="container">
+        <div className="about-message">
+          <h2>About Us</h2>
+          <h3>Our Story</h3>
+        </div>
       {/* Main Content */}
       <main className="content">
         {/* Our Story Section */}
         <section className="story-section">
-          <h2>About Us</h2>
           <div className="story-content">
-            <h3>Our Story</h3>
             <p>
                 At Gusto To Go, we believe in serving only the best pasta, made
                 with love and the finest ingredients. Our journey began with a

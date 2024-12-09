@@ -1,14 +1,15 @@
-/* Footer */
-.footer {
-    background-color: #333;
-    color: white;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;  /* För att hålla alla sektioner på samma rad */
-    flex-wrap: wrap;
-    width: 100%;
-    text-align: left;
-  }
+  .footer {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+  text-align: left;
+  flex-shrink: 0; /* Förhindrar att footer krymper */
+}
+
   
   /* Adress */
   address {
@@ -26,5 +27,7 @@
     color: white;
     text-decoration: none;
     font-size: 1rem;
+    padding: 10px;
+    margin-right: 20px;
   }
   
