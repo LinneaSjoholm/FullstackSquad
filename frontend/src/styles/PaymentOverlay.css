@@ -1,0 +1,198 @@
+.payment-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-container {
+  background: rgb(255, 255, 255, 0.75);
+  color: black;
+  border-radius: 8px;
+  padding: 20px 0;
+  width: 80%;
+  height: auto;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  margin-left: 150px;
+  margin-right: 150px;
+  gap: 15px;
+}
+
+.payment-options label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+}
+
+  .payment-options label img {
+    width: 30px; 
+    height: auto; 
+    margin-right: 10px; 
+  }
+
+  .payment-options label .klarna-icon {
+    width: 40px; 
+    height: auto; 
+    margin-right: 10px; 
+  }
+
+  .payment-options label .paypal-icon {
+    width: 60px; 
+    height: auto; 
+    margin-right: 10px; 
+  }
+  
+  .payment-options input[type="radio"] {
+    margin: 0;
+    appearance: none; 
+    width: 15px; 
+    height: 15px;
+    border: 2px solid #ccc;
+    border-radius: 50%; 
+    background-color: #fff; 
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .payment-card-form {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    padding: 10px;
+    border-top: 1px solid #575757;
+    border-bottom: 1px solid #575757 ;
+}
+
+.payment-card-form .card,
+.payment-card-form .billing {
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+    gap: 10px;
+}
+
+.payment-card-form h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.payment-card-form input {
+    padding: 10px;
+    font-size: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fffbea; 
+}
+
+.payment-options input[type="radio"] {
+  appearance: none; 
+  width: 20px; 
+  height: 20px;
+  border: 1px solid black; 
+  border-radius: 50%; 
+  background-color: white; 
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+}
+
+.payment-options input[type="radio"]:checked::after {
+  content: "";
+  width: 10px; 
+  height: 10px;
+  background-color: #007bff; 
+  border-radius: 50%; 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+}
+
+.close-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.close-button:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+  .payment-overlay {
+    overflow-y: auto; 
+  }
+  
+  .payment-container {
+    max-height: 90vh;
+    overflow-y: auto; 
+  }
+
+  .payment-container {
+    width: 80%;
+    padding: 20px;
+  }
+
+  .payment-options {
+    margin: 0 auto; 
+    gap: 20px;
+  }
+
+  .payment-card-form {
+    display: flex;
+    flex-direction: column; 
+    gap: 20px; 
+    padding: 10px;
+    border-top: 1px solid #575757;
+    border-bottom: 1px solid #575757;
+  }
+
+  .payment-card-form .card,
+  .payment-card-form .billing {
+    width: 80%; /* Full bredd */
+    gap: 10px;
+  }
+
+  .payment-card-form h3 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+
+  .payment-card-form input {
+    padding: 8px; 
+    font-size: 0.9rem; 
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: black;
+    background-color: #fffbea;
+  }
+
+  .close-button {
+    width: 100%; 
+    padding: 10px;
+    font-size: 1rem; 
+  }
+}

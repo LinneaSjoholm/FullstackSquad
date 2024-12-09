@@ -1,0 +1,25 @@
+ .header {
+  background-color: #333; /* Reservfärg om bilden inte laddas */
+  color: white;
+  
+  width: 100%;
+  height: 315px;
+  flex-shrink: 0; /* Förhindrar att header krymper */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Korrekt sökväg för React */
+  background-image: url('/images/background-header.jpg'); /* Lägg bilden i public/images */
+  background-size: cover; /* Gör att bilden täcker hela ytan */
+  background-position: center; /* Centrerar bilden */
+  background-repeat: no-repeat; /* Förhindrar att bilden upprepas */
+  backface-visibility:hidden;
+}
+  
+/* Main Content Styling */
+.main-content {
+  padding: 20px;
+  background-color: #f4f4f4;
+  text-align: center;
+}

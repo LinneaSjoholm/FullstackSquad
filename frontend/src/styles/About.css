@@ -1,0 +1,102 @@
+/* Main Content */
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-color: black;
+  padding: 20px;
+  border-radius: 20px;
+  width: 90%; /* Anpassa bredden för mobil */
+  margin: 20px auto; /* Reducera marginalerna för mobil */
+}
+
+.story-section,
+.team-section,
+.vision-section {
+  margin-bottom: 20px; /* Mindre avstånd för mobil */
+}
+
+.story-section h2,
+.story-section h3,
+.team-section h3,
+.vision-section h3 {
+  font-family: 'Serif', serif;
+  color: #333;
+}
+
+/* Team Section */
+.team-section {
+  background-color: black;
+  padding: 15px; /* Mindre padding för mobil */
+  border-radius: 10px;
+}
+
+.team-members {
+  display: flex;
+  flex-direction: column; /* Byt till kolumnlayout för mobil */
+  align-items: center;
+}
+
+.team-card {
+  background-color: black;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%; /* Gör korten bredare för mobil */
+  margin: 10px 0; /* Mer vertikalt mellanrum */
+  text-align: center;
+  padding: 15px; /* Mindre padding för mobil */
+}
+
+.team-photo {
+  width: 80px; /* Mindre storlek för mobil */
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.team-description {
+  font-size: 0.8rem; /* Mindre textstorlek för mobil */
+  color: #555;
+}
+
+/* Vision Section */
+.vision-section {
+  background-color: #448ca6;
+  padding: 15px; /* Mindre padding för mobil */
+  border-radius: 10px;
+}
+
+/* Responsiv design för mobil */
+@media (max-width: 768px) {
+  .content {
+    width: 90%; /* Gör huvudsektionen smalare */
+    margin: 10px auto; /* Minska marginalerna */
+    padding: 15px;
+  }
+
+  .team-members {
+    flex-direction: column; /* Visa teammedlemmar i en kolumn */
+  }
+
+  .team-card {
+    width: 100%; /* Gör korten fullbredd */
+    margin: 10px 0; /* Mer vertikalt avstånd */
+  }
+
+  .team-photo {
+    width: 70px; /* Mindre storlek på bilder */
+    height: 70px;
+  }
+
+  .vision-section {
+    padding: 10px; /* Mindre padding */
+  }
+
+  .story-section,
+  .team-section,
+  .vision-section {
+    margin-bottom: 20px; /* Reducera avståndet mellan sektioner */
+  }
+}
