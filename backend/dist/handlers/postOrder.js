@@ -48,11 +48,24 @@ export const postOrder = (event) => __awaiter(void 0, void 0, void 0, function* 
     }
     // Skapa ett numeriskt order-ID (kombinerar tidsstämpel och ett slumpmässigt tal)
     const numericOrderId = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
+    let finalItems = []; // För att lagra de slutliga artiklarna
+    let itemMap = {}; // En karta för att gruppera artiklar baserat på id
+    // Iterera över artiklarna för att gruppera samma maträtter och addera deras kvantiteter
+    items.forEach(item => {
+        if (itemMap[item.id]) {
+            itemMap[item.id].quantity += item.quantity; // Lägg till kvantiteter för samma artikel
+        }
+        else {
+            itemMap[item.id] = Object.assign({}, item); // Lägg till artikeln om den inte finns
+        }
+    });
+    // Skapa finalItems från itemMap
+    finalItems = Object.values(itemMap);
     const order = {
         orderId: numericOrderId,
         customerName,
         customerPhone, // Lägg till telefonnummer i beställningen
-        items, // Rätt objektsstruktur som skickas från frontend
+        items: finalItems, // Använd grupperade artiklar här
         status: 'pending', // Status kan vara "pending", "processed", etc.
         createdAt: new Date().toISOString(), // Tidpunkt för beställning
     };
@@ -71,7 +84,7 @@ export const postOrder = (event) => __awaiter(void 0, void 0, void 0, function* 
                 orderId: numericOrderId,
                 customerName,
                 customerPhone,
-                items,
+                items: finalItems, // Sätt de grupperade artiklarna som skickas tillbaka
             }),
         };
     }
