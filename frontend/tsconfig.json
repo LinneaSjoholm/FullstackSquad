@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES6",                    // JavaScript-version
-    "module": "commonjs",               // För Node.js och Lambda
+    "module": "ESNext",               // För Node.js och Lambda
     "strict": true,                     // Aktivera strikt typkontroll
     "esModuleInterop": true,            // Gör att CommonJS-moduler kan importeras
     "jsx": "react",                     // Om du använder React (både .tsx och .jsx)
