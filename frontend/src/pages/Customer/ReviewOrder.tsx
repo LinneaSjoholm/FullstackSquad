@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { CartItem } from '../../interfaces'; 
 import '../../styles/ReviewOrder.css';
 import DeleteOrder from '../../components/DeleteOrder'; 
+import Popup from '../../components/Popup'; 
 
 
 
@@ -14,6 +15,7 @@ const ReviewOrder: React.FC = () => {
   const [updatedItems, setUpdatedItems] = useState<CartItem[]>(orderItems || []);
   const [menuItems, setMenuItems] = useState<any[]>([]);
   const [updatedTotalPrice, setUpdatedTotalPrice] = useState(totalPrice || 0);
+  const [isPopupVisible, setPopupVisible] = useState(false); // State for showing the popup
   const navigate = useNavigate();
 
   // Hämta menydata från backend
@@ -186,57 +188,61 @@ const ReviewOrder: React.FC = () => {
           });
         };
   
-        const handleUpdateOrder = async () => {
-          const updatedOrderData = {
-            orderId: orderId,
-            createdAt: new Date().toISOString(),
-            customerName: updatedName,
-            customerPhone: updatedPhone,
-            glutenFreeMessage: updatedItems.some(item => item.glutenFree) ? "Gluten-free selected." : "",
-            lactoseFreeMessage: updatedItems.some(item => item.lactoseFree) ? "Lactose-free selected." : "",
-            items: updatedItems.map(item => ({
-              id: item.id,
-              name: item.name,
-              description: item.description,
-              quantity: item.quantity,
-              drinkId: item.drinkId,  // Ensure the drinkId is included
-              drinkName: item.drinkName,  // Ensure the drinkName is included
-              price: item.price,
-              ingredients: item.ingredients,
-              ingredientsToAdd: item.ingredientsToAdd,
-              ingredientsToRemove: item.ingredientsToRemove,
-              lactoseFree: item.lactoseFree,
-              glutenFree: item.glutenFree,
-              itemMessage: "Updated with changes",
-            })),
-            status: "pending",
-          };
-        
-          try {
-            const response = await fetch(`https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/order/reviewOrder/${orderId}`, {
-              method: 'PUT',
-              headers: {
-                'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(updatedOrderData),
-            });
-        
-            const data = await response.json();
-        
-            if (response.ok) {
-              alert('Order updated successfully!');
-              navigate(`/order/${orderId}`);
-            } else {
-              alert('Failed to update order: ' + data.message);
-            }
-          } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred while updating your order.');
-          }
-        };
-        
+         // Show the confirmation popup when the user presses the "Confirmation" button
+  const handleUpdateOrder = () => {
+    setPopupVisible(true); // Show the popup
+  };
+
+  // Handle the confirmation action (Yes, Continue)
+  const handleConfirmation = async () => {
+    setPopupVisible(false); // Close the popup
+    // Proceed with the order update logic here
+    const updatedOrderData = {
+      orderId: orderId,
+      createdAt: new Date().toISOString(),
+      customerName: updatedName,
+      customerPhone: updatedPhone,
+      items: updatedItems.map(item => ({
+        id: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+        drinkId: item.drinkId,
+        drinkName: item.drinkName,
+      })),
+      status: "pending",
+    };
   
+    try {
+      const response = await fetch(`https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/order/reviewOrder/${orderId}`, {
+        method: 'PUT',
+        headers: {
+          'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedOrderData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Order updated successfully!');
+        navigate(`/order/${orderId}`);
+      } else {
+        alert('Failed to update order: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while updating your order.');
+    }
+  };
+        
+  // Handle the cancellation action (No, Change Order)
+  const handleCancel = () => {
+    setPopupVisible(false); // Close the popup
+    // Handle the action to change the order (you can add specific logic here)
+    console.log('Order change initiated');
+  };
 
   return (
     <div className="review-container">
@@ -355,8 +361,16 @@ const ReviewOrder: React.FC = () => {
       <button onClick={handleUpdateOrder} className="review-update-order-button">
       Confirmation
       </button>
-       {/* Display DeleteOrder component */}
-      <DeleteOrder orderId={orderId} /> {/* Passing orderId to DeleteOrder */}
+        {/* The Popup component */}
+      <Popup 
+        isVisible={isPopupVisible} 
+        onClose={() => setPopupVisible(false)} 
+        onConfirm={handleConfirmation} 
+        onCancel={handleCancel} 
+      />
+
+      {/* Display DeleteOrder component */}
+      <DeleteOrder orderId={orderId} /> 
     </div>
       {/* Footer */}
       <footer className="footer">
