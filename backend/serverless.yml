@@ -10,7 +10,7 @@ provider:
     API_KEY: ${env:API_KEY}
     USERS_TABLE: UsersTable
     PAYMENTS_TABLE: Payments
-    JWT_SECRET: y7Gh@eN3!5PL!03HJaQe90^&*!s78Klo
+    JWT_SECRET: ${env:JWT_SECRET}
   iam:
     role:
       statements:
