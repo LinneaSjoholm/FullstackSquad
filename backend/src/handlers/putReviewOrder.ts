@@ -90,20 +90,32 @@ export const putReviewOrder = async (event: any) => {
           ...new Set([...originalItem.ingredients, ...itemToUpdate.ingredientsToAdd]),
         ];
 
-        originalItem.ingredients = originalItem.ingredients.filter(
-          ingredient => !itemToUpdate.ingredientsToRemove.includes(ingredient)
-        );
+        // Remove ingredients
+        if (itemToUpdate.ingredientsToRemove.length > 0) {
+          originalItem.ingredients = originalItem.ingredients.filter(
+            (ingredient) => !itemToUpdate.ingredientsToRemove.includes(ingredient)
+          );
+          updatedItemsDetails.push(`Removed ingredients: ${itemToUpdate.ingredientsToRemove.join(", ")}`);
+        }
 
-        // If the quantity is zero or the item is explicitly removed, remove it
-        if (itemToUpdate.quantity === 0 || itemToUpdate.ingredientsToRemove.includes(originalItem.id)) {
-          originalItems.splice(originalItemIndex, 1);
+        // Handle quantity change: log removal if quantity decreases
+        if (itemToUpdate.quantity === 0) {
+          originalItems.splice(originalItemIndex, 1); // Remove item from the originalItems list
           updatedItemsDetails.push(`Removed item: ${originalItem.name}`);
           continue; // Skip the rest of the processing for removed items
         }
-        
 
-        if (itemToUpdate.ingredientsToAdd.length > 0) updatedItemsDetails.push(`Added ingredients: ${itemToUpdate.ingredientsToAdd.join(', ')}`);
-        if (itemToUpdate.ingredientsToRemove.length > 0) updatedItemsDetails.push(`Removed ingredients: ${itemToUpdate.ingredientsToRemove.join(', ')}`);
+        // Log removal if quantity decreased
+        if (itemToUpdate.quantity < originalItem.quantity) {
+          const quantityRemoved = originalItem.quantity - itemToUpdate.quantity;
+          updatedItemsDetails.push(`Removed ${quantityRemoved} of ${originalItem.name}`);
+        }
+
+        // Otherwise, process the item (update ingredients, quantity, etc.)
+        if (itemToUpdate.ingredientsToAdd.length > 0)
+          updatedItemsDetails.push(`Added ingredients: ${itemToUpdate.ingredientsToAdd.join(", ")}`);
+        if (itemToUpdate.ingredientsToRemove.length > 0)
+          updatedItemsDetails.push(`Removed ingredients: ${itemToUpdate.ingredientsToRemove.join(", ")}`);
 
         originalItem.quantity = itemToUpdate.quantity || originalItem.quantity;
         const price = originalItem.price ?? 0;
@@ -115,7 +127,7 @@ export const putReviewOrder = async (event: any) => {
         // Add drinkId if provided and look up the drink name
         if (itemToUpdate.drinkId) {
           const drink = menuResult.Items?.find((item: any) => item.id === itemToUpdate.drinkId);
-          originalItem.drinkName = drink?.name || 'Unknown Drink';  // Set the drink name, not ID
+          originalItem.drinkName = drink?.name || "Unknown Drink"; // Set the drink name, not ID
         }
 
         originalItem.ingredientsToAdd = itemToUpdate.ingredientsToAdd;
@@ -126,7 +138,7 @@ export const putReviewOrder = async (event: any) => {
         const menuItem = menuResult.Items?.find((item: any) => item.id === itemToUpdate.id);
         const newItem: MenuItem = {
           id: itemToUpdate.id,
-          name: menuItem?.name || 'Unknown Item',
+          name: menuItem?.name || "Unknown Item",
           quantity: itemToUpdate.quantity || 1,
           ingredients: itemToUpdate.ingredientsToAdd || [...(menuItem?.ingredients || [])],
           ingredientsToAdd: itemToUpdate.ingredientsToAdd || [],
@@ -141,7 +153,13 @@ export const putReviewOrder = async (event: any) => {
         // Add drinkId if provided and look up the drink name
         if (itemToUpdate.drinkId) {
           const drink = menuResult.Items?.find((item: any) => item.id === itemToUpdate.drinkId);
-          newItem.drinkName = drink?.name || 'Unknown Drink';  // Set the drink name, not ID
+          newItem.drinkName = drink?.name || "Unknown Drink"; // Set the drink name, not ID
+        }
+
+        // If quantity is 0, don't add the item to the original items
+        if (itemToUpdate.quantity === 0) {
+          updatedItemsDetails.push(`Removed item: ${newItem.name}`);
+          continue; // Skip adding it to the order
         }
 
         originalItems.push(newItem);
