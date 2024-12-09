@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importera useNavigate
 import "../../../styles/LoginUser.css";
+import AdminIcon from "../../../assets/loginicon.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -53,6 +54,14 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      <div className="admin-icon-container">
+        <img
+          src={AdminIcon}
+          alt="Admin Login"
+          className="admin-icon"
+          onClick={() => navigate("/admin/login")} // Navigera till admin-login
+        />
+      </div>
       <div className="headertext">
         <h1>Gusto</h1>
         <h2>To Go</h2>
