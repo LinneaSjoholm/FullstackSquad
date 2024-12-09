@@ -10,7 +10,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/customer/create-account" element={<CreateAccount />} />
+        <Route path="/create/user" element={<CreateAccount />} />
         <Route path="/user/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/admin/login" element={<LoginAdmin />} />
