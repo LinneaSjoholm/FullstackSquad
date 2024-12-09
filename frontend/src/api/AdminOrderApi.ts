@@ -47,9 +47,7 @@ export const updateOrder = async (orderId: string, newStatus: string, commentToC
 
     // Kontrollera om svaret är OK
     if (!response.ok) {
-      // Om statuskoden inte är OK, logga och kasta fel
       const errorData = await response.json();
-      console.error('Error response from API:', errorData);
       throw new Error(errorData.message || 'Failed to update order.');
     }
 
@@ -57,16 +55,13 @@ export const updateOrder = async (orderId: string, newStatus: string, commentToC
 
     // Kontrollera om uppdaterad order finns i svaret
     if (data.updatedOrder) {
-      console.log('Order updated successfully:', data.updatedOrder);
-      return data.updatedOrder; // Return the updated order directly
+      return data.updatedOrder; 
     } else {
       throw new Error('Unexpected response format: No updatedOrder found.');
     }
 
   } catch (error) {
-    // Logga det fångade felet för att få mer insikt
-    console.error('Error updating order:', error);
-    throw error; // Kasta vidare felet så att handleUpdateOrder kan fånga det
+    throw error; 
   }
 };
 
@@ -90,6 +85,37 @@ export const lockOrder = async (orderId: string) => {
   } catch (error) {
     console.error('Error locking order:', error);
     throw error; 
+  }
+};
+
+export const markOrderAsCompleted = async (orderId: string) => {
+  try {
+    const response = await fetch(`https://j9vnr3bolg.execute-api.eu-north-1.amazonaws.com/dev/admin/order/${orderId}/mark-as-completed`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
+      },
+      body: JSON.stringify({
+        status: 'completed',  
+      }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to mark order as completed.');
+    }
+
+    const data = await response.json();
+
+    if (data.updatedOrder) {
+      return data.updatedOrder;
+    } else {
+      throw new Error('Unexpected response format: No updatedOrder found.');
+    }
+  } catch (error) {
+    console.error('Error marking order as completed:', error);
+    throw error;
   }
 };
 

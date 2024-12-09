@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { lockOrder, adminGetOrders, updateOrder } from '../api/AdminOrderApi';
+import { lockOrder, adminGetOrders, updateOrder, markOrderAsCompleted } from '../api/AdminOrderApi';
 
 const AdminOrderList: React.FC = () => {
   const [orders, setOrders] = useState<any[]>([]);
@@ -46,6 +46,23 @@ const AdminOrderList: React.FC = () => {
     }
   };
 
+  const handleMarkAsCompleted = async (orderId: string) => {
+    try {
+      const updatedOrder = await markOrderAsCompleted(orderId); // Anropa markOrderAsCompleted
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.orderId === orderId
+            ? { ...order, status: 'completed' } // Uppdatera orderstatusen till 'completed'
+            : order
+        )
+      );
+      alert('Order marked as completed.');
+    } catch (error) {
+      console.error('Error marking order as completed:', error);
+      alert('Failed to mark order as completed.');
+    }
+  };
+
   const handleUpdateOrder = async () => {
     if (selectedOrderId && newStatus && commentToChef !== null) {
       try {
@@ -54,10 +71,10 @@ const AdminOrderList: React.FC = () => {
           newStatus,
           commentToChef,
         });
-  
+
         // Call the backend API to update the order
         const updatedOrder = await updateOrder(selectedOrderId, newStatus, commentToChef);
-  
+
         // Update local orders state with the updated order data
         setOrders((prevOrders) =>
           prevOrders.map((order) =>
@@ -80,13 +97,13 @@ const AdminOrderList: React.FC = () => {
       alert('Please provide a valid status and message to chef');
     }
   };
-  
 
   if (loading) return <p>Loading orders...</p>;
   if (error) return <p>{error}</p>;
 
-  const newOrders = orders.filter((order) => !order.locked);
-  const lockedOrders = orders.filter((order) => order.locked);
+  const newOrders = orders.filter((order) => !order.locked && order.status !== 'completed');
+  const lockedOrders = orders.filter((order) => order.locked && order.status !== 'completed');
+  const completedOrders = orders.filter((order) => order.status === 'completed');
 
   return (
     <div>
@@ -105,7 +122,7 @@ const AdminOrderList: React.FC = () => {
                 setCommentToChef(order.messageToChef || ''); // Pre-fill the current comment
                 console.log('Selected Order ID:', order.orderId);
                 setIsModalOpen(true);
-              }}>
+              }} >
                 Update Order
               </button>
             </div>
@@ -122,6 +139,20 @@ const AdminOrderList: React.FC = () => {
             <div>
               <span>{index + 1}. Order ID: {order.orderId}</span> - <span>{order.dishName}</span> - <span>{order.messageToChef}</span> - <span>{order.status}</span>
               <span>Order is locked</span>
+              <button onClick={() => handleMarkAsCompleted(order.orderId)}>Mark as completed</button>
+            </div>
+          </div>
+        ))
+      )}
+
+      <h2>Completed Orders</h2>
+      {completedOrders.length === 0 ? (
+        <p>No completed orders.</p>
+      ) : (
+        completedOrders.map((order, index) => (
+          <div key={order.orderId}>
+            <div>
+              <span>{index + 1}. Order ID: {order.orderId}</span> - <span>{order.dishName}</span> - <span>{order.messageToChef}</span> - <span>{order.status}</span>
             </div>
           </div>
         ))
