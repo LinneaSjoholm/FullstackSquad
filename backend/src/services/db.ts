@@ -7,12 +7,7 @@ const client = new DynamoDB({
 });
 
 // Skapa och exportera en instans av DynamoDBDocument
-<<<<<<< HEAD
 const db = DynamoDBDocument.from(client);
-
-export { db };  // Exports for use in other files
-=======
 const docClient = DynamoDBDocument.from(client);
 
-export { docClient };  // Exports for use in other files
->>>>>>> Victoria
+export { db, docClient };  // Exports for use in other files
