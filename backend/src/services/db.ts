@@ -3,16 +3,11 @@ import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
 
 // Skapa DynamoDB-klienten
 const client = new DynamoDB({
-  region: process.env.AWS_REGION,  // Se till att du har rätt AWS-region definierad
+  region: process.env.AWS_REGION, 
 });
 
-// Skapa och exportera en instans av DynamoDBDocument
-<<<<<<< HEAD
 const db = DynamoDBDocument.from(client);
 
-export { db };  // Exports for use in other files
-=======
 const docClient = DynamoDBDocument.from(client);
 
-export { docClient };  // Exports for use in other files
->>>>>>> Victoria
+export { db, docClient }; 
