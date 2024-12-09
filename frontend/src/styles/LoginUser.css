@@ -3,10 +3,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Fyller hela höjden av sidan */
-  background-image: url('/src/assets/pasta.jpg'); /* Ange bakgrundsbilden */
-  background-size: cover; /* Täck hela sidan */
-  background-position: center; /* Centrera bilden */
+  height: 100vh; 
+  background-image: url('/src/assets/pasta.jpg'); 
+  background-size: cover; 
+  background-position: center; 
   }
 
   .login-container::after {
@@ -16,19 +16,19 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(22, 61, 75, 0.75); /* Semi-transparent färg */
-    z-index: 1; /* Placera över bilden */
+    background-color: rgba(22, 61, 75, 0.75); 
+    z-index: 1; 
   }
 
   .headertext {
-    position: absolute; /* Placera den absolut i relation till föräldern */
-    top: 20px; /* Avstånd från toppen av sidan */
-    left: 50%; /* Centrera horisontellt */
-    transform: translateX(-50%); /* Justera för att få den perfekt centrerad */
-    text-align: center; /* Centrera texten */
-    color: #fff; /* Sätt textfärgen till vit (eller annan färg om bakgrunden är ljus) */
-    font-family: 'Kolker Brush', cursive; /* Din valda font */
-    z-index: 10; /* Sätt den framför andra element */
+    position: absolute; 
+    top: 20px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    text-align: center;
+    color: #fff; 
+    font-family: 'Kolker Brush', cursive; 
+    z-index: 10; 
   }
 
   .headertext h1 {
@@ -36,10 +36,10 @@
     font-family: "Kolker Brush", cursive;
     font-size: 150px;
     position: relative;
-    z-index: 2; /* Placera texten över överlägget */
+    z-index: 2; 
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin-bottom: -10px; /* Minska avståndet nedåt */
-    line-height: 1; /* Justerar radavståndet */
+    margin-bottom: -10px; 
+    line-height: 1; 
     top: -75px;
 }
 
@@ -50,11 +50,28 @@
     font-size: 1.3rem;
     z-index: 2;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin-top: -15px; /* Minska avståndet uppåt */
-    line-height: 1; /* Justerar radavståndet */
-    position: relative; /* Gör det möjligt att finjustera position */
-    left: 60px; /* Flytta texten åt höger */
+    margin-top: -15px;
+    line-height: 1; 
+    position: relative;
+    left: 60px; 
     top: -95px;
+}
+
+.admin-icon-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-align: center;
+}
+
+.admin-icon {
+  position: absolute; 
+  top: 10px;          
+  right: 30px;        
+  width: 30px;        
+  height: 30px;      
+  cursor: pointer;    
+  z-index: 10;        
 }
   
 .login-box {
@@ -65,12 +82,12 @@
     background-color: rgba(255, 255, 255, 0.75); 
     padding: 30px 40px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Lätt skugga */
-    max-width: 400px; /* Bredd för rutan */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    max-width: 400px; 
     width: 250px; 
     height: 350px;
     z-index: 2;
-    margin-top: 85px; /* Flytta ner med 50px */
+    margin-top: 85px; 
 }
 
 .login-box h2 {
@@ -81,8 +98,8 @@
   .login-form {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Lägger mellanrum mellan element i formuläret */
-    width: 300px; /* Gör formuläret lagom brett */
+    gap: 15px; 
+    width: 300px; 
   }
   
   .form-group {
