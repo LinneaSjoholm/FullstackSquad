@@ -100,6 +100,7 @@ export const putReviewOrder = async (event: any) => {
           updatedItemsDetails.push(`Removed item: ${originalItem.name}`);
           continue; // Skip the rest of the processing for removed items
         }
+        
 
         if (itemToUpdate.ingredientsToAdd.length > 0) updatedItemsDetails.push(`Added ingredients: ${itemToUpdate.ingredientsToAdd.join(', ')}`);
         if (itemToUpdate.ingredientsToRemove.length > 0) updatedItemsDetails.push(`Removed ingredients: ${itemToUpdate.ingredientsToRemove.join(', ')}`);
