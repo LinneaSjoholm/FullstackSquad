@@ -89,7 +89,7 @@ functions:
     handler: src/handlers/putReviewOrder.putReviewOrder
     events:
       - httpApi:
-          path: /order/{id}/update
+          path: /order/update/{id}
           method: post
 
   getStockStatus:
@@ -119,7 +119,7 @@ functions:
     handler: src/handlers/adminUpdateOrder.adminUpdateOrder
     events:
       - httpApi:
-          path: /admin/order/{id}/update
+          path: /admin/order/update/{id}
           method: patch
           cors:
             origin: '*'
@@ -135,7 +135,7 @@ functions:
     handler: src/handlers/adminMarkOrderAsCompleted.adminMarkOrderAsCompleted
     events:
       - http:
-          path: /admin/order/{id}/mark-as-completed
+          path: /admin/order/mark-as-completed/{id}
           method: post
           cors:
             origin: '*'
@@ -151,7 +151,7 @@ functions:
     handler: src/handlers/adminLockOrder.adminLockOrder
     events:
       - http:
-          path: /admin/order/{id}/lock
+          path: /admin/order/lock/{id}
           method: post
           cors:
             origin: '*'
@@ -185,7 +185,7 @@ functions:
     handler: src/handlers/putMenuAdmin.putMenuAdmin
     events:
       - httpApi:
-          path: /menu/admin
+          path: /admin/menu
           method: put
           cors: true
           headers:
@@ -195,7 +195,7 @@ functions:
     handler: src/handlers/postcreateUser.handler
     events:
       - http:
-          path: /create/user
+          path: /user/create
           method: post
           cors: true
 
