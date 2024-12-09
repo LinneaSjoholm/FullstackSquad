@@ -1,32 +1,38 @@
 // src/components/Header.tsx
 import React, { useState } from 'react';
-import { FaBars, FaTimes } from 'react-icons/fa'; // Importera både hamburgermenyn och krysset
+import { FaBars, FaTimes } from 'react-icons/fa';
 import '../styles/Header.css';
+import { useNavigate } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setMenuOpen(false);
+  };
+
   return (
     <header className="header">
-      {/* Hamburgermeny eller kryss beroende på menyns tillstånd */}
+      
       <div className="menu-icon" onClick={toggleMenu}>
-        {menuOpen ? <FaTimes /> : <FaBars />}  {/* Visar kryss om menyn är öppen, annars hamburgare */}
+        {menuOpen ? <FaTimes /> : <FaBars />}
       </div>
 
       <h1>Gusto</h1>
       <p>To go</p>
 
-      {/* Sidomeny */}
       <div className={`sidebar ${menuOpen ? 'open' : ''}`}>
         <ul>
-          <li>Home</li>
-          <li>Menu</li>
-          <li>About</li>
-          <li>Contact</li>
+          <li onClick={() => handleNavigation('/')}>Home</li>
+          <li onClick={() => handleNavigation('/menu')}>Menu</li>
+          <li onClick={() => handleNavigation('/about')}>About</li>
+          <li onClick={() => handleNavigation('/contact')}>Contact</li>
         </ul>
       </div>
     </header>
