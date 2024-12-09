@@ -1,20 +1,23 @@
 {
-    "compilerOptions": {
-      "target": "ES6",                    // JavaScript-version
-      "module": "commonjs",               // För Node.js och Lambda
-      "strict": true,                     // Aktivera strikt typkontroll
-      "esModuleInterop": true,            // Gör att CommonJS-moduler kan importeras
-      "jsx": "react",                     // Om du använder React (både .tsx och .jsx)
-      "outDir": "./dist",                 // Var TypeScript-koden ska kompileras till
-      "rootDir": "./src",                 // Rotmappen för din kod
-      "skipLibCheck": true                // Undvik att kontrollera bibliotekens typer
-    },
-    "include": [
-      "src/**/*.ts",                      // Inkludera alla TypeScript-filer
-      "src/**/*.tsx"                       // Inkludera alla TSX-filer (React-komponenter)
-, "src/App.jsx"    ],
-    "exclude": [
-      "node_modules"                      // Uteslut node_modules
-    ]
-  }
+  "compilerOptions": {
+    "target": "ES6",                    
+    "module": "ESNext",               
+    "strict": true,                     
+    "esModuleInterop": true,            
+    "jsx": "react",                     
+    "outDir": "./dist",                 
+    "rootDir": "./src",                 
+    "skipLibCheck": true,                
+    "resolveJsonModule": true,              
+    "moduleResolution": "node",            
+    "allowSyntheticDefaultImports": true 
+  },
+  "include": [
+    "src/**/*.ts",                      
+    "src/**/*.tsx"                       
+  ],
+  "exclude": [
+    "node_modules"                      
+  ]
+}
   
