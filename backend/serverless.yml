@@ -7,12 +7,14 @@ provider:
   runtime: nodejs18.x
   region: eu-north-1
   environment:
-    API_KEY: ${env:API_KEY}  
-
+    API_KEY: ${env:API_KEY}
+    USERS_TABLE: UsersTable
+    PAYMENTS_TABLE: 
+    JWT_SECRET: y7Gh@eN3!5PL!03HJaQe90^&*!s78Klo
   iam:
     role:
       statements:
-        - Effect: "Allow"
+        - Effect: Allow
           Action:
             - dynamodb:Query
             - dynamodb:Scan
@@ -133,15 +135,6 @@ functions:
             methods:
               - POST
               - OPTIONS
-          
-
-  # Cancel an order (before it is locked)
-  deleteCancelOrder:  
-    handler: src/handlers/cancelOrder.cancelOrder  
-    events:
-      - httpApi:
-          path: /order/{id}/cancel
-          method: delete  
 
   initData:
     handler: src/handlers/initData.initData
@@ -167,14 +160,46 @@ functions:
           method: put
           cors: true
           headers:
-            x-api-key: true  
+            x-api-key: true 
+  
+  postCreateUser:
+    handler: src/handlers/postcreateUser.handler
+    events:
+      - http:
+          path: /create/user
+          method: post
+          cors: true
+
+  postLoginUser:
+    handler: src/handlers/postloginUser.handler
+    events:
+      - http:
+          path: /user/login
+          method: post
+          cors: true
+
+  postLoginAdmin:
+    handler: src/handlers/postloginAdmin.handler
+    events:
+      - http:
+          path: /admin/login
+          method: post
+          cors: true
+
+  postPayment:
+    handler: src/handlers/postPayment.handler
+    events:
+      - http:
+          path: /payment
+          method: post
+          cors: true
 
 resources:
   Resources:
     IngredientsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: IngredientsTable  # Tabell för ingredienser
+        TableName: IngredientsTable
         AttributeDefinitions:
           - AttributeName: "id"
             AttributeType: "S"
@@ -187,12 +212,27 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: MenuTable
+          Resource:
+            - arn:aws:dynamodb:eu-north-1:*:table/MenuTable
+            - arn:aws:dynamodb:eu-north-1:*:table/Payments
+            - arn:aws:dynamodb:eu-north-1:*:table/UsersTable
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: arn:aws:logs:eu-north-1:*:*
+
+    PaymentsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Payments
         AttributeDefinitions:
-          - AttributeName: "id"
-            AttributeType: "S"
+          - AttributeName: paymentId
+            AttributeType: S
         KeySchema:
-          - AttributeName: "id"
-            KeyType: "HASH"
+          - AttributeName: paymentId
+            KeyType: HASH
         BillingMode: PAY_PER_REQUEST
 
     OrdersTable:
