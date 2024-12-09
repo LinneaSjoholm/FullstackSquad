@@ -13,9 +13,21 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-body, html {
-  margin: 0; 
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+/* Förhindra horisontell scrollning */
+body {
+  margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  overflow-x: hidden; /* Dölj horisontell scrollning */
+  width: 100%;
+  box-sizing: border-box; /* Gör att padding och border räknas in i bredden */
 }
 
+/* Applicera box-sizing globalt */
+*, *::before, *::after {
+  box-sizing: inherit;
+}

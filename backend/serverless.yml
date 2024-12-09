@@ -30,7 +30,29 @@ functions:
     handler: src/handlers/getMenu.getMenu
     events:
       - httpApi:
-          path: /menu
+        path: /menu
+        method: get
+        cors: true
+
+  getAbout:
+    handler: src/handlers/getAbout.handler
+    events:
+      - httpApi:
+          path: /about
+          method: get
+
+  getConfirmation:
+    handler: src/handlers/getConfirmation.handler
+    events:
+      - httpApi:
+          path: /confirmation
+          method: get
+
+  getContact:
+    handler: src/handlers/getContact.handler
+    events:
+      - httpApi:
+          path: /contact
           method: get
 
   postOrder:
@@ -244,6 +266,42 @@ resources:
             AttributeType: "S"
         KeySchema:
           - AttributeName: "orderId"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    AboutTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: AboutTable  # DynamoDB-tabellnamn
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    ContactTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ContactTable  # DynamoDB-tabellnamn
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    ConfirmationTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ConfirmationTable  # DynamoDB-tabellnamn
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 

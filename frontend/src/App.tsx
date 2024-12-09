@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
-import Home from './pages/HomePage';
+import HomePage from './pages/HomePage';
 import Menu from './pages/menu';
 import CreateOrder from './pages/Customer/CreateOrder';
 import ReviewOrder from './pages/Customer/ReviewOrder';
@@ -13,6 +13,11 @@ import Login from "./pages/Customer/Login";
 import CreateAccount from "./pages/Customer/CreateAccount";
 import LoginAdmin from "./pages/Employed/Login";
 import PaymentTest from "./pages/PaymentTest";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import About from "./components/About";
+import Contact from "./components/Contact";
+import Confirmation from "./components/Confirmation";
 
 
 const App: React.FC = () => {
@@ -22,21 +27,34 @@ const App: React.FC = () => {
     <Router>
       <Routes>
 
-        <Route path="/" element={<Home />} />
-        <Route path="/menu" element={<Menu setCart={setCart} cart={cart} />} />
+      <div className="app">
+        {/* Header visas på alla sidor */}
+        <Header />
         
-        <Route path="/createOrder" element={<CreateOrder />} />
-        <Route path="/review/Order" element={<ReviewOrder />} />
+        <main>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/menu" element={<Menu setCart={setCart} cart={cart} />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/confirmation" element={<Confirmation />} />
 
-        <Route path="/admin/dashboard" element={<OrderDashboard />} />
-        <Route path="/admin/stock" element={<StockDashboard />} />
-        <Route path="/menu/admin" element={<MenuAdmin setCart={setCart} cart={cart}/>} />
+            <Route path="/createOrder" element={<CreateOrder />} />
+            <Route path="/review/Order" element={<ReviewOrder />} />
 
-        <Route path="/create/user" element={<CreateAccount />} />
-        <Route path="/user/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/admin/login" element={<LoginAdmin />} />
-        <Route path="/payment-test" element={<PaymentTest />} /> 
+            <Route path="/admin/dashboard" element={<OrderDashboard />} />
+            <Route path="/admin/stock" element={<StockDashboard />} />
+            <Route path="/menu/admin" element={<MenuAdmin setCart={setCart} cart={cart}/>} />
+
+            <Route path="/create/user" element={<CreateAccount />} />
+            <Route path="/user/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/admin/login" element={<LoginAdmin />} />
+            <Route path="/payment-test" element={<PaymentTest />} /> 
+        </main>
+
+        {/* Footer visas på alla sidor */}
+        <Footer />
+      </div>
       
       </Routes>
     </Router>

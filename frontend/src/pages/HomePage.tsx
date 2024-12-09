@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const HomePage = () => {
+const HomePage: React.FC = () => {
   return (
     <div>
       <h2>Welcome to the Home Page!</h2>
