@@ -27,11 +27,11 @@ const App: React.FC = () => {
     <Router>
       <Routes>
 
-      <div className="app">
+      {/* <div className="app"> */}
         {/* Header visas på alla sidor */}
-        <Header />
+        {/* <Header /> */}
         
-        <main>
+        
             <Route path="/" element={<HomePage />} />
             <Route path="/menu" element={<Menu setCart={setCart} cart={cart} />} />
             <Route path="/about" element={<About />} />
@@ -50,11 +50,11 @@ const App: React.FC = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/admin/login" element={<LoginAdmin />} />
             <Route path="/payment-test" element={<PaymentTest />} /> 
-        </main>
+        
 
         {/* Footer visas på alla sidor */}
-        <Footer />
-      </div>
+        {/* <Footer /> */}
+      {/* </div> */}
       
       </Routes>
     </Router>
