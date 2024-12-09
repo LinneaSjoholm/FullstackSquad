@@ -102,6 +102,17 @@ export const putReviewOrder = async (event: any) => {
         if (itemToUpdate.quantity === 0) {
           originalItems.splice(originalItemIndex, 1); // Remove item from the originalItems list
           updatedItemsDetails.push(`Removed item: ${originalItem.name}`);
+          // Remove associated drink if exists
+          if (originalItem.drinkId) {
+            originalItems.forEach(item => {
+              if (item.drinkId === originalItem.drinkId) {
+                item.drinkId = undefined; // Remove associated drink
+                item.drinkName = undefined; // Remove associated drink name
+                updatedItemsDetails.push(`Removed associated drink: ${item.drinkName}`);
+              }
+              
+            });
+          }
           continue; // Skip the rest of the processing for removed items
         }
 
@@ -127,7 +138,7 @@ export const putReviewOrder = async (event: any) => {
         // Add drinkId if provided and look up the drink name
         if (itemToUpdate.drinkId) {
           const drink = menuResult.Items?.find((item: any) => item.id === itemToUpdate.drinkId);
-          originalItem.drinkName = drink?.name || "Unknown Drink"; // Set the drink name, not ID
+          originalItem.drinkName = drink?.name ?? undefined; // Use undefined instead of null
         }
 
         originalItem.ingredientsToAdd = itemToUpdate.ingredientsToAdd;
@@ -186,7 +197,7 @@ export const putReviewOrder = async (event: any) => {
         ingredientsToAdd: item.ingredientsToAdd || [],
         ingredientsToRemove: item.ingredientsToRemove || [],
         itemMessage: item.ingredientsToAdd?.length || item.ingredientsToRemove?.length ? `Updated with changes` : `No changes`,
-        drinkName: item.drinkName || null,  // Use the drink name here
+        drinkName: item.drinkName || undefined,  // Use undefined instead of null
       })),
       status: 'pending',
       customerName,
