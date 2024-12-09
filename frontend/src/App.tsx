@@ -5,7 +5,6 @@ import Menu from './pages/menu';
 import CreateOrder from './pages/Customer/CreateOrder';
 import ReviewOrder from './pages/Customer/ReviewOrder';
 import OrderDashboard from './pages/admin/OrderDashboard';
-import UpdateOrder from './pages/admin/UpdateOrder';
 import StockDashboard from './pages/admin/StockStatus';
 import { CartItem } from './interfaces/index'; 
 
@@ -23,7 +22,6 @@ const App: React.FC = () => {
         />
         <Route path="/review-Order" element={<ReviewOrder />} />
         <Route path="/admin/dashboard" element={<OrderDashboard />} />
-        <Route path="/admin/order/:orderId/update" element={<UpdateOrder />} />
         <Route path="/admin/stock" element={<StockDashboard />} />
       </Routes>
     </Router>

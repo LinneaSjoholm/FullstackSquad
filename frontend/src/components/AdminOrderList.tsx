@@ -1,40 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { lockOrder, adminGetOrders } from '../api/AdminOrderApi';
+import { lockOrder, adminGetOrders, updateOrder } from '../api/AdminOrderApi';
 
 const AdminOrderList: React.FC = () => {
-  const [orders, setOrders] = useState<any[]>([]);  // För att hålla ordrarna
-  const [loading, setLoading] = useState<boolean>(false);  // Laddningstillstånd
-  const [error, setError] = useState<string | null>(null);  // Felmeddelanden
+  const [orders, setOrders] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Hämtar alla ordrar när komponenten laddas
+  // For managing popup modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [newStatus, setNewStatus] = useState<string>('');
+  const [commentToChef, setCommentToChef] = useState<string>(''); // New state for comment
+
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const response = await adminGetOrders();  // Hämtar ordrar från API
+        const response = await adminGetOrders();
         if (response.statusCode === 200) {
-          setOrders(response.body);  // Sätt ordrarna om hämtningen är framgångsrik
+          setOrders(response.body);
         } else {
-          setError(response.body.message);  // Om det är något fel, sätt felmeddelande
+          setError(response.body.message);
         }
       } catch (err) {
-        setError('An error occurred while fetching orders.');  // Fångar eventuella fel
+        setError('An error occurred while fetching orders.');
       } finally {
-        setLoading(false);  // Slå av laddningstilstånd
+        setLoading(false);
       }
     };
 
-    fetchOrders();  
+    fetchOrders();
   }, []);
 
-  // Hanterar att låsa en order (skickar en POST-förfrågan till backend)
   const handleLockOrder = async (orderId: string) => {
     try {
-      await lockOrder(orderId);  // Låser ordern via API
-      // Optimistisk uppdatering av UI:t
+      await lockOrder(orderId);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
-          order.orderId === orderId ? { ...order, locked: true } : order  // Uppdatera den låsta ordern lokalt
+          order.orderId === orderId ? { ...order, locked: true } : order
         )
       );
     } catch (error) {
@@ -43,23 +46,34 @@ const AdminOrderList: React.FC = () => {
     }
   };
 
-  if (loading) return <p>Loading orders...</p>;  // Visa laddningstext medan ordrarna hämtas
-  if (error) return <p>{error}</p>;  // Visa felmeddelande om något gick fel
+  const handleUpdateOrder = async () => {
+    if (selectedOrderId && newStatus) {
+      try {
+        // Include comment in the update request
+        await updateOrder(selectedOrderId, newStatus, commentToChef);
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.orderId === selectedOrderId
+              ? { ...order, status: newStatus, messageToChef: commentToChef } // Update status and comment
+              : order
+          )
+        );
+        alert('Order updated successfully!');
+        setIsModalOpen(false); // Close the modal after successful update
+      } catch (error) {
+        console.error('Error updating order:', error);
+        alert('Failed to update order.');
+      }
+    } else {
+      alert('Please provide a valid status');
+    }
+  };
 
-  // Filtrera ordrar i nya och låsta
-  const newOrders = orders.filter((order) => !order.locked).map((order) => ({
-    orderId: order.orderId,
-    dishName: order.items?.[0]?.name || 'Dish not specified',  // Namn på maträtt
-    messageToChef: order.messageToChef || 'No message provided',  // Meddelande till kocken
-    locked: order.locked,
-  }));
+  if (loading) return <p>Loading orders...</p>;
+  if (error) return <p>{error}</p>;
 
-  const lockedOrders = orders.filter((order) => order.locked).map((order) => ({
-    orderId: order.orderId,
-    dishName: order.items?.[0]?.name || 'Dish not specified',
-    messageToChef: order.messageToChef || 'No message provided',
-    locked: order.locked,
-  }));
+  const newOrders = orders.filter((order) => !order.locked);
+  const lockedOrders = orders.filter((order) => order.locked);
 
   return (
     <div>
@@ -70,8 +84,16 @@ const AdminOrderList: React.FC = () => {
         newOrders.map((order, index) => (
           <div key={order.orderId}>
             <div>
-              <span>{index + 1}. Order ID: {order.orderId}</span> - <span>{order.dishName}</span> - <span>{order.messageToChef}</span>
+              <span>{index + 1}. Order ID: {order.orderId}</span> - <span>{order.dishName}</span> - <span>{order.messageToChef}</span> - <span>{order.status}</span>
               <button onClick={() => handleLockOrder(order.orderId)}>Lock Order</button>
+              <button onClick={() => {
+                setSelectedOrderId(order.orderId);
+                setNewStatus(order.status || ''); // pre-fill the current status
+                setCommentToChef(order.messageToChef || ''); // pre-fill the current comment
+                setIsModalOpen(true);
+              }}>
+                Update Order
+              </button>
             </div>
           </div>
         ))
@@ -84,11 +106,34 @@ const AdminOrderList: React.FC = () => {
         lockedOrders.map((order, index) => (
           <div key={order.orderId}>
             <div>
-              <span>{index + 1}. Order ID: {order.orderId}</span> - <span>{order.dishName}</span> - <span>{order.messageToChef}</span>
+              <span>{index + 1}. Order ID: {order.orderId}</span> - <span>{order.dishName}</span> - <span>{order.messageToChef}</span> - <span>{order.status}</span>
               <span>Order is locked</span>
             </div>
           </div>
         ))
+      )}
+
+      {/* Modal for updating order */}
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Update Order Status</h3>
+            <label>Status:</label>
+            <input
+              type="text"
+              value={newStatus}
+              onChange={(e) => setNewStatus(e.target.value)}
+            />
+            <label>Comment to Chef:</label>
+            <textarea
+              value={commentToChef}
+              onChange={(e) => setCommentToChef(e.target.value)} // Update comment
+              placeholder="Add a comment for the chef (e.g. allergies, special requests)"
+            />
+            <button onClick={handleUpdateOrder}>Update</button>
+            <button onClick={() => setIsModalOpen(false)}>Cancel</button>
+          </div>
+        </div>
       )}
     </div>
   );
