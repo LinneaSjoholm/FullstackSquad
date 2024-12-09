@@ -7,6 +7,8 @@ import ReviewOrder from './pages/Customer/ReviewOrder';
 import OrderDashboard from './pages/admin/OrderDashboard';
 import StockDashboard from './pages/admin/StockStatus';
 import { CartItem } from './interfaces/index'; 
+import MenuAdmin from './pages/Employed/MenuAdmin'
+
 
 const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -21,8 +23,12 @@ const App: React.FC = () => {
           element={<CreateOrder />} // No need to pass props here since we are using location.state in CreateOrder
         />
         <Route path="/review-Order" element={<ReviewOrder />} />
+<<<<<<< HEAD
         <Route path="/admin/dashboard" element={<OrderDashboard />} />
         <Route path="/admin/stock" element={<StockDashboard />} />
+=======
+        <Route path="/menu-admin" element={<MenuAdmin setCart={setCart} cart={cart}/>} />
+>>>>>>> Emma
       </Routes>
     </Router>
   );

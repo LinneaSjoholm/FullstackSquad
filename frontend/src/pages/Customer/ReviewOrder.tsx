@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CartItem } from '../../interfaces'; // Importera dina interfaces
+import { CartItem } from '../../interfaces'; 
+import '../../styles/ReviewOrder.css';
+import DeleteOrder from '../../components/DeleteOrder'; 
+import Popup from '../../components/Popup'; 
+
+
 
 const ReviewOrder: React.FC = () => {
   const location = useLocation();
@@ -10,6 +15,7 @@ const ReviewOrder: React.FC = () => {
   const [updatedItems, setUpdatedItems] = useState<CartItem[]>(orderItems || []);
   const [menuItems, setMenuItems] = useState<any[]>([]);
   const [updatedTotalPrice, setUpdatedTotalPrice] = useState(totalPrice || 0);
+  const [isPopupVisible, setPopupVisible] = useState(false); // State for showing the popup
   const navigate = useNavigate();
 
   // Hämta menydata från backend
@@ -45,31 +51,57 @@ const ReviewOrder: React.FC = () => {
       0
     );
     setUpdatedTotalPrice(newTotalPrice); // Uppdatera totalpriset
-  }, [updatedItems]); // Kör denna effekt när updatedItems förändras
+  }, [updatedItems]);
 
   // Uppdatera priset för en enskild dryck
   const updateTotalPrice = (itemId: string, drinkId: string) => {
-    const selectedDrink = menuItems.find((drink) => drink.id === drinkId);
-    if (selectedDrink) {
-      // Uppdatera priset för den aktuella artikeln
+    if (drinkId === '') {
+      // Om användaren väljer "Select Drink" (tomt värde), återställ drycken
       setUpdatedItems((prevItems) => {
         return prevItems.map((item) => {
           if (item.id === itemId) {
             const oldDrinkPrice = item.drinkId
               ? menuItems.find((drink) => drink.id === item.drinkId)?.price
               : 0;
-
-            // Uppdatera dryckens information och pris
-            item.drinkId = drinkId;
-            item.drinkName = selectedDrink.name;
-            item.price -= oldDrinkPrice; // Ta bort gamla dryckens pris
-            item.price += selectedDrink.price; // Lägg till nya dryckens pris
+  
+            // Återställ drinken och justera priset
+            return {
+              ...item,
+              drinkId: '', // Sätt drinkId till tomt för att ta bort drycken
+              drinkName: '', // Ta bort dryckens namn
+              price: item.price - oldDrinkPrice, // Justera priset genom att ta bort dryckens pris
+            };
           }
           return item;
         });
       });
+    } else {
+      // Om en dryck är vald, uppdatera dryck och pris
+      const selectedDrink = menuItems.find((drink) => drink.id === drinkId);
+      if (selectedDrink) {
+        setUpdatedItems((prevItems) => {
+          return prevItems.map((item) => {
+            if (item.id === itemId) {
+              const oldDrinkPrice = item.drinkId
+                ? menuItems.find((drink) => drink.id === item.drinkId)?.price
+                : 0;
+  
+              // Uppdatera artikel med den nya drycken och justera priset
+              return {
+                ...item,
+                drinkId: drinkId,
+                drinkName: selectedDrink.name,
+                price: item.price - oldDrinkPrice + selectedDrink.price, // Justera priset med den nya drycken
+              };
+            }
+            return item;
+          });
+        });
+      }
     }
   };
+  
+  
 
   // Hantera ingrediensändringar
   const handleIngredientChange = (
@@ -124,40 +156,63 @@ const ReviewOrder: React.FC = () => {
     setUpdatedItems((prevItems) =>
       prevItems.map((item) => {
         if (item.id === itemId) {
-          return { ...item, [preference]: value }; // Uppdatera kostpreferensfältet
+          const updatedItem = {
+            ...item,
+            [preference]: !item[preference], // Toggla värdet
+          };
+          return updatedItem;
         }
         return item;
       })
     );
   };
 
-  // Uppdatera beställning
-  const handleUpdateOrder = async () => {
+        // Uppdatera beställning
+        const handleRemoveItem = (itemId: string) => {
+          setUpdatedItems((prevItems) => {
+            const updatedItems = prevItems.map((item) => {
+              if (item.id === itemId) {
+                // Set the quantity to 0 for the removed item
+                item.quantity = 0;
+              }
+              return item;
+            });
+        
+            // Update total price based on updated quantities
+            const newTotalPrice = updatedItems.reduce(
+              (total, item) => total + item.price * item.quantity,
+              0
+            );
+            setUpdatedTotalPrice(newTotalPrice);  // Update total price after removing item
+            return updatedItems;
+          });
+        };
+  
+         // Show the confirmation popup when the user presses the "Confirmation" button
+  const handleUpdateOrder = () => {
+    setPopupVisible(true); // Show the popup
+  };
+
+  // Handle the confirmation action (Yes, Continue)
+  const handleConfirmation = async () => {
+    setPopupVisible(false); // Close the popup
+    // Proceed with the order update logic here
     const updatedOrderData = {
       orderId: orderId,
       createdAt: new Date().toISOString(),
       customerName: updatedName,
       customerPhone: updatedPhone,
-      glutenFreeMessage: updatedItems.some(item => item.glutenFree) ? "Gluten-free selected." : "",
-      lactoseFreeMessage: updatedItems.some(item => item.lactoseFree) ? "Lactose-free selected." : "",
       items: updatedItems.map(item => ({
         id: item.id,
         name: item.name,
-        description: item.description,
         quantity: item.quantity,
+        price: item.price,
         drinkId: item.drinkId,
         drinkName: item.drinkName,
-        price: item.price,
-        ingredients: item.ingredients,
-        ingredientsToAdd: item.ingredientsToAdd,
-        ingredientsToRemove: item.ingredientsToRemove,
-        lactoseFree: item.lactoseFree,
-        glutenFree: item.glutenFree,
-        itemMessage: "Updated with changes"
       })),
-      status: "pending"
+      status: "pending",
     };
-
+  
     try {
       const response = await fetch(`https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/order/reviewOrder/${orderId}`, {
         method: 'PUT',
@@ -181,62 +236,78 @@ const ReviewOrder: React.FC = () => {
       alert('An error occurred while updating your order.');
     }
   };
+        
+  // Handle the cancellation action (No, Change Order)
+  const handleCancel = () => {
+    setPopupVisible(false); // Close the popup
+    // Handle the action to change the order (you can add specific logic here)
+    console.log('Order change initiated');
+  };
 
   return (
-    <div>
-      <h1>Review Your Order</h1>
-      <h2>Your Order Details</h2>
-      <ul>
+    <div className="review-container">
+      <div className="menu-header">
+        <h1></h1>
+      </div>
+      <h1 className="review-order-title">Review Your Order</h1>
+      <ul className="review-order-items">
         {updatedItems.map((item) => (
-          <li key={item.id}>
-            <div>
-              {item.name} x {item.quantity} - ${item.price * item.quantity}
-              <div>
-                {item.drinkName && <p>Selected Drink: {item.drinkName}</p>}
-                <h4>Ingredients:</h4>
+          <li key={item.id} className="review-order-item">
+            <div className="review-order-item-details">
+            <h2 className="review-order-subtitle">Your Order Details</h2>
+              <span className="review-order-item-name">{item.name}</span> x <span className="review-order-item-quantity">{item.quantity}</span> - <span className="review-order-item-price">${item.price * item.quantity}</span>
+              <div className="review-order-item-drink">
+                {item.drinkName && <p className="review-order-item-drink-name">Selected Drink: {item.drinkName}</p>}
+              </div>
+              <h4 className="review-order-item-heading">Add/Remove Ingredients:</h4>
+              <div className="review-order-item-ingredients">
                 {item.ingredientsToAdd?.map((ingredient) => (
-                  <span key={ingredient}>+{ingredient} </span>
+                  <span key={ingredient} className="review-ingredient-add">+{ingredient} </span>
                 ))}
                 {item.ingredientsToRemove?.map((ingredient) => (
-                  <span key={ingredient}>-{ingredient} </span>
+                  <span key={ingredient} className="review-ingredient-remove">-{ingredient} </span>
                 ))}
               </div>
               {item.ingredients && (
-                <div>
-                  <h4>Modify Ingredients:</h4>
+                <div className="review-order-item-modify-ingredients">
+                  <h4 className="review-order-item-heading">Do you want to remove something or add extra?</h4>
                   {item.ingredients.map((ingredient: string, index: number) => (
-                    <div key={index}>
-                      <span>{ingredient}</span>
-                      <button onClick={() => handleIngredientChange(item.id, 'add', ingredient)}>+</button>
-                      <button onClick={() => handleIngredientChange(item.id, 'remove', ingredient)}>-</button>
-                      <button onClick={() => handleIngredientChange(item.id, 'reset', ingredient)}>Reset</button>
+                    <div key={index} className="modify-ingredient">
+                      <span className="review-modify-ingredient-name">{ingredient}</span>
+                      <button className="review-modify-ingredient-button" onClick={() => handleIngredientChange(item.id, 'add', ingredient)}>+</button>
+                      <button className="review-modify-ingredient-button" onClick={() => handleIngredientChange(item.id, 'remove', ingredient)}>-</button>
+                      <button className="review-modify-ingredient-button" onClick={() => handleIngredientChange(item.id, 'reset', ingredient)}>Reset</button>
                     </div>
                   ))}
                 </div>
               )}
-              <div>
-                <label>
-                  Lactose-Free:
-                  <input
-                    type="checkbox"
-                    checked={item.lactoseFree || false}
-                    onChange={(e) => handleDietaryPreferenceChange(item.id, 'lactoseFree', e.target.checked)}
-                  />
-                </label>
-                <label>
-                  Gluten-Free:
-                  <input
-                    type="checkbox"
-                    checked={item.glutenFree || false}
-                    onChange={(e) => handleDietaryPreferenceChange(item.id, 'glutenFree', e.target.checked)}
-                  />
-                </label>
+
+              <div className="review-order-item-dietary-preferences">
+                <div className="dietary-preference-item">
+                  <p>{item.glutenFree ? 'Gluten Free' : 'Not Gluten Free'}</p>
+                  <button
+                    onClick={() => handleDietaryPreferenceChange(item.id, 'glutenFree', !item.glutenFree)}
+                    className="review-dietary-button">
+                    Gluten Free / Not Gluten Free
+                  </button>
+                </div>
+
+                <div className="dietary-preference-item">
+                  <p>{item.lactoseFree ? 'Lactose Free' : 'Not Lactose Free'}</p>
+                  <button
+                    onClick={() => handleDietaryPreferenceChange(item.id, 'lactoseFree', !item.lactoseFree)}
+                    className="review-dietary-button">
+                    Lactose Free / Not Lactose Free
+                  </button>
+                </div>
               </div>
-              <div>
-                <h4>Choose Drink:</h4>
+
+              <div className="review-order-item-drink-selection">
+                <h4 className="review-order-item-heading">Choose Drink:</h4>
                 <select
                   value={item.drinkId || ''}
                   onChange={(e) => updateTotalPrice(item.id, e.target.value)}
+                  className="review-drink-select"
                 >
                   <option value="">Select Drink</option>
                   {menuItems.length > 0 ? (
@@ -250,33 +321,63 @@ const ReviewOrder: React.FC = () => {
                   )}
                 </select>
               </div>
+
+              {/* Lägg till knapp för att ta bort artikel */}
+              <button onClick={() => handleRemoveItem(item.id)} className="review-remove-item-button">Remove Meal</button>
+              <h3 className="review-total-price">Total Price: ${updatedTotalPrice}</h3>
             </div>
           </li>
         ))}
       </ul>
 
-      <h3>Total Price: ${updatedTotalPrice}</h3>
+      
 
-      <h2>Customer Details</h2>
-      <div>
-        <input
-          type="text"
-          value={updatedName}
-          onChange={(e) => setUpdatedName(e.target.value)}
-          placeholder="Customer Name"
-        />
-      </div>
-      <div>
-        <input
-          type="text"
-          value={updatedPhone}
-          onChange={(e) => setUpdatedPhone(e.target.value)}
-          placeholder="Customer Phone"
-        />
-      </div>
+      <div className="review-customer-details-container">
+        <h2 className="review-customer-details-heading">Customer Details</h2>
 
-      <button onClick={handleUpdateOrder}>Update Order</button>
+        <div className="review-customer-details-input-group">
+          <label htmlFor="customerName" className="review-customer-details-label">Name</label>
+          <input
+            id="customerName"
+            type="text"
+            value={updatedName}
+            onChange={(e) => setUpdatedName(e.target.value)}
+            placeholder="Enter your name"
+            className="review-customer-details-input"
+          />
+        </div>
+
+        <div className="review-customer-details-input-group">
+          <label htmlFor="customerPhone" className="review-customer-details-label">Phone Number</label>
+          <input
+            id="customerPhone"
+            type="text"
+            value={updatedPhone}
+            onChange={(e) => setUpdatedPhone(e.target.value)}
+            placeholder="Enter your phone number"
+            className="review-customer-details-input"
+          />
+        </div>
+      <button onClick={handleUpdateOrder} className="review-update-order-button">
+      Confirmation
+      </button>
+        {/* The Popup component */}
+      <Popup 
+        isVisible={isPopupVisible} 
+        onClose={() => setPopupVisible(false)} 
+        onConfirm={handleConfirmation} 
+        onCancel={handleCancel} 
+      />
+
+      {/* Display DeleteOrder component */}
+      <DeleteOrder orderId={orderId} /> 
     </div>
+      {/* Footer */}
+      <footer className="footer">
+        <p>&copy; 2024 Your Company. All rights reserved.</p>
+      </footer>
+    </div>
+    
   );
 };
 

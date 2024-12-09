@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "target": "ES6", 
-    "module": "commonjs", 
-    "strict": true, 
-    "esModuleInterop": true, 
-    "jsx": "react", 
-    "outDir": "./dist", 
-    "rootDir": "./src", 
+    "target": "ES6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "outDir": "./dist",
+    "rootDir": "./src",
     "skipLibCheck": true
   },
   "include": [
-    "src/**/*.ts", 
-    "src/**/*.tsx", 
-    "common/types.ts"  // Inkludera gemensamma typer
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/declarations.d.ts",
+    "common/types.ts"
   ],
   "exclude": [
     "node_modules"

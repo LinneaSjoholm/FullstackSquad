@@ -10,7 +10,10 @@ export interface MenuItem {
   category?: string;
   popularity?: number;
   updatedAt?: string;
+  drinkId?: string;
+  image?: string | null; // Lägg till image här 
 }
+
 
 // Define an interface for an order item
 export interface OrderItem {
@@ -54,3 +57,15 @@ export interface Ingredient {
   allergens?: string[];  // Possible allergens in the ingredient
 }
 
+const handleSave = async (
+  itemId: string,
+  updatedPrice: number,
+  updatedDescription: string,
+  updatedIngredients: string[],
+  updatedImage: string
+) => {
+  updatedImage = updatedImage || '';  // Ensure it's a string
+
+  // Now you can safely use updatedImage
+  // ...
+};

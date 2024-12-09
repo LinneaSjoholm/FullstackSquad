@@ -76,6 +76,7 @@ export const putReviewOrder = async (event: any) => {
 
       const originalItemIndex = originalItems.findIndex((original: MenuItem) => original.id === itemToUpdate.id);
 
+      // If item exists in the original order, update it
       if (originalItemIndex !== -1) {
         const originalItem = originalItems[originalItemIndex];
 
@@ -84,16 +85,48 @@ export const putReviewOrder = async (event: any) => {
 
         originalItem.ingredients = originalItem.ingredients || [...menuIngredients];
 
+        // Add new ingredients and remove the specified ones
         originalItem.ingredients = [
           ...new Set([...originalItem.ingredients, ...itemToUpdate.ingredientsToAdd]),
         ];
 
-        originalItem.ingredients = originalItem.ingredients.filter(
-          ingredient => !itemToUpdate.ingredientsToRemove.includes(ingredient)
-        );
+        // Remove ingredients
+        if (itemToUpdate.ingredientsToRemove.length > 0) {
+          originalItem.ingredients = originalItem.ingredients.filter(
+            (ingredient) => !itemToUpdate.ingredientsToRemove.includes(ingredient)
+          );
+          updatedItemsDetails.push(`Removed ingredients: ${itemToUpdate.ingredientsToRemove.join(", ")}`);
+        }
 
-        if (itemToUpdate.ingredientsToAdd.length > 0) updatedItemsDetails.push(`Added ingredients: ${itemToUpdate.ingredientsToAdd.join(', ')}`);
-        if (itemToUpdate.ingredientsToRemove.length > 0) updatedItemsDetails.push(`Removed ingredients: ${itemToUpdate.ingredientsToRemove.join(', ')}`);
+        // Handle quantity change: log removal if quantity decreases
+        if (itemToUpdate.quantity === 0) {
+          originalItems.splice(originalItemIndex, 1); // Remove item from the originalItems list
+          updatedItemsDetails.push(`Removed item: ${originalItem.name}`);
+          // Remove associated drink if exists
+          if (originalItem.drinkId) {
+            originalItems.forEach(item => {
+              if (item.drinkId === originalItem.drinkId) {
+                item.drinkId = undefined; // Remove associated drink
+                item.drinkName = undefined; // Remove associated drink name
+                updatedItemsDetails.push(`Removed associated drink: ${item.drinkName}`);
+              }
+              
+            });
+          }
+          continue; // Skip the rest of the processing for removed items
+        }
+
+        // Log removal if quantity decreased
+        if (itemToUpdate.quantity < originalItem.quantity) {
+          const quantityRemoved = originalItem.quantity - itemToUpdate.quantity;
+          updatedItemsDetails.push(`Removed ${quantityRemoved} of ${originalItem.name}`);
+        }
+
+        // Otherwise, process the item (update ingredients, quantity, etc.)
+        if (itemToUpdate.ingredientsToAdd.length > 0)
+          updatedItemsDetails.push(`Added ingredients: ${itemToUpdate.ingredientsToAdd.join(", ")}`);
+        if (itemToUpdate.ingredientsToRemove.length > 0)
+          updatedItemsDetails.push(`Removed ingredients: ${itemToUpdate.ingredientsToRemove.join(", ")}`);
 
         originalItem.quantity = itemToUpdate.quantity || originalItem.quantity;
         const price = originalItem.price ?? 0;
@@ -102,19 +135,21 @@ export const putReviewOrder = async (event: any) => {
         originalItem.lactoseFree = itemToUpdate.lactoseFree ?? originalItem.lactoseFree;
         originalItem.glutenFree = itemToUpdate.glutenFree ?? originalItem.glutenFree;
 
-        // Lägg till drinkId om det finns
+        // Add drinkId if provided and look up the drink name
         if (itemToUpdate.drinkId) {
-          originalItem.drinkId = itemToUpdate.drinkId;
+          const drink = menuResult.Items?.find((item: any) => item.id === itemToUpdate.drinkId);
+          originalItem.drinkName = drink?.name ?? undefined; // Use undefined instead of null
         }
 
         originalItem.ingredientsToAdd = itemToUpdate.ingredientsToAdd;
         originalItem.ingredientsToRemove = itemToUpdate.ingredientsToRemove;
 
       } else {
+        // If the item doesn't exist in the original order, add it as a new item
         const menuItem = menuResult.Items?.find((item: any) => item.id === itemToUpdate.id);
         const newItem: MenuItem = {
           id: itemToUpdate.id,
-          name: menuItem?.name || 'Unknown Item',
+          name: menuItem?.name || "Unknown Item",
           quantity: itemToUpdate.quantity || 1,
           ingredients: itemToUpdate.ingredientsToAdd || [...(menuItem?.ingredients || [])],
           ingredientsToAdd: itemToUpdate.ingredientsToAdd || [],
@@ -126,9 +161,16 @@ export const putReviewOrder = async (event: any) => {
           popularity: menuItem?.popularity ?? 0,
         };
 
-        // Lägg till drinkId om det finns
+        // Add drinkId if provided and look up the drink name
         if (itemToUpdate.drinkId) {
-          newItem.drinkId = itemToUpdate.drinkId;
+          const drink = menuResult.Items?.find((item: any) => item.id === itemToUpdate.drinkId);
+          newItem.drinkName = drink?.name || "Unknown Drink"; // Set the drink name, not ID
+        }
+
+        // If quantity is 0, don't add the item to the original items
+        if (itemToUpdate.quantity === 0) {
+          updatedItemsDetails.push(`Removed item: ${newItem.name}`);
+          continue; // Skip adding it to the order
         }
 
         originalItems.push(newItem);
@@ -155,14 +197,14 @@ export const putReviewOrder = async (event: any) => {
         ingredientsToAdd: item.ingredientsToAdd || [],
         ingredientsToRemove: item.ingredientsToRemove || [],
         itemMessage: item.ingredientsToAdd?.length || item.ingredientsToRemove?.length ? `Updated with changes` : `No changes`,
-        // Lägg till drinkId om det finns
-        drinkId: item.drinkId || null,
+        drinkName: item.drinkName || undefined,  // Use undefined instead of null
       })),
       status: 'pending',
       customerName,
       customerPhone,
       lactoseFreeMessage,
       glutenFreeMessage,
+      updatedAt: new Date().toISOString(),  // Adding updated timestamp
     };
 
     const updateParams = {
@@ -179,6 +221,7 @@ export const putReviewOrder = async (event: any) => {
         updatedOrder: {
           ...updatedOrder,
           totalPrice,
+          updatedAt: updatedOrder.updatedAt,  // Include updated timestamp in the response
         },
         details: updatedItemsDetails,
       }),
