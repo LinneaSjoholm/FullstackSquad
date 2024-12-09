@@ -8,6 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   
   /* Korrekt sökväg för React */
   background-image: url('/images/background-header.jpg'); /* Lägg bilden i public/images */
@@ -16,10 +17,19 @@
   background-repeat: no-repeat; /* Förhindrar att bilden upprepas */
   backface-visibility:hidden;
 }
-  
-/* Main Content Styling */
-.main-content {
-  padding: 20px;
-  background-color: #f4f4f4;
-  text-align: center;
+
+.header h1 {
+  font-family: Kolker Brush, sans-serif;
+  font-size: 15rem;
+  margin: -130px 0 0 0;
+  text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.header p {
+  font-family: Roboto, sans-serif;
+  font-size: 1.4rem;
+  margin: -70px 0 0 190px;
+  text-transform: uppercase;
+  text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  letter-spacing: 4px;
 }

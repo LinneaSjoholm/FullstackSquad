@@ -1,0 +1,142 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.tagline1 {
+    font-family: Source Serif 4, sans-serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--color-beige);
+    text-align: center;
+    margin: -200px 20px 50px auto;
+    z-index: 2;
+    position: relative;
+    transform: rotate(15deg);
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 20%;
+    margin: 20px auto 50px auto;
+    z-index: 1;
+}
+
+button .btn__container, .account-btn, .login-btn {
+    text-align: center;
+    background-color: var(--color-button);
+    color: var(--color-beige);
+    font-size: var(--font-size-small-button);
+    font-family: Roboto;
+    border-radius: 5px;
+    padding: 3px;
+    border-style: none;
+    cursor: pointer;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+    font-weight: 400;
+    text-transform: uppercase;
+    width: 140px;
+    height: 30px;
+    letter-spacing: 1px;
+  }
+
+.tagline2 {
+    font-family: Source Serif 4, sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-beige);
+    margin: 40px auto 0 450px;
+    z-index: 2;
+    position: relative;
+    transform: rotate(-10deg);
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.takeaway-btn {
+    text-align: center;
+    background-color: var(--color-button);
+    color: var(--color-beige);
+    font-size: var(--font-size-medium-button);
+    font-family: Roboto;
+    border-radius: 5px;
+    padding: 3px;
+    border-style: none;
+    cursor: pointer;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+    font-weight: 400;
+    text-transform: uppercase;
+    width: 170px;
+    height: 50px;
+    letter-spacing: 1px;
+    margin-top: -10px;
+}
+
+.icon {
+    color: var(--color-beige);
+    margin: -25px 0 auto 140px;
+    position: relative;
+    transform: rotate(-20deg);
+    font-size: 2rem;
+    z-index: 2;
+}
+
+.cta-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 200 auto -200px auto;
+    z-index: 2;
+}
+.tagline3 {
+    font-family: Source Serif 4, sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-beige);
+    margin: 0 auto;
+    z-index: 2;
+    position: relative;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.menu-btn {
+    text-align: center;
+    background-color: var(--color-button);
+    color: var(--color-beige);
+    font-size: var(--font-size-medium-button);
+    font-family: Source Serif 4, sans-serif;
+    border-radius: 5px;
+    border-style: none;
+    cursor: pointer;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+    font-weight: bold;
+    text-transform: uppercase;
+    width: 280px;
+    height: 70px;
+    letter-spacing: 1px;
+}
+
+.image-container {
+    position: relative;
+    align-items: center;
+    margin: 20px 0 -50px 0;
+    width: 100%;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    opacity: 0.6;
+}
+
+  
