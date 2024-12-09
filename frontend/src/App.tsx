@@ -23,12 +23,9 @@ const App: React.FC = () => {
           element={<CreateOrder />} // No need to pass props here since we are using location.state in CreateOrder
         />
         <Route path="/review-Order" element={<ReviewOrder />} />
-<<<<<<< HEAD
         <Route path="/admin/dashboard" element={<OrderDashboard />} />
         <Route path="/admin/stock" element={<StockDashboard />} />
-=======
         <Route path="/menu-admin" element={<MenuAdmin setCart={setCart} cart={cart}/>} />
->>>>>>> Emma
       </Routes>
     </Router>
   );
