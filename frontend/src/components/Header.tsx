@@ -1,4 +1,3 @@
-// src/components/Header.tsx
 import React, { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import '../styles/Header.css';
