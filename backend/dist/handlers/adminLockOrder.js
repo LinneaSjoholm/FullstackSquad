@@ -9,74 +9,69 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { db } from '../services/db';
 import { UpdateCommand } from '@aws-sdk/lib-dynamodb';
-export const adminLockOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const orderId = (_a = event.pathParameters) === null || _a === void 0 ? void 0 : _a.id;
-    if (!orderId) {
-        return {
-            statusCode: 400,
-            body: JSON.stringify({ message: 'Order ID is required.' }),
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-            }
-        };
-    }
+export const adminLockAndMarkOrderAsCompleted = (event) => __awaiter(void 0, void 0, void 0, function* () {
+    const orderId = event.pathParameters.id;
     try {
+        // Hämta den aktuella beställningen
         const getOrderParams = { TableName: 'OrdersTable', Key: { orderId } };
         const orderData = yield db.get(getOrderParams);
         if (!orderData.Item) {
             return {
                 statusCode: 404,
                 body: JSON.stringify({ message: 'Order not found.' }),
-                headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-                }
             };
         }
-        const updateParams = {
+        // Först, lås beställningen
+        const lockUpdateParams = {
             TableName: 'OrdersTable',
             Key: { orderId },
-            UpdateExpression: 'SET #locked = :locked, #status = :status, #updatedAt = :updatedAt',
+            UpdateExpression: 'SET #locked = :locked, #updatedAt = :updatedAt',
             ExpressionAttributeNames: {
                 '#locked': 'locked',
-                '#status': 'status',
                 '#updatedAt': 'updatedAt',
             },
             ExpressionAttributeValues: {
-                ':locked': true,
-                ':status': 'locked',
+                ':locked': true, // Lås beställningen
                 ':updatedAt': new Date().toISOString(),
             },
             ReturnValues: 'ALL_NEW',
         };
-        const updateCommand = new UpdateCommand(updateParams);
-        const updatedOrder = yield db.send(updateCommand);
+        const lockCommand = new UpdateCommand(lockUpdateParams);
+        yield db.send(lockCommand);
+        // Markera beställningen som tillagad och klar
+        const completedUpdateParams = {
+            TableName: 'OrdersTable',
+            Key: { orderId },
+            UpdateExpression: 'SET #status = :status, #updatedAt = :updatedAt',
+            ExpressionAttributeNames: {
+                '#status': 'status',
+                '#updatedAt': 'updatedAt',
+            },
+            ExpressionAttributeValues: {
+                ':status': 'completed', // Markera som klar
+                ':updatedAt': new Date().toISOString(),
+            },
+            ReturnValues: 'ALL_NEW',
+        };
+        const completedCommand = new UpdateCommand(completedUpdateParams);
+        const updatedOrder = yield db.send(completedCommand);
         return {
             statusCode: 200,
             body: JSON.stringify({
-                message: 'Order locked successfully.',
+                message: 'Order locked and marked as completed successfully.',
                 updatedOrder: updatedOrder.Attributes,
             }),
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-            }
         };
     }
     catch (error) {
+        console.error('Error locking and marking order as completed:', error);
+        let errorMessage = 'Failed to lock and mark order as completed.';
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
         return {
             statusCode: 500,
-            body: JSON.stringify({ message: 'Failed to lock order.' }),
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'POST, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-            }
+            body: JSON.stringify({ message: errorMessage }),
         };
     }
 });

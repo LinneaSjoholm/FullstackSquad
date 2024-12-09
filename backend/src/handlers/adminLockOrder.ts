@@ -1,23 +1,11 @@
 import { db } from '../services/db';
 import { UpdateCommand, UpdateCommandInput } from '@aws-sdk/lib-dynamodb';
-import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
-export const adminLockOrder = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
-  const orderId = event.pathParameters?.id;
-
-  if (!orderId) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ message: 'Order ID is required.' }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      }
-    };
-  }
+export const adminLockAndMarkOrderAsCompleted = async (event: any): Promise<any> => {
+  const orderId = event.pathParameters.id;
 
   try {
+    // Hämta den aktuella beställningen
     const getOrderParams = { TableName: 'OrdersTable', Key: { orderId } };
     const orderData = await db.get(getOrderParams);
 
@@ -25,55 +13,65 @@ export const adminLockOrder = async (event: APIGatewayProxyEvent): Promise<APIGa
       return {
         statusCode: 404,
         body: JSON.stringify({ message: 'Order not found.' }),
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        }
       };
     }
 
-    const updateParams: UpdateCommandInput = {
+    // Först, lås beställningen
+    const lockUpdateParams: UpdateCommandInput = {
       TableName: 'OrdersTable',
       Key: { orderId },
-      UpdateExpression: 'SET #locked = :locked, #status = :status, #updatedAt = :updatedAt',
+      UpdateExpression: 'SET #locked = :locked, #updatedAt = :updatedAt',
       ExpressionAttributeNames: {
         '#locked': 'locked',
-        '#status': 'status',
         '#updatedAt': 'updatedAt',
       },
       ExpressionAttributeValues: {
-        ':locked': true,
-        ':status': 'locked',
+        ':locked': true,  // Lås beställningen
         ':updatedAt': new Date().toISOString(),
       },
       ReturnValues: 'ALL_NEW',
     };
 
-    const updateCommand = new UpdateCommand(updateParams);
-    const updatedOrder = await db.send(updateCommand);
+    const lockCommand = new UpdateCommand(lockUpdateParams);
+    await db.send(lockCommand);
+
+    // Markera beställningen som tillagad och klar
+    const completedUpdateParams: UpdateCommandInput = {
+      TableName: 'OrdersTable',
+      Key: { orderId },
+      UpdateExpression: 'SET #status = :status, #updatedAt = :updatedAt',
+      ExpressionAttributeNames: {
+        '#status': 'status',
+        '#updatedAt': 'updatedAt',
+      },
+      ExpressionAttributeValues: {
+        ':status': 'completed',  // Markera som klar
+        ':updatedAt': new Date().toISOString(),
+      },
+      ReturnValues: 'ALL_NEW',
+    };
+
+    const completedCommand = new UpdateCommand(completedUpdateParams);
+    const updatedOrder = await db.send(completedCommand);
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Order locked successfully.',
+        message: 'Order locked and marked as completed successfully.',
         updatedOrder: updatedOrder.Attributes,
       }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      }
     };
   } catch (error) {
+    console.error('Error locking and marking order as completed:', error);
+    let errorMessage = 'Failed to lock and mark order as completed.';
+
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'Failed to lock order.' }),
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      }
+      body: JSON.stringify({ message: errorMessage }),
     };
   }
 };

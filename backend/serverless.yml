@@ -106,7 +106,15 @@ functions:
       - http:
           path: /admin/order/{id}/mark-as-completed
           method: post
-          cors: true
+          cors: 
+            origin: '*'
+            headers:
+              - Content-Type
+              - Authorization
+              - x-api-key
+            methods:
+              - POST
+              - OPTIONS
 
   adminLockOrder:
     handler: src/handlers/adminLockOrder.adminLockOrder
