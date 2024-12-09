@@ -4,8 +4,8 @@ import Home from './pages/HomePage';
 import Menu from './pages/menu';
 import CreateOrder from './pages/Customer/CreateOrder';
 import ReviewOrder from './pages/Customer/ReviewOrder';
-import OrderDashboard from './pages/admin/OrderDashboard';
-import StockDashboard from './pages/admin/StockStatus';
+import OrderDashboard from './pages/Employed/admin/OrderDashboard';
+import StockDashboard from './pages/Employed/admin/StockStatus';
 import { CartItem } from './interfaces/index'; 
 import MenuAdmin from './pages/Employed/MenuAdmin'
 import Profile from "./pages/Customer/Profile";
