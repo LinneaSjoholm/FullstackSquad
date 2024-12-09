@@ -9,7 +9,7 @@ provider:
   environment:
     API_KEY: ${env:API_KEY}
     USERS_TABLE: UsersTable
-    PAYMENTS_TABLE: 
+    PAYMENTS_TABLE: Payments
     JWT_SECRET: y7Gh@eN3!5PL!03HJaQe90^&*!s78Klo
   iam:
     role:
@@ -23,16 +23,25 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
             - dynamodb:BatchGetItem
-          Resource: "*"
+          Resource:
+            - arn:aws:dynamodb:eu-north-1:*:table/MenuTable
+            - arn:aws:dynamodb:eu-north-1:*:table/Payments
+            - arn:aws:dynamodb:eu-north-1:*:table/UsersTable
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: arn:aws:logs:eu-north-1:*:*
 
 functions:
   getMenu:
     handler: src/handlers/getMenu.getMenu
     events:
       - httpApi:
-        path: /menu
-        method: get
-        cors: true
+          path: /menu
+          method: get
+          cors: true
 
   getAbout:
     handler: src/handlers/getAbout.handler
@@ -83,7 +92,6 @@ functions:
           path: /order/{id}/update
           method: post
 
-  # Get the stock status for all ingredients
   getStockStatus:
     handler: src/handlers/getStockStatus.getStockStatus
     events:
@@ -91,7 +99,6 @@ functions:
           path: /admin/stock-status
           method: get
 
-  # Get all orders for admin
   adminGetOrders:
     handler: src/handlers/adminGetOrders.adminGetOrders
     events:
@@ -130,7 +137,7 @@ functions:
       - http:
           path: /admin/order/{id}/mark-as-completed
           method: post
-          cors: 
+          cors:
             origin: '*'
             headers:
               - Content-Type
@@ -166,7 +173,7 @@ functions:
           method: put
           cors: true
 
-  deleteOrder:  
+  deleteOrder:
     handler: src/handlers/deleteOrder.deleteOrder
     events:
       - httpApi:
@@ -182,8 +189,8 @@ functions:
           method: put
           cors: true
           headers:
-            x-api-key: true 
-  
+            x-api-key: true
+
   postCreateUser:
     handler: src/handlers/postcreateUser.handler
     events:
@@ -227,23 +234,20 @@ resources:
             AttributeType: "S"
         KeySchema:
           - AttributeName: "id"
-            KeyType: "HASH"  
+            KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
     MenuTable:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: MenuTable
-          Resource:
-            - arn:aws:dynamodb:eu-north-1:*:table/MenuTable
-            - arn:aws:dynamodb:eu-north-1:*:table/Payments
-            - arn:aws:dynamodb:eu-north-1:*:table/UsersTable
-        - Effect: Allow
-          Action:
-            - logs:CreateLogGroup
-            - logs:CreateLogStream
-            - logs:PutLogEvents
-          Resource: arn:aws:logs:eu-north-1:*:*
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
 
     PaymentsTable:
       Type: AWS::DynamoDB::Table
@@ -272,7 +276,7 @@ resources:
     AboutTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: AboutTable  # DynamoDB-tabellnamn
+        TableName: AboutTable
         AttributeDefinitions:
           - AttributeName: "id"
             AttributeType: "S"
@@ -284,7 +288,7 @@ resources:
     ContactTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ContactTable  # DynamoDB-tabellnamn
+        TableName: ContactTable
         AttributeDefinitions:
           - AttributeName: "id"
             AttributeType: "S"
@@ -296,7 +300,7 @@ resources:
     ConfirmationTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ConfirmationTable  # DynamoDB-tabellnamn
+        TableName: ConfirmationTable
         AttributeDefinitions:
           - AttributeName: "id"
             AttributeType: "S"
@@ -326,6 +330,6 @@ custom:
         - GET
         - POST
         - PATCH
-        - DELETE 
+        - DELETE
         - PUT
         - OPTIONS
