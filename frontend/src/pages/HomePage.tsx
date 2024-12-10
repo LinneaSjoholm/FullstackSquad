@@ -9,6 +9,7 @@ import Carbonara from '../assets/CarbonaraClassic.png';
 import CreamyAlfredo from '../assets/CreamyAlfredo.png';
 import GardenPesto from '../assets/GardenPestoDelight.png';
 import LemonChicken from '../assets/LemonHerbChickenPasta.png';
+import Arrabbiata from '../assets/ArrabbiataPenne.png';
 
 const reviews = [
   { name: 'John D.', comment: 'Amazing pasta! Will definitely order again.', stars: 5 },
@@ -64,7 +65,7 @@ const HomePage: React.FC = () => {
         <p>Discover the most popular dishes of the month.</p>
 
         <section className="menu-items">
-          <img src={Carbonara} alt="Carbonara" className="carbonara-image" />
+          <img src={Arrabbiata} alt="Arrabbiata" className="arrabbiata-image" />
           <img src={CreamyAlfredo} alt="Creamy Alfredo" className="alfredo-image" />
           <img src={GardenPesto} alt="Garden Pesto" className="pesto-image" />
           <img src={LemonChicken} alt="Lemon Chicken" className="lemon-image" />
