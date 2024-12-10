@@ -19,14 +19,17 @@
 .header h1 {
   font-family: Kolker Brush, sans-serif;
   font-size: 15rem;
-  margin: -100px 0 0 0;
+  position: relative;
+  top: -20px;
   text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .header p {
   font-family: Roboto, sans-serif;
   font-size: 1.5rem;
-  margin: -70px 0 0 210px;
+  position: relative;
+  top: -100px;
+  left: 100px;
   text-transform: uppercase;
   text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
   letter-spacing: 4px;
@@ -75,14 +78,4 @@
 
 .sidebar ul li:hover {
   background-color: var(--color-blue);
-}
-
-@media screen and (max-width: 768px) {
-  .header h1 {
-    margin: -70px 0 0 0;
-  }
-
-  .header p {
-    margin: -75px 0 0 220px;
-  }
 }
