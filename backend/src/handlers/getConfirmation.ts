@@ -10,22 +10,50 @@ export const handler = async (event: any) => {
     };
   }
 
+  const orderId = event.pathParameters?.id;
+
+  if (!orderId) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: 'Order ID is required' }),
+    };
+  }
+
   const params = {
-    TableName: 'ConfirmationTable',
-    Key: { id: 'confirmation' },
+    TableName: 'OrdersTable',
+    Key: { orderId },
   };
 
   try {
-    const data = await db.get(params);
+    const result = await db.get(params);
+
+    if (!result.Item) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'Order not found' }),
+      };
+    }
+
+    const updatedOrder = { ...result.Item, status: 'confirmed', reviewStatus: 'confirmed' };  // Mark as confirmed
+    const updateParams = {
+      TableName: 'OrdersTable',
+      Item: updatedOrder,
+    };
+
+    await db.put(updateParams);  // Confirm the order in the database
+
     return {
       statusCode: 200,
-      body: JSON.stringify(data.Item || {}),
+      body: JSON.stringify({
+        message: 'Order confirmed successfully',
+        updatedOrder,
+      }),
     };
   } catch (error) {
-    console.error('Error fetching confirmation data:', error);
+    console.error('Error confirming order:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: 'Failed to fetch confirmation data' }),
+      body: JSON.stringify({ message: 'Error confirming order', error }),
     };
   }
 };

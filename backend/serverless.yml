@@ -81,8 +81,8 @@ functions:
     handler: src/handlers/putReviewOrder.putReviewOrder
     events:
       - httpApi:
-          path: /order/update/{id}
-          method: post
+          path: /order/reviewOrder/{id}
+          method: put
 
   getStockStatus:
     handler: src/handlers/getStockStatus.getStockStatus
@@ -156,14 +156,6 @@ functions:
             methods:
               - POST
               - OPTIONS
-
-  initData:
-    handler: src/handlers/initData.initData
-    events:
-      - httpApi:
-          path: /order/reviewOrder/{id}
-          method: put
-          cors: true
 
   deleteOrder:
     handler: src/handlers/deleteOrder.deleteOrder
