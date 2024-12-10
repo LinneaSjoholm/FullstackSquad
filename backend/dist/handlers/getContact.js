@@ -7,8 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import AWS from 'aws-sdk';
-const docClient = new AWS.DynamoDB.DocumentClient();
+import { db } from '../services/db';
 export const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const apiKey = (_a = event.headers) === null || _a === void 0 ? void 0 : _a['x-api-key'];
@@ -23,7 +22,7 @@ export const handler = (event) => __awaiter(void 0, void 0, void 0, function* ()
         Key: { id: 'contact' },
     };
     try {
-        const data = yield docClient.get(params).promise();
+        const data = yield db.get(params);
         return {
             statusCode: 200,
             body: JSON.stringify(data.Item || {}),

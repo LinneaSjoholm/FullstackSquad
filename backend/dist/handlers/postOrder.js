@@ -7,8 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-const dynamoDb = new DocumentClient();
+import { db } from '../services/db'; // Importera db från din db-modul
 // API-nyckeln (kan hämtas från miljövariabler för att vara mer säker)
 const API_KEY = process.env.API_KEY || 'your-default-api-key';
 export const postOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
@@ -40,7 +39,7 @@ export const postOrder = (event) => __awaiter(void 0, void 0, void 0, function* 
     }
     const { customerName, customerPhone, items } = orderDetails;
     // Kontrollera att alla nödvändiga data finns
-    if (!customerName || !Array.isArray(items) || items.length === 0) {
+    if (!customerName || !customerPhone || !Array.isArray(items) || items.length === 0) {
         return {
             statusCode: 400,
             body: JSON.stringify({ message: 'Invalid order details. Ensure customerName, customerPhone, and items are provided.' }),
@@ -48,9 +47,7 @@ export const postOrder = (event) => __awaiter(void 0, void 0, void 0, function* 
     }
     // Skapa ett numeriskt order-ID (kombinerar tidsstämpel och ett slumpmässigt tal)
     const numericOrderId = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
-    let finalItems = []; // För att lagra de slutliga artiklarna
-    let itemMap = {}; // En karta för att gruppera artiklar baserat på id
-    // Iterera över artiklarna för att gruppera samma maträtter och addera deras kvantiteter
+    const itemMap = {};
     items.forEach(item => {
         if (itemMap[item.id]) {
             itemMap[item.id].quantity += item.quantity; // Lägg till kvantiteter för samma artikel
@@ -59,23 +56,22 @@ export const postOrder = (event) => __awaiter(void 0, void 0, void 0, function* 
             itemMap[item.id] = Object.assign({}, item); // Lägg till artikeln om den inte finns
         }
     });
-    // Skapa finalItems från itemMap
-    finalItems = Object.values(itemMap);
+    const finalItems = Object.values(itemMap);
     const order = {
         orderId: numericOrderId,
         customerName,
-        customerPhone, // Lägg till telefonnummer i beställningen
-        items: finalItems, // Använd grupperade artiklar här
-        status: 'pending', // Status kan vara "pending", "processed", etc.
-        createdAt: new Date().toISOString(), // Tidpunkt för beställning
+        customerPhone,
+        items: finalItems,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
     };
     const params = {
         TableName: 'OrdersTable',
-        Item: order, // Lägger till beställningen i DynamoDB
+        Item: order,
     };
     try {
         // Försök att lägga till beställningen i DynamoDB
-        yield dynamoDb.put(params).promise();
+        yield db.put(params); // Använd db.put istället för dynamoDb.put
         // Returnera svaret med det skapade order-ID samt kundens detaljer
         return {
             statusCode: 201,
@@ -84,7 +80,7 @@ export const postOrder = (event) => __awaiter(void 0, void 0, void 0, function* 
                 orderId: numericOrderId,
                 customerName,
                 customerPhone,
-                items: finalItems, // Sätt de grupperade artiklarna som skickas tillbaka
+                items: finalItems,
             }),
         };
     }

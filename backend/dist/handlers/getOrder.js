@@ -7,8 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-const dynamoDb = new DocumentClient();
+import { db } from '../services/db'; // Använder din importerade db-modul
 // API-nyckeln (kan hämtas från miljövariabler för att vara mer säker)
 const API_KEY = process.env.API_KEY || 'your-default-api-key';
 export const getOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
@@ -35,7 +34,8 @@ export const getOrder = (event) => __awaiter(void 0, void 0, void 0, function* (
         },
     };
     try {
-        const result = yield dynamoDb.get(params).promise();
+        // Använd db.get istället för dynamoDb.get
+        const result = yield db.get(params);
         if (!result.Item) {
             return {
                 statusCode: 404,

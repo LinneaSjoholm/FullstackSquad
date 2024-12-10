@@ -7,6 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import { db } from "../services/db"; // Importerar db
+import { GetCommand } from "@aws-sdk/lib-dynamodb"; // Importera GetCommand
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 export const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
@@ -18,17 +20,19 @@ export const handler = (event) => __awaiter(void 0, void 0, void 0, function* ()
             return {
                 statusCode: 400,
                 headers: {
-                    "Access-Control-Allow-Origin": "*", // Tillåter alla domäner
+                    "Access-Control-Allow-Origin": "*",
                     "Access-Control-Allow-Headers": "Content-Type",
                 },
                 body: JSON.stringify({ error: "Admin ID and password are required" }),
             };
         }
-        const adminCredentials = {
-            adminID: "admin123",
-            hashedPassword: "$2a$10$BvA4pLloApXNFeOF46Es5O6XYvqtw7bu7CNJaH6x4OZTrLOacaeYS",
-        };
-        if (adminID !== adminCredentials.adminID) {
+        // Använd db för att hämta admin-uppgifter
+        const command = new GetCommand({
+            TableName: "AdminsTable",
+            Key: { adminID },
+        });
+        const adminCredentials = yield db.send(command);
+        if (!adminCredentials.Item) {
             return {
                 statusCode: 401,
                 headers: {
@@ -38,7 +42,8 @@ export const handler = (event) => __awaiter(void 0, void 0, void 0, function* ()
                 body: JSON.stringify({ error: "Invalid credentials" }),
             };
         }
-        const isPasswordValid = yield bcrypt.compare(adminPassword, adminCredentials.hashedPassword);
+        const hashedPassword = adminCredentials.Item.hashedPassword;
+        const isPasswordValid = yield bcrypt.compare(adminPassword, hashedPassword);
         if (!isPasswordValid) {
             return {
                 statusCode: 401,
