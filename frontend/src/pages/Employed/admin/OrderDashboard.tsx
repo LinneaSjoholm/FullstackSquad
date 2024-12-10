@@ -4,7 +4,7 @@ import AdminOrderList from '../../../components/AdminOrderList'
 const OrderDashboard: React.FC = () => {
   return (
     <div>
-      <h1>Orders Dashboard</h1>
+      <h1>Orders</h1>
       <AdminOrderList />
     </div>
   );
