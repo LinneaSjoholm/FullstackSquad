@@ -16,11 +16,11 @@
   --font-size-medium-button: 1rem;
 
   background-color: var(--color-blue);
-  background-image: url('../images/background.jpg'); /* Byt ut mot sökvägen till din bild */
-  background-size: cover; /* Ser till att bilden täcker hela sidan */
-  background-repeat: no-repeat; /* Förhindrar att bilden upprepas */
-  background-position: center; /* Centrerar bilden */
-  min-height: 100vh; /* Säkerställer att den täcker hela höjden */
+  background-image: url('../images/background.jpg');
+  background-size: cover; 
+  background-repeat: no-repeat; 
+  background-position: center; 
+  min-height: 100vh; 
   background-position-x: right;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -28,17 +28,15 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Förhindra horisontell scrollning */
+
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Dölj horisontell scrollning */
+  overflow-x: hidden; 
   width: 100%;
-  /* box-sizing: border-box; Gör att padding och border räknas in i bredden */
   
 }
 
-/* Applicera box-sizing globalt */
 *, *::before, *::after {
   box-sizing: inherit;
 }
