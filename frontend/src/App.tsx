@@ -12,7 +12,6 @@ import Profile from "./pages/Customer/Profile";
 import Login from "./pages/Customer/Login";
 import CreateAccount from "./pages/Customer/CreateAccount";
 import LoginAdmin from "./pages/Employed/Login";
-import PaymentTest from "./pages/PaymentTest";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import About from "./components/About";
@@ -44,7 +43,6 @@ const App: React.FC = () => {
           <Route path="/user/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin/login" element={<LoginAdmin />} />
-          <Route path="/payment-test" element={<PaymentTest />} /> 
         </Routes>
 
       {/* Footer visas alltid */}
