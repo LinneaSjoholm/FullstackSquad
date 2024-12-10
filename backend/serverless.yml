@@ -23,16 +23,8 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
             - dynamodb:BatchGetItem
-          Resource:
-            - arn:aws:dynamodb:eu-north-1:*:table/MenuTable
-            - arn:aws:dynamodb:eu-north-1:*:table/Payments
-            - arn:aws:dynamodb:eu-north-1:*:table/UsersTable
-        - Effect: Allow
-          Action:
-            - logs:CreateLogGroup
-            - logs:CreateLogStream
-            - logs:PutLogEvents
-          Resource: arn:aws:logs:eu-north-1:*:*
+          Resource: 
+            - '*'
 
 functions:
   getMenu:
@@ -54,7 +46,7 @@ functions:
     handler: src/handlers/getConfirmation.handler
     events:
       - httpApi:
-          path: /confirmation
+          path: /confirmation/{id}
           method: get
 
   getContact:
@@ -89,8 +81,8 @@ functions:
     handler: src/handlers/putReviewOrder.putReviewOrder
     events:
       - httpApi:
-          path: /order/update/{id}
-          method: post
+          path: /order/reviewOrder/{id}
+          method: put
 
   getStockStatus:
     handler: src/handlers/getStockStatus.getStockStatus
@@ -164,14 +156,6 @@ functions:
             methods:
               - POST
               - OPTIONS
-
-  initData:
-    handler: src/handlers/initData.initData
-    events:
-      - httpApi:
-          path: /order/reviewOrder/{id}
-          method: put
-          cors: true
 
   deleteOrder:
     handler: src/handlers/deleteOrder.deleteOrder

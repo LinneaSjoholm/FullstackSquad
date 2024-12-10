@@ -43,29 +43,29 @@ export const getOrderReview = async (event: any) => {
     // Kolla om beställningen är under granskning
     if (order.reviewStatus === 'inReview') {
       order.items.forEach((item: any) => {
-        // Lägg till ingredienser som ska läggas till
+        // Add ingredients to the item
         if (item.ingredientsToAdd && item.ingredientsToAdd.length > 0) {
           item.ingredients = [...new Set([...item.ingredients, ...item.ingredientsToAdd])];
         }
-
-        // Ta bort ingredienser som ska tas bort
+    
+        // Remove ingredients from the item
         if (item.ingredientsToRemove && item.ingredientsToRemove.length > 0) {
           item.ingredients = item.ingredients.filter(
             (ingredient: string) => !item.ingredientsToRemove.includes(ingredient)
           );
         }
-
-        // Applicera andra modifieringar (t.ex. laktosfri)
+    
+        // Apply other modifications (e.g., lactoseFree)
         if (item.lactoseFree !== undefined) {
           item.lactoseFree = item.lactoseFree;
         }
-
-        // Rensa upp temporära fält efter att modifieringarna tillämpats
+    
+        // Cleanup temporary fields
         delete item.ingredientsToAdd;
         delete item.ingredientsToRemove;
       });
     }
-
+    
     return {
       statusCode: 200,
       body: JSON.stringify({
@@ -73,6 +73,7 @@ export const getOrderReview = async (event: any) => {
         order,
       }),
     };
+    
   } catch (error) {
     return {
       statusCode: 500,
