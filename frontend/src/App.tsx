@@ -12,46 +12,70 @@ import Profile from "./pages/Customer/Profile";
 import Login from "./pages/Customer/Login";
 import CreateAccount from "./pages/Customer/CreateAccount";
 import LoginAdmin from "./pages/Employed/Login";
-import PaymentTest from "./pages/PaymentTest";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Confirmation from "./components/Confirmation";
+import PaymentOverlay from './components/PaymentOverlay';
 
 const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [updatedItems ] = useState<CartItem[]>(cart); // Om du behöver skicka uppdaterade varor till PaymentOverlay
+  const [updatedTotalPrice ] = useState<number>(0); // För att skicka uppdaterad totalpriser
+
+  // Exempel på funktioner som kan skickas till PaymentOverlay
+  const handleCloseOverlay = () => {
+    // Stänger overlay (kan stänga via en state eller annan metod)
+    console.log('Overlay closed');
+  };
+
+  const handlePaymentSuccess = () => {
+    // Hantera betalningsframgång
+    console.log('Payment succeeded');
+  };
+
+  const handlePaymentFailure = () => {
+    // Hantera betalningsmisslyckande
+    console.log('Payment failed');
+  };
 
   return (
     <Router>
-      {/* Header visas alltid */}
       <Header />
-      
 
-        {/* Huvudsakligt innehåll */}
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/menu" element={<Menu setCart={setCart} cart={cart} />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/confirmation" element={<Confirmation />} />
-          <Route path="/createOrder" element={<CreateOrder />} />
-          <Route path="/review/Order" element={<ReviewOrder />} />
-          <Route path="/admin/dashboard" element={<OrderDashboard />} />
-          <Route path="/admin/stock" element={<StockDashboard />} />
-          <Route path="/admin/menu" element={<MenuAdmin setCart={setCart} cart={cart}/>} />
-          <Route path="/user/create" element={<CreateAccount />} />
-          <Route path="/user/login" element={<Login />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/admin/login" element={<LoginAdmin />} />
-          <Route path="/payment-test" element={<PaymentTest />} /> 
-        </Routes>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/menu" element={<Menu setCart={setCart} cart={cart} />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/createOrder" element={<CreateOrder />} />
+        <Route path="/review/Order" element={<ReviewOrder />} />
+        <Route path="/admin/dashboard" element={<OrderDashboard />} />
+        <Route path="/admin/stock" element={<StockDashboard />} />
+        <Route path="/admin/menu" element={<MenuAdmin setCart={setCart} cart={cart}/>} />
+        <Route path="/user/create" element={<CreateAccount />} />
+        <Route path="/user/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/admin/login" element={<LoginAdmin />} />
+        <Route 
+          path="/payment" 
+          element={
+            <PaymentOverlay 
+              onClose={handleCloseOverlay} 
+              onPaymentSuccess={handlePaymentSuccess} 
+              onPaymentFailure={handlePaymentFailure} 
+              updatedItems={updatedItems} 
+              updatedTotalPrice={updatedTotalPrice}
+            />
+          } 
+        />
+      </Routes>
 
-      {/* Footer visas alltid */}
       <Footer />
     </Router>
   );
 };
 
 export default App;
-
