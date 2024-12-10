@@ -1,0 +1,63 @@
+/* Container för dashboard */
+.dashboard-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--color-button);
+    border-radius: 10px;
+  }
+  
+  /* Rubriken för dashboard */
+.dashboard-header {
+    font-size: 2rem;
+    color: var(--color-beige);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+.dashboard-date {
+    font-size: 1rem;
+    color: var(--color-white);
+    margin-top: -10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Navigationens lista */
+.dashboard-navigation {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Varje enskild navigation-item */
+.dashboard-item {
+    padding: 10px 15px;
+    background-color: #0881A3;
+    color: var(--color-white);
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+    cursor: pointer;
+  }
+  
+  /* Hover-effekt */
+.dashboard-item:hover {
+    background-color: var(--color-blue);
+  }
+  
+  /* Specifik stil för logga ut-knappen */
+.dashboard-item.logout {
+    background-color: #dc3545;
+  }
+  
+.dashboard-item.logout:hover {
+    background-color: #a71d2a;
+  }
+  
