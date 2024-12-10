@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { docClient } from "../services/db";
+import { db } from "../services/db"; // Ändrat till db
 export const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = JSON.parse(event.body);
@@ -27,7 +27,7 @@ export const handler = (event) => __awaiter(void 0, void 0, void 0, function* ()
         }
         console.log("Using table:", process.env.USERS_TABLE);
         // Skanna tabellen efter användare med rätt email
-        const result = yield docClient.scan({
+        const result = yield db.scan({
             TableName: process.env.USERS_TABLE,
             FilterExpression: "#email = :email",
             ExpressionAttributeNames: {
@@ -55,7 +55,7 @@ export const handler = (event) => __awaiter(void 0, void 0, void 0, function* ()
             console.log("Password is not hashed, hashing now...");
             const hashedPassword = yield bcrypt.hash(password, 10);
             // Uppdatera lösenordet i databasen
-            yield docClient.update({
+            yield db.update({
                 TableName: process.env.USERS_TABLE,
                 Key: { id: user.id },
                 UpdateExpression: "set #password = :password",

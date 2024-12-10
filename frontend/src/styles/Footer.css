@@ -1,33 +1,62 @@
-  .footer {
+.footer {
   background-color: #333;
   color: white;
-  padding: 20px;
+  padding: 30px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
   width: 100%;
   text-align: left;
-  flex-shrink: 0; /* Förhindrar att footer krymper */
+  flex-shrink: 0;
 }
 
-  
-  /* Adress */
+address {
+  font-family: Roboto, sans-serif;
+  line-height: 1.8;
+  font-size: 1rem;
+  color: var(--color-beige); 
+  margin-right: 30px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px; 
+  margin-right: 50px;
+}
+
+.social-icon {
+  color: white;
+  text-decoration: none;
+  font-size: 2rem; 
+  padding: 12px;
+  transition: transform 0.3s ease, 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: scale(1.3); 
+}
+
+.social-icon1 {
+  color: #4267B2; 
+}
+
+.social-icon2 {
+  color: #E1306C;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: row;
+    align-items: center;
+    padding: 20px;
+  }
+
   address {
-    font-style: normal;
-    line-height: 1.5;
+    margin: 0 0 0 30px;
   }
-  
-  /* Social Icons */
-  .social-icons {
-    display: flex;
-    gap: 10px;
-  }
-  
   .social-icon {
-    color: white;
-    text-decoration: none;
-    font-size: 1rem;
-    padding: 10px;
-    margin-right: 20px;
+    font-size: 1.5rem;  /* Minska storleken på ikonerna på små skärmar */
+    padding: 8px;
   }
-  
+}

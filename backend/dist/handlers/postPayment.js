@@ -8,8 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { v4 as uuidv4 } from "uuid";
-import { DynamoDB } from "@aws-sdk/client-dynamodb";
-const dbClient = new DynamoDB({ region: "eu-north-1" });
+import { db } from "../services/db"; // Ändrat till db
 export const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     // Logga inkommande headers och body för debugging
     console.log("Incoming Headers:", event.headers);
@@ -32,15 +31,15 @@ export const handler = (event) => __awaiter(void 0, void 0, void 0, function* ()
         // Generera ett unikt betalnings-ID
         const paymentId = uuidv4();
         // Spara betalningen i DynamoDB
-        yield dbClient.putItem({
+        yield db.put({
             TableName: "Payments",
             Item: {
-                paymentId: { S: paymentId },
-                orderId: { S: orderId },
-                paymentMethod: { S: paymentMethod },
-                amount: { N: amount.toString() },
-                userId: { S: userId || `guest-${uuidv4()}` },
-                isGuest: { BOOL: !userId },
+                paymentId,
+                orderId,
+                paymentMethod,
+                amount: amount.toString(),
+                userId: userId || `guest-${uuidv4()}`,
+                isGuest: !userId,
             },
         });
         // Logga framgångsrik insättning

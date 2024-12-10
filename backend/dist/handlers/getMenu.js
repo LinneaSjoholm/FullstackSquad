@@ -18,8 +18,7 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-const dynamoDb = new DocumentClient();
+import { db } from '../services/db'; // Använd db-modulen
 export const getMenu = (event) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const apiKey = event.headers['x-api-key'];
@@ -34,7 +33,8 @@ export const getMenu = (event) => __awaiter(void 0, void 0, void 0, function* ()
         TableName: 'MenuTable',
     };
     try {
-        const result = yield dynamoDb.scan(params).promise();
+        // Använd db.scan istället för dynamoDb.scan
+        const result = yield db.scan(params);
         if (!result.Items || result.Items.length === 0) {
             return {
                 statusCode: 404,

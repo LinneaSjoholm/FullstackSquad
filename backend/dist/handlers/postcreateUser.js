@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { v4 as uuidv4 } from "uuid"; // För att generera unika ID:n
 import bcrypt from "bcryptjs"; // För att hasha lösenord
-import { docClient } from "../services/db"; // DynamoDB-klienten
+import { db } from "../services/db"; // Ändrat till att importera db
 export const handler = (event) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Parsear body från request
@@ -35,7 +35,7 @@ export const handler = (event) => __awaiter(void 0, void 0, void 0, function* ()
         };
         console.log("User object to save:", user); // Loggar användarobjektet innan det sparas
         // Lägger till användaren i DynamoDB
-        yield docClient.put({
+        yield db.put({
             TableName: process.env.USERS_TABLE, // Tabellnamnet från serverless.yml
             Item: user,
         });

@@ -15,9 +15,9 @@ import LoginAdmin from "./pages/Employed/Login";
 import PaymentTest from "./pages/PaymentTest";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import About from "./components/About";
-import Contact from "./components/Contact";
-import Confirmation from "./components/Confirmation";
+import About from "./pages/Customer/About";
+import Contact from "./pages/Customer/Contact";
+import Confirmation from "./pages/Customer/Confirmation";
 
 const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -28,7 +28,7 @@ const App: React.FC = () => {
       <Header />
       
 
-        {/* Huvudsakligt innehÃ¥ll */}
+        {/* Huvudsakligt innehåll */}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/menu" element={<Menu setCart={setCart} cart={cart} />} />
@@ -39,8 +39,8 @@ const App: React.FC = () => {
           <Route path="/review/Order" element={<ReviewOrder />} />
           <Route path="/admin/dashboard" element={<OrderDashboard />} />
           <Route path="/admin/stock" element={<StockDashboard />} />
-          <Route path="/menu/admin" element={<MenuAdmin setCart={setCart} cart={cart}/>} />
-          <Route path="/create/user" element={<CreateAccount />} />
+          <Route path="/admin/menu" element={<MenuAdmin setCart={setCart} cart={cart}/>} />
+          <Route path="/user/create" element={<CreateAccount />} />
           <Route path="/user/login" element={<Login />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/admin/login" element={<LoginAdmin />} />
@@ -54,3 +54,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+

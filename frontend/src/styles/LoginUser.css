@@ -8,7 +8,7 @@
   background-size: cover; 
   background-position: center; 
   }
-
+.header
   .login-container::after {
     content: "";
     position: absolute;
@@ -40,7 +40,7 @@
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     margin-bottom: -10px; 
     line-height: 1; 
-    top: -75px;
+    top: -35px;
 }
 
 .headertext h2 {
@@ -54,7 +54,7 @@
     line-height: 1; 
     position: relative;
     left: 60px; 
-    top: -95px;
+    top: -60px;
 }
 
 .admin-icon-container {
@@ -99,7 +99,7 @@
     display: flex;
     flex-direction: column;
     gap: 15px; 
-    width: 300px; 
+    width: 200px; 
   }
   
   .form-group {

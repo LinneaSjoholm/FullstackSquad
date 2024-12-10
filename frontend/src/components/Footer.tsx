@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/Footer.css";
+import { FaFacebook, FaInstagram } from 'react-icons/fa';
 
 const Footer: React.FC = () => {
   return (
@@ -11,10 +12,13 @@ const Footer: React.FC = () => {
         +123 456 789
       </address>
 
-      {/* Sociala Ikoner Sektion */}
       <div className="social-icons">
-        <a href="#" className="social-icon">Facebook</a>
-        <a href="#" className="social-icon">Instagram</a>
+        <a href="https://www.facebook.com" className="social-icon" target="_blank" rel="noopener noreferrer">
+          <FaFacebook style={{ fontSize: '2rem', color: '#4267B2' }} />
+        </a>
+        <a href="https://www.instagram.com" className="social-icon" target="_blank" rel="noopener noreferrer">
+          <FaInstagram style={{ fontSize: '2rem', color: '#E1306C' }} />
+        </a>
       </div>
     </footer>
   );

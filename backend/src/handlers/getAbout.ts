@@ -1,6 +1,4 @@
-import AWS from 'aws-sdk';
-
-const docClient = new AWS.DynamoDB.DocumentClient();
+import { db } from '../services/db';
 
 export const handler = async (event: any) => {
   const apiKey = event.headers?.['x-api-key'];
@@ -18,7 +16,7 @@ export const handler = async (event: any) => {
   };
 
   try {
-    const data = await docClient.get(params).promise();
+    const data = await db.get(params);
     return {
       statusCode: 200,
       body: JSON.stringify(data.Item || {}),

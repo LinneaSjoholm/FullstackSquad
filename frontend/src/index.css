@@ -1,33 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Kolker+Brush&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Roboto, Kolker Brush, Source Serif 4, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #1F4E5F;
+  --color-blue: #1F4E5F;
+  --color-light-blue: #0881A3;
+  --color-beige: #FFEAC9;
+  --color-white: #F9F8ED;
+  --color-button: #1E1E1E;
+  --color-button-hover: #0881A3;
 
+  --font-size-small-button: 0.75rem;
+  --font-size-medium-button: 1rem;
+
+  background-color: var(--color-blue);
+  background-image: url('../images/background.jpg'); /* Byt ut mot sökvägen till din bild */
+  background-size: cover; /* Ser till att bilden täcker hela sidan */
+  background-repeat: no-repeat; /* Förhindrar att bilden upprepas */
+  background-position: center; /* Centrerar bilden */
+  min-height: 100vh; /* Säkerställer att den täcker hela höjden */
+  background-position-x: right;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
 /* Förhindra horisontell scrollning */
 body {
   margin: 0;
   padding: 0;
   overflow-x: hidden; /* Dölj horisontell scrollning */
   width: 100%;
-  box-sizing: border-box; /* Gör att padding och border räknas in i bredden */
+  /* box-sizing: border-box; Gör att padding och border räknas in i bredden */
+  
 }
 
 /* Applicera box-sizing globalt */
 *, *::before, *::after {
   box-sizing: inherit;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
 }
