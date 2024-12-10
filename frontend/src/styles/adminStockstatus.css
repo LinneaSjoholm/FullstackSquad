@@ -1,6 +1,7 @@
+/* Navbar */
 .navbar {
     background-color: var(--color-button);
-    padding: 10px 20px;
+    padding: 10px 15px;
     margin: 20px auto;
   }
   
@@ -9,12 +10,13 @@
     padding: 0;
     margin: 0;
     display: flex;
+    flex-direction: row;
     justify-content: center;
+    gap: 30px;
   }
   
   .navbar-item {
     color: var(--color-white);
-    margin: 0 20px;
     font-size: 1rem;
     cursor: pointer;
     font-family: 'Roboto', sans-serif;
@@ -26,15 +28,16 @@
   
   .navbar-item.active {
     font-weight: bold;
-    color: var(--color-light-blue);
+    color: #008000;
   }
-
-.stock-dashboard-container {
-    padding: 20px;
+  
+  /* Stock Dashboard */
+  .stock-dashboard-container {
+    padding: 10px;
     font-family: 'Roboto', sans-serif;
   }
   
-.stock-dashboard-header {
+  .stock-dashboard-header {
     font-family: 'Source Serif 4', sans-serif;
     font-size: 3rem;
     font-weight: bold;
@@ -42,53 +45,96 @@
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
     letter-spacing: 1px;
     text-transform: uppercase;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
     position: relative;
-    left: 100px;
-    top: 10px;
+    text-align: center; 
   }
   
-.stock-table {
+  /* Table */
+  .stock-table {
     width: 80%;
     border-collapse: collapse;
     margin: 0 auto;
     background-color: #f9f9f9;
   }
   
-.stock-table th,
-.stock-table td {
-    padding: 13px;
+  .stock-table th,
+  .stock-table td {
+    padding: 10px;
     text-align: center;
+    font-size: 0.9rem;
   }
   
-.stock-table th {
+  .stock-table th {
     background-color: var(--color-light-blue);
     color: var(--color-white);
     text-transform: uppercase;
   }
   
-.stock-table td {
-    font-size: 14px;
+  .stock-table td {
+    font-size: 0.9rem;
   }
-
-.stock-table tr:nth-child(even) {
+  
+  .stock-table tr:nth-child(even) {
     background-color: #f2f2f2;
   }
-
-.stock-table .stock-status-sufficient {
+  
+  /* Status colors */
+  .stock-table .stock-status-sufficient {
     color: #008000;
     font-weight: bold;
   }
-
-.stock-table .stock-status-low {
+  
+  .stock-table .stock-status-low {
     color: #ffa500;
     font-weight: bold;
   }
   
-.stock-table .stock-status-critical {
+  .stock-table .stock-status-critical {
     color: #ff0000;
     font-weight: bold;
   }
   
 
+  @media screen and (max-width: 390px) {
+    /* Navbar */
+    .navbar {
+      padding: 10px 10px; 
+    }
+  
+    .navbar-links {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .navbar-item {
+      margin: 8px 0; 
+      font-size: 1rem;
+    }
+  
+    /* Stock Dashboard Header */
+    .stock-dashboard-header {
+        font-size: 1.5rem; 
+        margin-bottom: 20px; 
+        left: 0; 
+        top: 0; 
+        text-align: center;
+      }
+  
+    /* Table */
+    .stock-table {
+      width: 100%; 
+      margin: 10px 0;
+    }
+  
+    .stock-table th,
+    .stock-table td {
+      padding: 8px;
+      font-size: 1rem;
+    }
+  
+    .stock-table td {
+      word-wrap: break-word;
+    }
+  }
   
