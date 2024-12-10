@@ -7,13 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// src/handlers/getStockStatus.ts
-import { DynamoDB } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
-const client = new DynamoDB({
-    region: process.env.AWS_REGION,
-});
-const db = DynamoDBDocument.from(client);
+import { db } from '../services/db';
 export const getIngredientStock = (ingredientId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield db.get({
