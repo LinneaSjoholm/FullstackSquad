@@ -72,6 +72,18 @@ const HomePage: React.FC = () => {
         </section>
       </article>
 
+      <article className="customers-favorites">
+        <h2>Month's favorites</h2>
+        <p>Discover the most popular dishes of the month.</p>
+
+        <section className="customers-items">
+          <img src={Arrabbiata} alt="Arrabbiata" className="arrabbiata-image" />
+          <img src={CreamyAlfredo} alt="Creamy Alfredo" className="alfredo-image" />
+          <img src={GardenPesto} alt="Garden Pesto" className="pesto-image" />
+          <img src={LemonChicken} alt="Lemon Chicken" className="lemon-image" />
+        </section>
+      </article>
+
       <span className="cta-section">
         <p className="tagline3">"Order now and taste the difference."</p>
         <button className="menu-btn" onClick={() => navigate('/menu')}>Explore our full menu</button>
