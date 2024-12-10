@@ -1,8 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { v4 as uuidv4 } from "uuid";
-import { DynamoDB } from "@aws-sdk/client-dynamodb";
-
-const dbClient = new DynamoDB({ region: "eu-north-1" });
+import { db } from "../services/db"; // Ändrat till db
 
 export const handler: APIGatewayProxyHandler = async (event) => {
   // Logga inkommande headers och body för debugging
@@ -30,15 +28,15 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     const paymentId = uuidv4();
 
     // Spara betalningen i DynamoDB
-    await dbClient.putItem({
+    await db.put({
       TableName: "Payments",
       Item: {
-        paymentId: { S: paymentId },
-        orderId: { S: orderId },
-        paymentMethod: { S: paymentMethod },
-        amount: { N: amount.toString() },
-        userId: { S: userId || `guest-${uuidv4()}` },
-        isGuest: { BOOL: !userId },
+        paymentId,
+        orderId,
+        paymentMethod,
+        amount: amount.toString(),
+        userId: userId || `guest-${uuidv4()}`,
+        isGuest: !userId,
       },
     });
 

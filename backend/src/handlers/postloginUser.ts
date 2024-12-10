@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { docClient } from "../services/db";
+import { db } from "../services/db"; // Ändrat till db
 
 export const handler = async (event: any) => {
   try {
@@ -23,7 +23,7 @@ export const handler = async (event: any) => {
     console.log("Using table:", process.env.USERS_TABLE);
 
     // Skanna tabellen efter användare med rätt email
-    const result = await docClient.scan({
+    const result = await db.scan({
       TableName: process.env.USERS_TABLE,
       FilterExpression: "#email = :email",
       ExpressionAttributeNames: {
@@ -56,7 +56,7 @@ export const handler = async (event: any) => {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Uppdatera lösenordet i databasen
-      await docClient.update({
+      await db.update({
         TableName: process.env.USERS_TABLE,
         Key: { id: user.id },
         UpdateExpression: "set #password = :password",

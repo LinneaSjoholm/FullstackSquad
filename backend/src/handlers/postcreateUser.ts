@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid"; // För att generera unika ID:n
 import bcrypt from "bcryptjs"; // För att hasha lösenord
-import { docClient } from "../services/db"; // DynamoDB-klienten
+import { db } from "../services/db"; // Ändrat till att importera db
 
 export const handler = async (event: any) => {
   try {
@@ -32,7 +32,7 @@ export const handler = async (event: any) => {
     console.log("User object to save:", user); // Loggar användarobjektet innan det sparas
 
     // Lägger till användaren i DynamoDB
-    await docClient.put({
+    await db.put({
       TableName: process.env.USERS_TABLE, // Tabellnamnet från serverless.yml
       Item: user,
     });
