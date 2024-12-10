@@ -230,6 +230,7 @@ button .btn__container, .account-btn, .login-btn {
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
     letter-spacing: 1px;
     font-weight: 400;
+    margin-bottom: -10px;
 }
   
   .reviews-content {
@@ -270,12 +271,12 @@ button .btn__container, .account-btn, .login-btn {
     color: rgb(255, 217, 0);
   }
   
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 390px) {
 
     .tagline1 {
         font-size: 1.4rem;
-        top: -290px;
-        left: 60px;
+        top: -295px;
+        left: 40px;
         rotate: -10deg;
         margin-bottom: 50px;
     }
@@ -330,7 +331,6 @@ button .btn__container, .account-btn, .login-btn {
         top: -50px;
     }
 
- 
     .image-container {
         width: 100%;
         height: 450px;
@@ -346,17 +346,20 @@ button .btn__container, .account-btn, .login-btn {
     }
 
     .menu-items img, .customers-items img {
-        width: 180px;
-        height: 180px;
+        width: 150px;
+        height: 150px;
     }
     .reviews {
         margin-bottom: -220px;
         margin-top: -20px;
     }
+    
+    .reviews h1 {
+        font-size: 2.4rem;
+    }
 
     .review-card {
         width: 80%; 
-        max-width: 300px;
       }
 }
 
