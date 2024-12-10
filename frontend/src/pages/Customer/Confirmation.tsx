@@ -1,6 +1,5 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "../styles/Confirmation.css";
 import "../../styles/Confirmation.css";
 
 const Confirmation: React.FC = () => {
