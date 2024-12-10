@@ -1,21 +1,35 @@
 /* Main Content */
+.about-message {
+  color: #F4E7D3;
+  margin-top: 30px;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+}
+.about-message h1 {
+  font-family: 'Serif', serif;
+  font-size: 3rem;
+  color: #F4E7D3;
+}
+
 .content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-color: black;
+  background-color: #1F4E5F;
   padding: 20px;
   border-radius: 20px;
   width: 90%; /* Anpassa bredden för mobil */
   margin: 20px auto; /* Reducera marginalerna för mobil */
+  color: #F4E7D3;
 }
 
 .story-section,
 .team-section,
 .vision-section {
-  margin-bottom: 20px; /* Mindre avstånd för mobil */
+  margin-bottom: 20px; /* Mindre avstånd för mobil */;
 }
 
 .story-section h2,
@@ -23,12 +37,12 @@
 .team-section h3,
 .vision-section h3 {
   font-family: 'Serif', serif;
-  color: #333;
+  color: #F4E7D3;
 }
 
 /* Team Section */
 .team-section {
-  background-color: black;
+  background-color: #1F4E5F;
   padding: 15px; /* Mindre padding för mobil */
   border-radius: 10px;
 }
@@ -40,7 +54,7 @@
 }
 
 .team-card {
-  background-color: black;
+  background-color: #F4E7D3;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 90%; /* Gör korten bredare för mobil */
@@ -58,14 +72,17 @@
 
 .team-description {
   font-size: 0.8rem; /* Mindre textstorlek för mobil */
-  color: #555;
+  color: #000;
 }
 
-/* Vision Section */
-.vision-section {
-  background-color: #448ca6;
+.meet-the-team-section {
   padding: 15px; /* Mindre padding för mobil */
-  border-radius: 10px;
+
+}
+
+.vision-section {
+  padding: 15px; /* Mindre padding för mobil */
+
 }
 
 /* Responsiv design för mobil */
