@@ -86,22 +86,69 @@ button .btn__container, .account-btn, .login-btn {
     z-index: 2;
 }
 
-.cta-section {
+.months-favorites {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    margin: 200 auto -200px auto;
-    z-index: 2;
+    margin-top: 50px;
 }
-.tagline3 {
+
+.months-favorites h2 {
     font-family: Source Serif 4, sans-serif;
+    color: var(--color-beige);
     font-size: 2rem;
-    font-weight: bold;
+    margin: 0 auto;
+    z-index: 2;
+    position: relative;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+}
+
+.months-favorites p {
+    font-family: Roboto;
     color: var(--color-beige);
     margin: 0 auto;
     z-index: 2;
+    position: relative;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.menu-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin: 50px auto;
+}
+
+.menu-items img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.menu-items img:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.cta-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+    background-color: aqua;
+}
+.tagline3 {
+    font-family: Source Serif 4, sans-serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--color-beige);
+    top: 280px;
     position: relative;
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 }
@@ -122,6 +169,8 @@ button .btn__container, .account-btn, .login-btn {
     width: 280px;
     height: 70px;
     letter-spacing: 1px;
+    top: 280px;
+    position: relative;
 }
 
 .image-container {
@@ -139,67 +188,173 @@ button .btn__container, .account-btn, .login-btn {
     opacity: 0.6;
 }
 
+.cta-section {
+    z-index: 2;
+    position: relative;
+    top: 180px;
+}
+
+.reviews {
+    top: 500px;
+    z-index: 2;
+    position: relative;
+    text-align: center;
+}
+
+.reviews h1 {
+    font-family: Source Serif 4, sans-serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--color-beige);
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+}
+
+.reviews h3 {
+    font-family: Source Serif 4, sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-beige);
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.reviews-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Justera innehållet till mitten */
+  width: 100%;
+  position: relative;
+  top: 20px;
+}
+
+.reviews-slider {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+  width: 100%; /* Lätt reducerad bredd för att få mer utrymme för pilarna */
+}
+
+.review-card {
+  background-color: var(--color-beige);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  width: 230px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.arrow-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: var(--color-beige);
+}
+
+.left-arrow {
+  position: absolute;
+  left: -50px;
+}
+
+.right-arrow {
+  position: absolute;
+  right: -50px;
+}
+
+.stars {
+  font-size: 1.5rem;
+  color: gold;
+}
   
 @media screen and (max-width: 768px) {
-    
+
     .tagline1 {
-        font-size: 1.8rem;
-        margin: -120px 10px 30px auto;
+        font-size: 1.6rem;
+        margin: -270px 10px 150px auto;
         transform: rotate(10deg);
     }
 
-    
-    .tagline2 {
-        font-size: 1.6rem;
-        margin: 20px auto 0 auto;
-        transform: rotate(0deg);
+    .btn__container {
+        width: 80%;
+        margin: 20px auto;
+        justify-content: center;
+        gap: 20px;
     }
 
-    
+    .tagline2 {
+        font-size: 1.6rem;
+        margin: 50px auto 20px 50px;
+        transform: rotate(-10deg);
+    }
+
     .takeaway-btn {
         width: 150px;
         height: 40px;
         font-size: 1rem;
+        margin-bottom: -10px;
     }
 
-    
     .icon {
-        margin: -10px 0 auto 100px;
+        margin: -15px 0 -20px 130px;
         font-size: 1.5rem;
     }
 
-    
     .cta-section {
-        margin: 100px auto 50px auto;
+        z-index: 2;
     }
 
-    
     .tagline3 {
-        font-size: 1.6rem;
+        position: relative;
+        top: 20px;
+        text-align: center;
+        font-size: 2.5rem;
     }
 
-   
     .menu-btn {
+        position: relative;
+        top: 30px;
         width: 240px;
         height: 60px;
-        font-size: 1.2rem;
+        font-size: 0.9rem;
     }
 
-   
     .image-container {
-        margin: 10px 0 -40px 0;
+        width: 100%;
+        height: 500px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    
     .image-container img {
-        opacity: 0.8; 
-        object-position: top;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
     }
 
-    
     .btn__container {
         width: 80%;
         margin: 20px auto;
         justify-content: center;
     }
+
+    .menu-items {
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 30px auto -20px auto;
+    }
+  .reviews-container {
+    gap: 10px;
+  }
+
+  .review-card {
+    width: 200px;
+  }
+
+  .stars {
+    font-size: 1rem;
+  }
+  
 }
