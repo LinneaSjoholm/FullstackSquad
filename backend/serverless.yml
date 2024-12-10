@@ -23,16 +23,8 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
             - dynamodb:BatchGetItem
-          Resource:
-            - arn:aws:dynamodb:eu-north-1:*:table/MenuTable
-            - arn:aws:dynamodb:eu-north-1:*:table/Payments
-            - arn:aws:dynamodb:eu-north-1:*:table/UsersTable
-        - Effect: Allow
-          Action:
-            - logs:CreateLogGroup
-            - logs:CreateLogStream
-            - logs:PutLogEvents
-          Resource: arn:aws:logs:eu-north-1:*:*
+          Resource: 
+            - '*'
 
 functions:
   getMenu:
@@ -54,7 +46,7 @@ functions:
     handler: src/handlers/getConfirmation.handler
     events:
       - httpApi:
-          path: /confirmation
+          path: /confirmation/{id}
           method: get
 
   getContact:
@@ -197,7 +189,13 @@ functions:
       - http:
           path: /user/create
           method: post
-          cors: true
+          cors:
+          origin: "*"
+          headers:
+            - Content-Type
+          methods:
+            - POST
+            - OPTIONS
 
   postLoginUser:
     handler: src/handlers/postloginUser.handler
@@ -211,7 +209,7 @@ functions:
     handler: src/handlers/postloginAdmin.handler
     events:
       - http:
-          path: /admin/login
+          path: admin/login
           method: post
           cors: true
 
@@ -259,6 +257,18 @@ resources:
         KeySchema:
           - AttributeName: paymentId
             KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    AdminsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: AdminsTable
+        AttributeDefinitions:
+          - AttributeName: "adminID"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "adminID"
+            KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
     OrdersTable:
