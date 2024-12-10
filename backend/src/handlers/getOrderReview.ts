@@ -1,6 +1,4 @@
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-
-const dynamoDb = new DocumentClient();
+import { db } from '../services/db'; // Använd db-modulen
 
 // API-nyckeln (kan hämtas från miljövariabler för att vara mer säker)
 const API_KEY = process.env.API_KEY || 'your-default-api-key';
@@ -30,7 +28,8 @@ export const getOrderReview = async (event: any) => {
   };
 
   try {
-    const result = await dynamoDb.get(params).promise();
+    // Använd db.get istället för dynamoDb.get
+    const result = await db.get(params);
 
     if (!result.Item) {
       return {

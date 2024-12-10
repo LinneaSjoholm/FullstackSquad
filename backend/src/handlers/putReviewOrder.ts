@@ -1,7 +1,5 @@
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+import { db } from '../services/db'; // Importera db från din db-modul
 import { DynamoDBItem, MenuItem } from '../interfaces';
-
-const dynamoDb = new DocumentClient();
 
 // Utility function to normalize ingredients
 const normalizeIngredients = (ingredients: any[]): string[] => {
@@ -48,7 +46,7 @@ export const putReviewOrder = async (event: any) => {
   };
 
   try {
-    const orderResult = await dynamoDb.get(orderParams).promise();
+    const orderResult = await db.get(orderParams); // Använd db.get istället för dynamoDb.get
     if (!orderResult.Item) {
       return {
         statusCode: 404,
@@ -58,7 +56,7 @@ export const putReviewOrder = async (event: any) => {
 
     const originalItems: MenuItem[] = orderResult.Item.items || [];
     const menuParams = { TableName: 'MenuTable' };
-    const menuResult = await dynamoDb.scan(menuParams).promise();
+    const menuResult = await db.scan(menuParams); // Använd db.scan istället för dynamoDb.scan
 
     if (!menuResult.Items || menuResult.Items.length === 0) {
       return {
@@ -110,7 +108,6 @@ export const putReviewOrder = async (event: any) => {
                 item.drinkName = undefined; // Remove associated drink name
                 updatedItemsDetails.push(`Removed associated drink: ${item.drinkName}`);
               }
-              
             });
           }
           continue; // Skip the rest of the processing for removed items
@@ -212,7 +209,7 @@ export const putReviewOrder = async (event: any) => {
       Item: updatedOrder,
     };
 
-    await dynamoDb.put(updateParams).promise();
+    await db.put(updateParams); // Använd db.put istället för dynamoDb.put
 
     return {
       statusCode: 200,

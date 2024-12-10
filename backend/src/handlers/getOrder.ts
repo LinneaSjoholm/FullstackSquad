@@ -1,6 +1,4 @@
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-
-const dynamoDb = new DocumentClient();
+import { db } from '../services/db'; // Använder din importerade db-modul
 
 // API-nyckeln (kan hämtas från miljövariabler för att vara mer säker)
 const API_KEY = process.env.API_KEY || 'your-default-api-key';
@@ -27,12 +25,13 @@ export const getOrder = async (event: any) => {
   const params = {
     TableName: 'OrdersTable',
     Key: {
-      orderId,  // Använd orderId för att hämta rätt objekt
+      orderId, // Använd orderId för att hämta rätt objekt
     },
   };
 
   try {
-    const result = await dynamoDb.get(params).promise();
+    // Använd db.get istället för dynamoDb.get
+    const result = await db.get(params);
 
     if (!result.Item) {
       return {

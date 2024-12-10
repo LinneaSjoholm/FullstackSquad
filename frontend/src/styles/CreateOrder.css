@@ -9,7 +9,6 @@
     min-height: 100vh;
     position: relative;
     width: 100%;
-    overflow-x: hidden;
 }
 
 /* Skapa en horisontell layout för orderitems */
@@ -27,7 +26,6 @@
   cursor: pointer;
   padding: 5px 10px;
   color: black;
-  position: absolute;
   bottom: -50px; 
   left: 20px;    
 }

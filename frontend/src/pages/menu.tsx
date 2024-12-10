@@ -262,10 +262,6 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
         />
       )}
   
-      {/* Footer */}
-      <footer className="footer">
-        <p>&copy; 2024 Your Company. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
