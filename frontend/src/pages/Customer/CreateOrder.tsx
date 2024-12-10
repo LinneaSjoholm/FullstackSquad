@@ -156,10 +156,6 @@ const CreateOrder: React.FC = () => {
         <button type="submit">Review order</button>
       </form>
 
-      {/* Footer */}
-      <footer className="footer">
-        <p>&copy; 2024 Your Company. All rights reserved.</p>
-      </footer>
     </div>
   );
 };
