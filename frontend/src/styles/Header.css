@@ -80,8 +80,6 @@
   background-color: var(--color-blue);
 }
 
-<<<<<<< HEAD
-=======
 /* --- Mobilanpassning --- */
 @media (max-width: 768px) {
   .header {
@@ -118,4 +116,3 @@
     padding: 10px; /* Minska padding */
   }
 }
->>>>>>> Lam
