@@ -79,3 +79,9 @@
 .sidebar ul li:hover {
   background-color: var(--color-blue);
 }
+
+@media screen and (max-width: 430px) {
+  .sidebar.open {
+    width: 60%;
+  } 
+}
