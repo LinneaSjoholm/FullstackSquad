@@ -1,0 +1,156 @@
+/* General styling for the container */
+.admin-order-list-container {
+    margin: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    color: var(--color-blue);
+  }
+  
+  h2 {
+    font-family: 'Source Serif 4', sans-serif;
+  }
+  
+
+  .order-section {
+    margin-bottom: 20px;
+  }
+  
+  .order-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .order-item span {
+    margin-right: 10px;
+    font-size: 14px;
+  }
+  
+
+  .status {
+    font-weight: bold;
+    margin-left: auto;
+  }
+  
+  .status.locked {
+    color: #d97706; 
+  }
+  
+  .status.completed {
+    color: #10b981; 
+  }
+  
+  /* Buttons styling */
+  button {
+    padding: 6px 12px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button.lock-btn {
+    background-color: #10b981;
+    color: #fff;
+  }
+  
+  button.lock-btn:hover {
+    background-color: #059669;
+  }
+  
+  button.update-btn {
+    background-color: var(--color-light-blue); 
+    color: #fff;
+  }
+  
+  button.update-btn:hover {
+    background-color: var(--color-blue);
+  }
+  
+  button.complete-btn {
+    background-color: #d97706; 
+    color: #fff;
+  }
+  
+  button.complete-btn:hover {
+    background-color: #b45309;
+  }
+  
+  button.cancel-btn {
+    background-color: #ef4444;
+    color: #fff;
+  }
+  
+  button.cancel-btn:hover {
+    background-color: #dc2626;
+  }
+  
+  /* Modal styling */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: #FFFF;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    display: flex; /* Flexbox för att strukturera innehållet */
+    flex-direction: column;
+    align-items: center; /* Centrerar innehållet horisontellt */
+}
+  
+  .modal-content h3 {
+    margin-top: 0;
+    color: var(--color-light-blue);
+  }
+  
+  .modal-content label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+  }
+  
+  .modal-content input,
+  .modal-content textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+
+  .modal-content textarea {
+    resize: none;
+  }
+  
+  .modal-content button {
+    margin-top: 10px;
+    width: 50%;
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    align-self: center;
+}
+  

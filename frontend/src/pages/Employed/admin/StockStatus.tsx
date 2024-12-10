@@ -48,7 +48,7 @@ const StockStatus: React.FC = () => {
 
   return (
     <div className="stock-dashboard-container">
-      
+
       <div className="navbar">
         <ul className="navbar-links">
           <li 
@@ -58,7 +58,7 @@ const StockStatus: React.FC = () => {
             </li>
           
           <li 
-          className="navbar-item active"
+          className="navbar-item"
           onClick={() => navigate('/admin/stock')}>
             Stockstatus
             </li>

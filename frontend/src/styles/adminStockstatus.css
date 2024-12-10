@@ -26,11 +26,6 @@
     color: var(--color-light-blue);
   }
   
-  .navbar-item.active {
-    font-weight: bold;
-    color: #008000;
-  }
-  
   /* Stock Dashboard */
   .stock-dashboard-container {
     padding: 10px;
