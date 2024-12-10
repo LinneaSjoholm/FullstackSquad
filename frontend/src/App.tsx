@@ -24,41 +24,8 @@ const App: React.FC = () => {
 
   return (
     <Router>
-<<<<<<< HEAD
-      <Routes>
-
-      {/* <div className="app"> */}
-        {/* Header visas på alla sidor */}
-        {/* <Header /> */}
-        
-        
-            <Route path="/" element={<HomePage />} />
-            <Route path="/menu" element={<Menu setCart={setCart} cart={cart} />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/confirmation" element={<Confirmation />} />
-
-            <Route path="/createOrder" element={<CreateOrder />} />
-            <Route path="/review/Order" element={<ReviewOrder />} />
-
-            <Route path="/admin/dashboard" element={<OrderDashboard />} />
-            <Route path="/admin/stock" element={<StockDashboard />} />
-            <Route path="/menu/admin" element={<MenuAdmin setCart={setCart} cart={cart}/>} />
-
-            <Route path="/create/user" element={<CreateAccount />} />
-            <Route path="/user/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/admin/login" element={<LoginAdmin />} />
-            <Route path="/payment-test" element={<PaymentTest />} /> 
-        
-
-        {/* Footer visas på alla sidor */}
-        {/* <Footer /> */}
-      {/* </div> */}
-=======
       {/* Header visas alltid */}
       <Header />
->>>>>>> Linnea
       
 
         {/* Huvudsakligt innehåll */}
