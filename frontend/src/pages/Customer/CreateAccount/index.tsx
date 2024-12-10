@@ -21,7 +21,7 @@ const CreateAccount = () => {
 
     try {
       const response = await fetch(
-        "https://cbcxsumuq8.execute-api.eu-north-1.amazonaws.com/dev/create/user",
+        "https://cbcxsumuq8.execute-api.eu-north-1.amazonaws.com/dev/user/create",
         {
           method: "POST",
           headers: {
@@ -30,21 +30,24 @@ const CreateAccount = () => {
           body: JSON.stringify(accountData),
         }
       );
-
+    
+      console.log("Response status:", response.status);
+    
       if (response.ok) {
         const data = await response.json();
         console.log("Account created successfully:", data);
         setSuccess(true);
-
-        navigate("/customer/login"), 2000;
+        navigate("/user/login");
       } else {
         const errorData = await response.json();
+        console.error("Error response from server:", errorData);
         setError(errorData.error || "Failed to create account.");
       }
     } catch (error) {
       console.error("Error during account creation:", error);
       setError("An error occurred. Please try again.");
     }
+    
   };
 
   return (
@@ -71,15 +74,6 @@ const CreateAccount = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <div className="form-group">
             <label htmlFor="name">Name:</label>
             <input
               type="text"
@@ -89,6 +83,15 @@ const CreateAccount = () => {
               required
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
           <div className="form-group">
             <label htmlFor="address">Address:</label>
