@@ -10,7 +10,8 @@ body {
     font-weight: bold;
     color: var(--color-beige);
     text-align: center;
-    margin: -200px 20px 50px auto;
+    top: -240px;
+    left: 400px;
     z-index: 2;
     position: relative;
     transform: rotate(15deg);
@@ -22,14 +23,15 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 20%;
-    margin: 20px auto 50px auto;
+    position: relative;
+    top: -130px;
     z-index: 1;
 }
 
 button .btn__container, .account-btn, .login-btn {
     text-align: center;
-    background-color: var(--color-button);
-    color: var(--color-beige);
+    background-color: var(--color-beige);
+    color: var(--color-blue);
     font-size: var(--font-size-small-button);
     font-family: Roboto;
     border-radius: 5px;
@@ -50,9 +52,10 @@ button .btn__container, .account-btn, .login-btn {
     font-size: 2rem;
     font-weight: bold;
     color: var(--color-beige);
-    margin: 40px auto 0 450px;
     z-index: 2;
     position: relative;
+    top: -50px;
+    right: 100px;
     transform: rotate(-10deg);
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 }
@@ -74,13 +77,16 @@ button .btn__container, .account-btn, .login-btn {
     width: 170px;
     height: 50px;
     letter-spacing: 1px;
-    margin-top: -10px;
+    position: relative;
+    top: -50px;
+    
 }
 
 .icon {
     color: var(--color-beige);
-    margin: -25px 0 auto 140px;
     position: relative;
+    top: -80px;
+    left: 70px;
     transform: rotate(-20deg);
     font-size: 2rem;
     z-index: 2;
@@ -91,42 +97,43 @@ button .btn__container, .account-btn, .login-btn {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    position: relative;
+    top: -30px;
 }
 
 .months-favorites h2 {
     font-family: Source Serif 4, sans-serif;
     color: var(--color-beige);
-    font-size: 2rem;
-    margin: 0 auto;
+    font-size: 2.5rem;
     z-index: 2;
     position: relative;
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
     text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .months-favorites p {
     font-family: Roboto;
     color: var(--color-beige);
-    margin: 0 auto;
     z-index: 2;
     position: relative;
+    bottom: 10px;
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .menu-items {
     display: flex;
-    justify-content: center;
-    align-items: center;
     gap: 30px;
-    margin: 50px auto;
+    width: 100%;
+    position: relative;
+    top: 30px;
 }
 
 .menu-items img {
     width: 200px;
     height: 200px;
     object-fit: cover;
-    border-radius: 2px;
+    border-radius: 20;
     box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
@@ -140,16 +147,14 @@ button .btn__container, .account-btn, .login-btn {
     display: flex;
     flex-direction: column;
     align-items: center;
-    z-index: 2;
-    background-color: aqua;
 }
 .tagline3 {
     font-family: Source Serif 4, sans-serif;
     font-size: 2.5rem;
     font-weight: bold;
-    color: var(--color-beige);
-    top: 280px;
     position: relative;
+    top: -110px;
+    color: var(--color-beige);
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -169,15 +174,15 @@ button .btn__container, .account-btn, .login-btn {
     width: 280px;
     height: 70px;
     letter-spacing: 1px;
-    top: 280px;
     position: relative;
+    top: -100px;
 }
 
 .image-container {
     position: relative;
     align-items: center;
-    margin: 20px 0 -50px 0;
     width: 100%;
+    top: 50px;
 }
 
 .image-container img {
@@ -221,7 +226,7 @@ button .btn__container, .account-btn, .login-btn {
 .reviews-container {
   display: flex;
   align-items: center;
-  justify-content: center; /* Justera innehållet till mitten */
+  justify-content: center;
   width: 100%;
   position: relative;
   top: 20px;
@@ -231,7 +236,7 @@ button .btn__container, .account-btn, .login-btn {
   display: flex;
   gap: 20px;
   overflow: hidden;
-  width: 100%; /* Lätt reducerad bredd för att få mer utrymme för pilarna */
+  width: 100%;
 }
 
 .review-card {
