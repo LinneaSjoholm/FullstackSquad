@@ -10,8 +10,6 @@ const Confirmation: React.FC = () => {
   return (
     <div className="container">
       <div className="container-message">
-        {/* <p className="message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptas? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisq */}
-        {/* </p> */}
         <h2 className="thank-you-message">Thank you for choosing Gusto to Go</h2>
         <p className="confirmation-message">Your order is on its way!</p>
       </div>

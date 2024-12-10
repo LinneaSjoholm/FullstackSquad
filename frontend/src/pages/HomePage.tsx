@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/HomePage.css';
 import { Icon } from '@iconify/react';
 import fingerTapLine from '@iconify-icons/mingcute/finger-tap-line';
 import pictureHomePage from '../assets/pictureHomePage.png';
-import Carbonara from '../assets/CarbonaraClassic.png';
 import CreamyAlfredo from '../assets/CreamyAlfredo.png';
 import GardenPesto from '../assets/GardenPestoDelight.png';
 import LemonChicken from '../assets/LemonHerbChickenPasta.png';
