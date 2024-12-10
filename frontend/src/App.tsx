@@ -15,9 +15,9 @@ import LoginAdmin from "./pages/Employed/Login";
 import PaymentTest from "./pages/PaymentTest";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import About from "./components/About";
-import Contact from "./components/Contact";
-import Confirmation from "./components/Confirmation";
+import About from "./pages/Customer/About";
+import Contact from "./pages/Customer/Contact";
+import Confirmation from "./pages/Customer/Confirmation";
 
 const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);

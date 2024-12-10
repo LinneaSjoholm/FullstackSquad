@@ -1,6 +1,10 @@
 import React from "react";
+<<<<<<< HEAD:frontend/src/components/Confirmation.tsx
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/Confirmation.css";
+=======
+import "../../styles/Confirmation.css";
+>>>>>>> Lam:frontend/src/pages/Customer/Confirmation.tsx
 
 const Confirmation: React.FC = () => {
   const location = useLocation();
@@ -10,6 +14,11 @@ const Confirmation: React.FC = () => {
   return (
     <div className="container">
       <div className="container-message">
+<<<<<<< HEAD:frontend/src/components/Confirmation.tsx
+=======
+        {/* <p className="message">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptas? Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisq */}
+        {/* </p> */}
+>>>>>>> Lam:frontend/src/pages/Customer/Confirmation.tsx
         <h2 className="thank-you-message">Thank you for choosing Gusto to Go</h2>
         <p className="confirmation-message">Your order is on its way!</p>
       </div>
