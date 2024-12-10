@@ -227,7 +227,7 @@ button .btn__container, .account-btn, .login-btn {
     margin-top: -30px;
   }
   
-  .reviews h1 {
+.reviews h1 {
     font-family: Source Serif 4, sans-serif;
     font-size: 3rem;
     font-weight: bold;
@@ -237,7 +237,7 @@ button .btn__container, .account-btn, .login-btn {
     text-transform: uppercase;
   }
 
-  .reviews h4 {
+.reviews h4 {
     font-family: Roboto, sans-serif;
     color: var(--color-beige);
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
@@ -246,7 +246,7 @@ button .btn__container, .account-btn, .login-btn {
     margin-bottom: -10px;
 }
   
-  .reviews-content {
+.reviews-content {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
@@ -255,7 +255,7 @@ button .btn__container, .account-btn, .login-btn {
     top: 30px;
   }
   
-  .review-card {
+.review-card {
     background-color: var(--color-button);
     border-radius: 10px;
     padding: 15px;
@@ -270,16 +270,16 @@ button .btn__container, .account-btn, .login-btn {
     color: var(--color-beige);
   }
   
-  .review-name {
+.review-name {
     font-weight: bold;
     margin-bottom: 10px;
   }
   
-  .review-comment {
+.review-comment {
     margin-bottom: 10px;
   }
   
-  .stars {
+.stars {
     font-size: 1.5rem;
     color: rgb(255, 217, 0);
   }
