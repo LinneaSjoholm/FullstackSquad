@@ -1,6 +1,4 @@
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-
-const dynamoDb = new DocumentClient();
+import { db } from '../services/db'; // Importera db från din db-modul
 
 // API-nyckeln (kan hämtas från miljövariabler för att vara mer säker)
 const API_KEY = process.env.API_KEY || 'your-default-api-key';
@@ -52,7 +50,7 @@ export const postOrder = async (event: any) => {
   const { customerName, customerPhone, items } = orderDetails;
 
   // Kontrollera att alla nödvändiga data finns
-  if (!customerName || !Array.isArray(items) || items.length === 0) {
+  if (!customerName || !customerPhone || !Array.isArray(items) || items.length === 0) {
     return {
       statusCode: 400,
       body: JSON.stringify({ message: 'Invalid order details. Ensure customerName, customerPhone, and items are provided.' }),
@@ -62,38 +60,34 @@ export const postOrder = async (event: any) => {
   // Skapa ett numeriskt order-ID (kombinerar tidsstämpel och ett slumpmässigt tal)
   const numericOrderId = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
 
-  let finalItems: Item[] = [];  // För att lagra de slutliga artiklarna
-  let itemMap: { [key: string]: Item } = {};  // En karta för att gruppera artiklar baserat på id
-
-  // Iterera över artiklarna för att gruppera samma maträtter och addera deras kvantiteter
+  const itemMap: { [key: string]: Item } = {};
   items.forEach(item => {
     if (itemMap[item.id]) {
-      itemMap[item.id].quantity += item.quantity;  // Lägg till kvantiteter för samma artikel
+      itemMap[item.id].quantity += item.quantity; // Lägg till kvantiteter för samma artikel
     } else {
-      itemMap[item.id] = { ...item };  // Lägg till artikeln om den inte finns
+      itemMap[item.id] = { ...item }; // Lägg till artikeln om den inte finns
     }
   });
 
-  // Skapa finalItems från itemMap
-  finalItems = Object.values(itemMap);
+  const finalItems = Object.values(itemMap);
 
   const order = {
     orderId: numericOrderId,
     customerName,
-    customerPhone,  // Lägg till telefonnummer i beställningen
-    items: finalItems,  // Använd grupperade artiklar här
-    status: 'pending',  // Status kan vara "pending", "processed", etc.
-    createdAt: new Date().toISOString(),  // Tidpunkt för beställning
+    customerPhone,
+    items: finalItems,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
   };
 
   const params = {
     TableName: 'OrdersTable',
-    Item: order,  // Lägger till beställningen i DynamoDB
+    Item: order,
   };
 
   try {
     // Försök att lägga till beställningen i DynamoDB
-    await dynamoDb.put(params).promise();
+    await db.put(params); // Använd db.put istället för dynamoDb.put
 
     // Returnera svaret med det skapade order-ID samt kundens detaljer
     return {
@@ -103,7 +97,7 @@ export const postOrder = async (event: any) => {
         orderId: numericOrderId,
         customerName,
         customerPhone,
-        items: finalItems,  // Sätt de grupperade artiklarna som skickas tillbaka
+        items: finalItems,
       }),
     };
   } catch (error) {

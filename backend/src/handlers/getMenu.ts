@@ -1,7 +1,5 @@
 import { DynamoDBItem, MenuItem } from '../interfaces';
-import { DocumentClient } from 'aws-sdk/clients/dynamodb';
-
-const dynamoDb = new DocumentClient();
+import { db } from '../services/db'; // Använd db-modulen
 
 export const getMenu = async (event: any) => {
   const apiKey = event.headers['x-api-key'];
@@ -19,7 +17,8 @@ export const getMenu = async (event: any) => {
   };
 
   try {
-    const result = await dynamoDb.scan(params).promise();
+    // Använd db.scan istället för dynamoDb.scan
+    const result = await db.scan(params);
 
     if (!result.Items || result.Items.length === 0) {
       return {
@@ -58,7 +57,6 @@ export const getMenu = async (event: any) => {
         popularity: filteredItem.popularity,
         description: dbItem.description || '',  // Lägg till description
       };
-      
 
       if (!acc[itemCategory]) {
         acc[itemCategory] = [];
