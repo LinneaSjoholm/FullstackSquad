@@ -32,25 +32,6 @@ const App: React.FC = () => {
     <>
       {!hideHeaderFooterPaths.includes(location.pathname) && <Header />}
 
-<<<<<<< HEAD
-        {/* Huvudsakligt innehåll */}
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/menu" element={<Menu setCart={setCart} cart={cart} />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/confirmation" element={<Confirmation />} />
-          <Route path="/createOrder" element={<CreateOrder />} />
-          <Route path="/review/Order" element={<ReviewOrder />} />
-          <Route path="/admin/dashboard" element={<OrderDashboard />} />
-          <Route path="/admin/stock" element={<StockDashboard />} />
-          <Route path="/admin/menu" element={<MenuAdmin setCart={setCart} cart={cart}/>} />
-          <Route path="/user/create" element={<CreateAccount />} />
-          <Route path="/user/login" element={<Login />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/admin/login" element={<LoginAdmin />} />
-        </Routes>
-=======
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/menu" element={<Menu setCart={setCart} cart={cart} />} />
@@ -59,7 +40,6 @@ const App: React.FC = () => {
         <Route path="/createOrder" element={<CreateOrder />} />
         <Route path="/review/Order" element={<ReviewOrder />} />
         <Route path="/confirmation" element={<Confirmation />} />
-        <Route path="/payment-test" element={<PaymentTest />} />
         <Route path="/admin/login" element={<LoginAdmin />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/orders" element={<OrderDashboard />} />
@@ -69,7 +49,6 @@ const App: React.FC = () => {
         <Route path="/user/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
->>>>>>> Lam
 
       {!hideHeaderFooterPaths.includes(location.pathname) && <Footer />}
     </>
