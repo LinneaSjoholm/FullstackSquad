@@ -22,11 +22,7 @@ const CreateAccount = () => {
 
     try {
       const response = await fetch(
-<<<<<<< HEAD
-        "https://cbcxsumuq8.execute-api.eu-north-1.amazonaws.com/dev/user/create",
-=======
         "https://snb7yzqm7k.execute-api.eu-north-1.amazonaws.com/dev/user/create",
->>>>>>> Emma
         {
           method: "POST",
           headers: {
@@ -42,14 +38,10 @@ const CreateAccount = () => {
         const data = await response.json();
         console.log("Account created successfully:", data);
         setSuccess(true);
-<<<<<<< HEAD
-        navigate("/");
-=======
 
         setTimeout(() => {
           navigate("/"); // Redirect to homepage after account creation
         }, 2000); // Wait for 2 seconds before redirecting
->>>>>>> Emma
       } else {
         const errorData = await response.json();
         console.error("Error response from server:", errorData);
@@ -86,8 +78,6 @@ const CreateAccount = () => {
             />
           </div>
           <div className="form-group">
-<<<<<<< HEAD
-=======
             <label htmlFor="password">Password:</label>
             <input
               type="password"
@@ -98,7 +88,6 @@ const CreateAccount = () => {
             />
           </div>
           <div className="form-group">
->>>>>>> Emma
             <label htmlFor="name">Name:</label>
             <input
               type="text"
@@ -108,19 +97,6 @@ const CreateAccount = () => {
               required
             />
           </div>
-<<<<<<< HEAD
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-=======
->>>>>>> Emma
           <div className="form-group">
             <label htmlFor="address">Address:</label>
             <input
