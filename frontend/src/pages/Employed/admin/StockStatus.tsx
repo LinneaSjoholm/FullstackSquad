@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../../styles/adminStockstatus.css';
 import { useNavigate } from 'react-router-dom';
+import { Navbar } from '../../../components/navBar';
 
 interface StockItem {
   id: string;
@@ -39,7 +40,12 @@ const StockStatus: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <p className="stock-loading">Loading stock data...</p>;
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p className="stock-loading">Loading stock data...</p>
+      </div>
+    );
   }
 
   if (error) {
@@ -48,58 +54,41 @@ const StockStatus: React.FC = () => {
 
   return (
     <div className="stock-dashboard-container">
-
-      <div className="navbar">
-        <ul className="navbar-links">
-          <li 
-          className="navbar-item"
-          onClick={() => navigate('/admin/menu')}>
-            Menu
-            </li>
-          
-          <li 
-          className="navbar-item"
-          onClick={() => navigate('/admin/stock')}>
-            Stockstatus
-            </li>
-          
-          <li 
-          className="navbar-item"
-          onClick={() => navigate('/admin/orders')}>Orders</li>
-        </ul>
-      </div>
-
+      <Navbar />
       <h1 className="stock-dashboard-header">Stock Status</h1>
-      <table className="stock-table">
-        <thead>
-          <tr>
-            <th>Ingredient</th>
-            <th>Stock</th>
-            <th>Unit</th>
-            <th>Associated Dishes</th>
-          </tr>
-        </thead>
-        <tbody>
-          {stockItems.map((item) => (
-            <tr key={item.id}>
-              <td>{item.name}</td>
-              <td
-                className={
-                  item.stock <= 5
-                    ? 'stock-status-critical'
-                    : item.stock <= 10
-                    ? 'stock-status-low'
-                    : 'stock-status-sufficient'
-                }
-              >
-                {item.stock}
-              </td>
-              <td>{item.unit}</td>
-              <td>{item.dishNames.length > 0 ? item.dishNames.join(', ') : 'None'}</td>
+
+      <div className="stock-table-wrapper">
+        <table className="stock-table">
+          <thead>
+            <tr>
+              <th>Ingredient</th>
+              <th>Stock</th>
+              <th>Unit</th>
+              <th>Associated Dishes</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {stockItems.map((item) => (
+              <tr key={item.id}>
+                <td>{item.name}</td>
+                <td
+                  className={
+                    item.stock <= 5
+                      ? 'stock-status-critical'
+                      : item.stock <= 10
+                      ? 'stock-status-low'
+                      : 'stock-status-sufficient'
+                  }
+                >
+                  {item.stock}
+                </td>
+                <td>{item.unit}</td>
+                <td>{item.dishNames.length > 0 ? item.dishNames.join(', ') : 'None'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

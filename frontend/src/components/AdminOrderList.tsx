@@ -7,11 +7,10 @@ const AdminOrderList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // För att hantera popup-modalen
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [newStatus, setNewStatus] = useState<string>('');
-  const [commentToChef, setCommentToChef] = useState<string>(''); // Nytt state för kommentar
+  const [commentToChef, setCommentToChef] = useState<string>(''); 
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -49,11 +48,11 @@ const AdminOrderList: React.FC = () => {
 
   const handleMarkAsCompleted = async (orderId: string) => {
     try {
-      const updatedOrder = await markOrderAsCompleted(orderId); // Anropa markOrderAsCompleted
+      const updatedOrder = await markOrderAsCompleted(orderId);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.orderId === orderId
-            ? { ...order, status: 'completed' } // Uppdatera orderstatusen till 'completed'
+            ? { ...order, status: 'completed' } 
             : order
         )
       );
@@ -73,23 +72,22 @@ const AdminOrderList: React.FC = () => {
           commentToChef,
         });
 
-        // Call the backend API to update the order
         const updatedOrder = await updateOrder(selectedOrderId, newStatus, commentToChef);
 
-        // Update local orders state with the updated order data
+   
         setOrders((prevOrders) =>
           prevOrders.map((order) =>
             order.orderId === selectedOrderId
               ? {
                   ...order,
-                  status: updatedOrder.status, // Use updated status
-                  messageToChef: updatedOrder.messageToChef, // Use updated messageToChef
+                  status: updatedOrder.status, 
+                  messageToChef: updatedOrder.messageToChef,
                 }
               : order
           )
         );
         alert('Order updated successfully!');
-        setIsModalOpen(false); // Close the modal after successful update
+        setIsModalOpen(false);
       } catch (error) {
         console.error('Error updating order:', error);
         alert('Failed to update order.');
@@ -121,21 +119,24 @@ const AdminOrderList: React.FC = () => {
               <span>{order.dishName}</span>{' '}
               <span>{order.messageToChef || 'No message provided'}</span>{' '}
               <span className={`status ${order.status}`}>{order.status}</span>
-              <button className="lock-btn" onClick={() => handleLockOrder(order.orderId)}>
-                Lock Order
-              </button>
-              <button
-                className="update-btn"
-                onClick={() => {
-                  setSelectedOrderId(order.orderId);
-                  setNewStatus(order.status || '');
-                  setCommentToChef(order.messageToChef || '');
-                  console.log('Selected Order ID:', order.orderId);
-                  setIsModalOpen(true);
-                }}
-              >
-                Update Order
-              </button>
+              <div className="button-container">
+                <button className="lock-btn" onClick={() => handleLockOrder(order.orderId)}>
+                  Lock Order
+                </button>
+
+                <button
+                  className="update-btn"
+                  onClick={() => {
+                    setSelectedOrderId(order.orderId);
+                    setNewStatus(order.status || '');
+                    setCommentToChef(order.messageToChef || '');
+                    console.log('Selected Order ID:', order.orderId);
+                    setIsModalOpen(true);
+                  }}
+                >
+                  Update Order
+                </button>
+              </div>
             </div>
           ))}
         </div>
