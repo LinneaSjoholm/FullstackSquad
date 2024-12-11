@@ -7,7 +7,7 @@ import ReviewOrder from './pages/Customer/ReviewOrder';
 import Dashboard from './pages/Employed/admin/Dashboard';
 import StockDashboard from './pages/Employed/admin/StockStatus';
 import { CartItem } from './interfaces/index'; 
-import MenuAdmin from './pages/Employed/MenuAdmin';
+import MenuAdmin from './pages/Employed/admin/MenuAdmin';
 import Profile from "./pages/Customer/Profile";
 import Login from "./pages/Customer/Login";
 import CreateAccount from "./pages/Customer/CreateAccount";
