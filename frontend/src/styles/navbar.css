@@ -1,4 +1,3 @@
-/* Navbar */
 .navbar {
   background-color: var(--color-button);
   padding: 20px 15px;
@@ -10,7 +9,7 @@
   padding: 0;
   margin: 0;
   display: flex;
-  flex-direction: row;
+  flex-direction: row; 
   justify-content: center;
   gap: 30px;
 }
@@ -23,14 +22,31 @@
   transition: color 0.3s ease;
 }
 
-/* Hover effect */
 .navbar-item:hover {
   color: var(--color-light-blue);
 }
 
-/* Active link style */
 .navbar-item.active {
   color: var(--color-light-blue);
   font-weight: bold;
   text-decoration: none; 
+}
+
+/* Responsiv design för skärmar mindre än 390px */
+@media screen and (max-width: 390px) {
+  .navbar {
+    padding: 10px 5px; 
+  }
+
+  .navbar-links {
+    display: flex !important; 
+    flex-direction: row !important;
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .navbar-item {
+    font-size: 0.9rem; 
+  }
 }
