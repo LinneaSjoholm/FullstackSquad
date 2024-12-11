@@ -3,15 +3,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f8f8f8;
   padding: 20px;
+  color: #FFEAC9;
 }
 
 .delete-order-message {
-  background-color: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
   max-width: 400px;
   width: 100%;
@@ -19,7 +17,7 @@
 }
 
 .Delete-order-button {
-  background-color: #e74c3c;
+  background-color: rgb(220, 43, 43);
   color: white;
   padding: 10px 20px;
   border: none;
@@ -31,5 +29,5 @@
 }
 
 .Delete-order-button:hover {
-  background-color: #c0392b;
+  background-color: #9e0d03;
 }

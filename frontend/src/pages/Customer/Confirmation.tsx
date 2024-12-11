@@ -19,13 +19,13 @@ const Confirmation: React.FC = () => {
 
       <main className="order-content">
         <section className="order-summary">
-          <h3>Order #{orderId}</h3>
+          <h2>Order #{orderId}</h2>
           <ul className="order-items">
             {updatedItems?.map((item: CartItem, index: number) => (
               <li key={index} className="order-item">
-                <span>{item.name} x {item.quantity}</span>
-                <span>${(item.price * item.quantity).toFixed(2)}</span>
-
+                <h3><strong>{item.name} x {item.quantity}</strong></h3>
+                <h3><strong>${(item.price * item.quantity).toFixed(2)}</strong></h3>
+              <div className="order-item-details">
                 {/* Visa vald dryck */}
                 {item.drinkName && (
                   <p><strong>Drink:</strong> {item.drinkName}</p>
@@ -48,6 +48,7 @@ const Confirmation: React.FC = () => {
                 {item.glutenFree && (
                   <p><strong>Gluten Free</strong></p>
                 )}
+              </div>  
               </li>
             ))}
           </ul>
@@ -55,8 +56,8 @@ const Confirmation: React.FC = () => {
           <hr />
 
           <div className="order-total">
-            <span>Total</span>
-            <span>${updatedTotalPrice?.toFixed(2)}</span>
+            <h2>Total</h2>
+            <h2>${updatedTotalPrice?.toFixed(2)}</h2>
           </div>
 
           <div className="delivery-info">
