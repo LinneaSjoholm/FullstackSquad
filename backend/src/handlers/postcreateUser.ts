@@ -1,33 +1,16 @@
 import { v4 as uuidv4 } from "uuid"; // För att generera unika ID:n
 import bcrypt from "bcryptjs"; // För att hasha lösenord
-import { db } from "../services/db"; // Ändrat till att importera db
+import { db } from "../services/db"; // För att interagera med databasen
 
 export const handler = async (event: any) => {
-  if (event.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-      },
-      body: "",
-    };
-  }
-
   try {
     // Parsear body från request
     const { email, name, password, address, phone } = JSON.parse(event.body);
 
     // Validerar att alla fält finns
-    if (!email || !name || !password || !address || !phone) {
+    if (!email|| !name||  !password||  !address||  !phone) {
       return {
         statusCode: 400,
-        headers: {
-          "Access-Control-Allow-Origin": "*", // Tillåt alla origin
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Methods": "POST, OPTIONS", // Tillåt POST och OPTIONS
-        },
         body: JSON.stringify({ error: "All fields are required" }),
       };
     }
@@ -36,9 +19,9 @@ export const handler = async (event: any) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log("Hashed password:", hashedPassword); // Loggar det hashade lösenordet
 
-    // Skapar en användare
+    // Skapar en användare med ett unikt UUID (för intern användning)
     const user = {
-      id: uuidv4(),
+      userId: uuidv4(), // Skapar ett unikt UUID för användaren (ändrat till userId)
       email,
       name,
       password: hashedPassword,
@@ -57,23 +40,13 @@ export const handler = async (event: any) => {
     // Returnerar framgångsrespons
     return {
       statusCode: 201,
-      headers: {
-        "Access-Control-Allow-Origin": "*", // Tillåt alla origin
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Methods": "POST, OPTIONS", // Tillåt POST och OPTIONS
-      },
-      body: JSON.stringify({ message: "User created successfully", userId: user.id }),
+      body: JSON.stringify({ message: "User created successfully", userId: user.userId }), // Ändrat till userId
     };
   } catch (error: any) {
     // Hanterar eventuella fel
     console.error("Error occurred:", error.message);
     return {
       statusCode: 500,
-      headers: {
-        "Access-Control-Allow-Origin": "*", // Tillåt alla origin
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Methods": "POST, OPTIONS", // Tillåt POST och OPTIONS
-      },
       body: JSON.stringify({ error: error.message }),
     };
   }
