@@ -178,15 +178,23 @@ functions:
   postCreateUser:
     handler: src/handlers/postcreateUser.handler
     events:
-      - http:
+      - httpApi:
           path: /user/create
           method: post
-          cors: true
+          cors: 
+          origin: "*"
+          headers:
+            - Content-Type
+            - Authorization
+            - X-Requested-With
+            - Access-Control-Allow-Origin
+            - Access-Control-Allow-Headers
+
 
   postLoginUser:
     handler: src/handlers/postloginUser.handler
     events:
-      - http:
+      - httpApi:
           path: /user/login
           method: post
           cors:
@@ -201,7 +209,7 @@ functions:
   postLoginAdmin:
     handler: src/handlers/postloginAdmin.handler
     events:
-      - http:
+      - httpApi:
           path: /admin/login
           method: post
           cors: true
@@ -209,8 +217,24 @@ functions:
   postPayment:
     handler: src/handlers/postPayment.handler
     events:
-      - http:
+      - httpApi:
           path: /payment
+          method: post
+          cors: true
+          
+  postLogoutUser:
+    handler: src/handlers/logoutHandler.logoutHandler
+    events:
+      - httpApi:
+          path: /user/logout
+          method: post
+          cors: true
+
+  postLogoutAdmin:
+    handler: src/handlers/logoutHandler.logoutHandler
+    events:
+      - httpApi:
+          path: /admin/logout
           method: post
           cors: true
 

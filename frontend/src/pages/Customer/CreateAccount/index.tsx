@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { FaArrowLeft } from "react-icons/fa"; // Import back arrow icon from react-icons
 import "../../../styles/CreateAccount.css"; // Ny CSS-fil för denna vy
 
 const CreateAccount = () => {
@@ -10,7 +11,7 @@ const CreateAccount = () => {
   const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Create navigate function
 
   const handleCreateAccount = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +22,11 @@ const CreateAccount = () => {
 
     try {
       const response = await fetch(
+<<<<<<< HEAD
         "https://cbcxsumuq8.execute-api.eu-north-1.amazonaws.com/dev/user/create",
+=======
+        "https://snb7yzqm7k.execute-api.eu-north-1.amazonaws.com/dev/user/create",
+>>>>>>> Emma
         {
           method: "POST",
           headers: {
@@ -37,7 +42,14 @@ const CreateAccount = () => {
         const data = await response.json();
         console.log("Account created successfully:", data);
         setSuccess(true);
+<<<<<<< HEAD
         navigate("/");
+=======
+
+        setTimeout(() => {
+          navigate("/"); // Redirect to homepage after account creation
+        }, 2000); // Wait for 2 seconds before redirecting
+>>>>>>> Emma
       } else {
         const errorData = await response.json();
         console.error("Error response from server:", errorData);
@@ -74,6 +86,19 @@ const CreateAccount = () => {
             />
           </div>
           <div className="form-group">
+<<<<<<< HEAD
+=======
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+>>>>>>> Emma
             <label htmlFor="name">Name:</label>
             <input
               type="text"
@@ -83,6 +108,7 @@ const CreateAccount = () => {
               required
             />
           </div>
+<<<<<<< HEAD
           <div className="form-group">
             <label htmlFor="password">Password:</label>
             <input
@@ -93,6 +119,8 @@ const CreateAccount = () => {
               required
             />
           </div>
+=======
+>>>>>>> Emma
           <div className="form-group">
             <label htmlFor="address">Address:</label>
             <input
@@ -117,6 +145,11 @@ const CreateAccount = () => {
             Create Account
           </button>
         </form>
+        {/* Back to homepage button */}
+      <div className="back-button" onClick={() => navigate("/")}>
+        <FaArrowLeft size={24} /> {/* You can adjust the size of the arrow */}
+        <span>Back to Home</span>
+      </div>
       </div>
     </div>
   );
