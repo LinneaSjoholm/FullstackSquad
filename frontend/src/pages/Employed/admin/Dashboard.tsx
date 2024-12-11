@@ -38,21 +38,24 @@ const Dashboard: React.FC = () => {
     <p className="dashboard-date">{currentDateTime}</p>
 
       <ul className="dashboard-navigation">
+      <li
+          className="dashboard-item"
+          onClick={() => navigate('/admin/orders')}>
+          Orders
+        </li>
+        
+      <li
+          className="dashboard-item"
+          onClick={() => navigate('/admin/menu')}>
+          Menu
+        </li>
+
         <li
           className="dashboard-item"
           onClick={() => navigate('/admin/stock')}>
           Stock
         </li>
-        <li
-          className="dashboard-item"
-          onClick={() => navigate('/admin/orders')}>
-          Orders
-        </li>
-        <li
-          className="dashboard-item"
-          onClick={() => navigate('/admin/menu')}>
-          Menu
-        </li>
+
         <li
           className="dashboard-item logout"
           onClick={() => navigate('/admin/logout')}>

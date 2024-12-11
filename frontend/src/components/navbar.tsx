@@ -19,6 +19,12 @@ export const Navbar: React.FC = () => {
                     Dashboard
                 </li>
                 <li
+                    className={`navbar-item ${isActive("/admin/orders") ? "active" : ""}`}
+                    onClick={() => navigate("/admin/orders")}
+                >
+                    Orders
+                </li>
+                <li
                     className={`navbar-item ${isActive("/admin/menu") ? "active" : ""}`}
                     onClick={() => navigate("/admin/menu")}
                 >
@@ -28,14 +34,9 @@ export const Navbar: React.FC = () => {
                     className={`navbar-item ${isActive("/admin/stock") ? "active" : ""}`}
                     onClick={() => navigate("/admin/stock")}
                 >
-                    Stockstatus
+                    Stock
                 </li>
-                <li
-                    className={`navbar-item ${isActive("/admin/orders") ? "active" : ""}`}
-                    onClick={() => navigate("/admin/orders")}
-                >
-                    Orders
-                </li>
+
             </ul>
         </div>
     );

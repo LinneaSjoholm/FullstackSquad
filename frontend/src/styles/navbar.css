@@ -2,7 +2,7 @@
   top: 0;
   left: 0;
   background-color: var(--color-button);
-  padding: 20px 15px;
+  padding: 40px;
   width: 100%;
   position: fixed;
   z-index: 1000;
@@ -39,7 +39,7 @@
 /* Responsiv design för skärmar mindre än 390px */
 @media screen and (max-width: 390px) {
   .navbar {
-    padding: 10px 5px; 
+    padding: 20px; 
   }
 
   .navbar-links {
