@@ -1,8 +1,8 @@
 .contact-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-start;
+    justify-content: center; /* Centrera horisontellt */
+    align-items: flex-start; /* Standardlayout för desktop */
     gap: 40px;
     padding: 40px;
   }
@@ -117,6 +117,8 @@
   @media (max-width: 768px) {
     .contact-container {
       flex-direction: column; /* Ändra layout till kolumn */
+      justify-content: center; /* Centrera horisontellt */
+      align-items: center; /* Centrera vertikalt */
       gap: 20px; /* Mindre mellanrum */
       padding: 20px; /* Mindre padding */
     }
@@ -124,32 +126,42 @@
     .map-section,
     .form-section {
       max-width: 100%; /* Anpassa bredden till skärmen */
+      text-align: center; /* Centrera text */
     }
   
     .contact-details {
       flex-direction: column; /* Ändra layout till kolumn */
+      align-items: center; /* Centrera horisontellt */
+      justify-content: center; /* Placera i mitten */
       gap: 15px; /* Mindre mellanrum */
-      font-size: 0.9rem; /* Minska textstorleken */
     }
   
     .map {
       margin: 20px 0; /* Mindre marginaler */
     }
   
+    .contact-form {
+      align-items: center; /* Centrera formuläret */
+      width: 100%; /* Fyll hela bredden */
+    }
+  
     .contact-form input,
     .contact-form textarea {
       font-size: 0.9rem; /* Mindre textstorlek */
       padding: 8px; /* Mindre padding */
+      margin: 0 auto; /* Centrera fälten */
     }
   
     .contact-form button {
       font-size: 0.9rem; /* Anpassa knappstorlek */
       padding: 8px 15px;
+      margin: 0 auto; /* Centrera knappen */
     }
   
     .submit-button {
       font-size: 0.9rem; /* Anpassa knappstorlek */
       padding: 8px 15px;
+      margin: 0 auto; /* Centrera knappen */
     }
   }
   

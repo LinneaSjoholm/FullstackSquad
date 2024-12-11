@@ -9,7 +9,7 @@ const Contact: React.FC = () => {
         <div className="map">
           <iframe
             title="Gusto Italiano Location"
-            src="https://www.google.com/maps/embed?pb=YOUR_MAP_EMBED_URL"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3934.4079535343853!2d100.02525747594865!3d9.560057156043452!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3054f08c0f703447%3A0x5ac875dc556675b7!2sGusto%20Italiano!5e0!3m2!1ssv!2s!4v1733894668612!5m2!1ssv!2s"
             width="100%"
             height="300"
             style={{ border: 0 }}
@@ -44,3 +44,4 @@ const Contact: React.FC = () => {
 };
 
 export default Contact;
+
