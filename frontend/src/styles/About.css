@@ -1,102 +1,122 @@
 /* Main Content */
+.about-message {
+  color: var(--color-beige);
+  margin-top: 30px;
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+}
+.about-message h1 {
+  font-family: 'Source Serif 4', sans-serif;
+  font-size: 3rem;
+  color: var(--color-beige);
+  text-transform: uppercase;
+}
+
 .content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  background-color: black;
   padding: 20px;
   border-radius: 20px;
-  width: 90%; /* Anpassa bredden för mobil */
-  margin: 20px auto; /* Reducera marginalerna för mobil */
+  width: 90%; 
+  margin: 20px auto;
+  color: var(--color-beige);
+  font-family: Roboto, sans-serif;
 }
 
 .story-section,
 .team-section,
 .vision-section {
-  margin-bottom: 20px; /* Mindre avstånd för mobil */
+  margin-bottom: 20px;
 }
 
 .story-section h2,
 .story-section h3,
 .team-section h3,
 .vision-section h3 {
-  font-family: 'Serif', serif;
-  color: #333;
+  font-family: Source Serif 4, sans-serif;
+  color: var(--color-beige);
 }
 
 /* Team Section */
 .team-section {
-  background-color: black;
-  padding: 15px; /* Mindre padding för mobil */
+  background-color: var(--color-blue);
+  padding: 15px;
   border-radius: 10px;
 }
 
 .team-members {
   display: flex;
-  flex-direction: column; /* Byt till kolumnlayout för mobil */
+  flex-direction: column; 
   align-items: center;
 }
 
 .team-card {
-  background-color: black;
+  background-color: var(--color-beige);
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 90%; /* Gör korten bredare för mobil */
-  margin: 10px 0; /* Mer vertikalt mellanrum */
+  width: 50%; 
+  margin: 10px 0;
   text-align: center;
-  padding: 15px; /* Mindre padding för mobil */
+  padding: 15px; 
 }
 
 .team-photo {
-  width: 80px; /* Mindre storlek för mobil */
+  width: 80px;
   height: 80px;
   border-radius: 50%;
   margin-bottom: 10px;
 }
 
 .team-description {
-  font-size: 0.8rem; /* Mindre textstorlek för mobil */
-  color: #555;
+  font-size: 0.8rem; 
+  color: var(--color-button);
+  font-family: Roboto, sans-serif;
 }
 
-/* Vision Section */
+.meet-the-team-section {
+  padding: 15px; 
+  font-family: Roboto, sans-serif;
+}
+
 .vision-section {
-  background-color: #448ca6;
-  padding: 15px; /* Mindre padding för mobil */
-  border-radius: 10px;
+  padding: 15px;
+  font-family: Roboto, sans-serif;
+
 }
 
 /* Responsiv design för mobil */
 @media (max-width: 768px) {
   .content {
-    width: 90%; /* Gör huvudsektionen smalare */
-    margin: 10px auto; /* Minska marginalerna */
+    width: 90%;
+    margin: 10px auto; 
     padding: 15px;
   }
 
   .team-members {
-    flex-direction: column; /* Visa teammedlemmar i en kolumn */
+    flex-direction: column; 
   }
 
   .team-card {
-    width: 100%; /* Gör korten fullbredd */
-    margin: 10px 0; /* Mer vertikalt avstånd */
+    width: 100%;
+    margin: 10px 0;
   }
 
   .team-photo {
-    width: 70px; /* Mindre storlek på bilder */
+    width: 70px;
     height: 70px;
   }
 
   .vision-section {
-    padding: 10px; /* Mindre padding */
+    padding: 10px;
   }
 
   .story-section,
   .team-section,
   .vision-section {
-    margin-bottom: 20px; /* Reducera avståndet mellan sektioner */
+    margin-bottom: 20px;
   }
 }

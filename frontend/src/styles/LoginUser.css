@@ -8,7 +8,7 @@
   background-size: cover; 
   background-position: center; 
   }
-
+.header
   .login-container::after {
     content: "";
     position: absolute;

@@ -1,19 +1,32 @@
 .header {
-  background-color: #333;
-  color: white;
+  color: #F4E7D3;
   width: 100%;
   height: 315px;
   flex-shrink: 0;
   display: flex;
+  text-align: center;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  color: var(--color-beige)
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 110%;
+  height: 110%;
   background-image: url('/images/background-header.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  backface-visibility: hidden;
-  position: relative;
+  filter: blur(2px);
+  z-index: -1;
+  transform: translate(-5%, -5%);
 }
 
 .header h1 {
@@ -22,6 +35,7 @@
   position: relative;
   top: -20px;
   text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
 .header p {
@@ -33,6 +47,7 @@
   text-transform: uppercase;
   text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
   letter-spacing: 4px;
+  z-index: 1;
 }
 
 .menu-icon {
@@ -78,4 +93,39 @@
 
 .sidebar ul li:hover {
   background-color: var(--color-blue);
+}
+
+
+@media (max-width: 768px) {
+  .header {
+    height: 200px;
+    background-position: center;
+  }
+
+  .header h1 {
+    font-size: 8rem;
+    top: 0; 
+  }
+
+  .header p {
+    font-size: 1rem;
+    top: -40px;
+    left: 60px;
+    text-align: center;
+  }
+
+  .menu-icon {
+    font-size: 1.2rem;
+    top: 10px;
+    left: 10px;
+  }
+
+  .sidebar {
+    width: 200px;
+  }
+
+  .sidebar ul li {
+    font-size: 1rem;
+    padding: 10px;
+  }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "../styles/Confirmation.css";
-import { CartItem } from "../../src/interfaces/index"; 
+import { CartItem } from "../../interfaces/index"; 
+import "../../styles/Confirmation.css";
 
 const Confirmation: React.FC = () => {
   const location = useLocation();

@@ -7,7 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { db } from '../services/db'; // Importera db från din db-modul
+import { DocumentClient } from 'aws-sdk/clients/dynamodb';
+const dynamoDb = new DocumentClient();
 // Utility function to normalize ingredients
 const normalizeIngredients = (ingredients) => {
     return ingredients ? ingredients.map((ingredient) => ingredient.S) : [];
@@ -42,7 +43,7 @@ export const putReviewOrder = (event) => __awaiter(void 0, void 0, void 0, funct
         Key: { orderId },
     };
     try {
-        const orderResult = yield db.get(orderParams); // Använd db.get istället för dynamoDb.get
+        const orderResult = yield dynamoDb.get(orderParams).promise();
         if (!orderResult.Item) {
             return {
                 statusCode: 404,
@@ -51,7 +52,7 @@ export const putReviewOrder = (event) => __awaiter(void 0, void 0, void 0, funct
         }
         const originalItems = orderResult.Item.items || [];
         const menuParams = { TableName: 'MenuTable' };
-        const menuResult = yield db.scan(menuParams); // Använd db.scan istället för dynamoDb.scan
+        const menuResult = yield dynamoDb.scan(menuParams).promise();
         if (!menuResult.Items || menuResult.Items.length === 0) {
             return {
                 statusCode: 500,
@@ -175,7 +176,7 @@ export const putReviewOrder = (event) => __awaiter(void 0, void 0, void 0, funct
             TableName: 'OrdersTable',
             Item: updatedOrder,
         };
-        yield db.put(updateParams); // Använd db.put istället för dynamoDb.put
+        yield dynamoDb.put(updateParams).promise();
         return {
             statusCode: 200,
             body: JSON.stringify({

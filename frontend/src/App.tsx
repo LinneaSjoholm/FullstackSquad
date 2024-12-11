@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import Menu from './pages/menu';
 import CreateOrder from './pages/Customer/CreateOrder';
 import ReviewOrder from './pages/Customer/ReviewOrder';
-import OrderDashboard from './pages/Employed/admin/OrderDashboard';
+import Dashboard from './pages/Employed/admin/Dashboard';
 import StockDashboard from './pages/Employed/admin/StockStatus';
 import { CartItem } from './interfaces/index'; 
-import MenuAdmin from './pages/Employed/MenuAdmin';
+import MenuAdmin from './pages/Employed/admin/MenuAdmin';
 import Profile from "./pages/Customer/Profile";
 import Login from "./pages/Customer/Login";
 import CreateAccount from "./pages/Customer/CreateAccount";
 import LoginAdmin from "./pages/Employed/Login";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import About from "./components/About";
-import Contact from "./components/Contact";
-import Confirmation from "./components/Confirmation";
 import PaymentOverlay from './components/PaymentOverlay';
+import About from "./pages/Customer/About";
+import Contact from "./pages/Customer/Contact";
+import Confirmation from "./pages/Customer/Confirmation";
+import OrderDashboard from './pages/Employed/admin/OrderDashboard';
 
 const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -40,9 +41,15 @@ const App: React.FC = () => {
     console.log('Payment failed');
   };
 
+  // Hämta den aktuella sökvägen
+  const location = useLocation();
+
+  // Lista över sidor där Header och Footer ska döljas
+  const hideHeaderFooterPaths = ['/admin/login', '/user/login', '/user/create', '/admin/dashboard', '/admin/orders', '/admin/stock', '/admin/menu'];
+
   return (
-    <Router>
-      <Header />
+    <>
+      {!hideHeaderFooterPaths.includes(location.pathname) && <Header />}
 
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -72,9 +79,9 @@ const App: React.FC = () => {
           } 
         />
       </Routes>
-
-      <Footer />
-    </Router>
+  
+      {!hideHeaderFooterPaths.includes(location.pathname) && <Footer />}
+    </>
   );
 };
 
