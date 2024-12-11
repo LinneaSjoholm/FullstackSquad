@@ -9,6 +9,11 @@ export const Navbar: React.FC = () => {
         <ul className="navbar-links">
             <li
             className="navbar-item"
+            onClick={() => navigate("/admin/dashboard")}>
+            Dashboard
+            </li>
+            <li
+            className="navbar-item"
             onClick={() => navigate("/admin/menu")}
             >
             Menu
