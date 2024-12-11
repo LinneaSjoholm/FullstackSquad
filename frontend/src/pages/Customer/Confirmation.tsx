@@ -1,11 +1,14 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { CartItem } from "../../interfaces/index"; 
 import "../../styles/Confirmation.css";
 
 const Confirmation: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { orderId, updatedTotalPrice, updatedItems } = location.state || {};
+
+  // Ta emot state från PaymentOverlay
+  const { orderId, updatedTotalPrice, updatedItems }: { orderId: string; updatedTotalPrice: number; updatedItems: CartItem[] } = location.state || {};
 
   return (
     <div className="container">
@@ -18,25 +21,27 @@ const Confirmation: React.FC = () => {
         <section className="order-summary">
           <h3>Order #{orderId}</h3>
           <ul className="order-items">
-            {updatedItems?.map((item: any, index: number) => (
+            {updatedItems?.map((item: CartItem, index: number) => (
               <li key={index} className="order-item">
                 <span>{item.name} x {item.quantity}</span>
-                <span>${item.price * item.quantity}</span>
+                <span>${(item.price * item.quantity).toFixed(2)}</span>
 
-                {/* Show selected drink */}
+                {/* Visa vald dryck */}
                 {item.drinkName && (
                   <p><strong>Drink:</strong> {item.drinkName}</p>
                 )}
 
-                {/* Show add/remove ingredients */}
-                {item.ingredientsToAdd?.length > 0 && (
+                {/* Visa tillagda ingredienser, med säkerhetskontroll för undefined */}
+                {item.ingredientsToAdd && item.ingredientsToAdd.length > 0 && (
                   <p><strong>Add Ingredients:</strong> {item.ingredientsToAdd.join(', ')}</p>
                 )}
-                {item.ingredientsToRemove?.length > 0 && (
+                
+                {/* Visa borttagna ingredienser, med säkerhetskontroll för undefined */}
+                {item.ingredientsToRemove && item.ingredientsToRemove.length > 0 && (
                   <p><strong>Remove Ingredients:</strong> {item.ingredientsToRemove.join(', ')}</p>
                 )}
 
-                {/* Show dietary preferences */}
+                {/* Visa dieter */}
                 {item.lactoseFree && (
                   <p><strong>Lactose Free</strong></p>
                 )}
@@ -51,7 +56,7 @@ const Confirmation: React.FC = () => {
 
           <div className="order-total">
             <span>Total</span>
-            <span>${updatedTotalPrice}</span>
+            <span>${updatedTotalPrice?.toFixed(2)}</span>
           </div>
 
           <div className="delivery-info">
@@ -72,4 +77,3 @@ const Confirmation: React.FC = () => {
 };
 
 export default Confirmation;
-

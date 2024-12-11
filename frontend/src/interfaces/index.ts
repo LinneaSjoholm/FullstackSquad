@@ -11,7 +11,7 @@ export interface MenuItem {
   popularity?: number;
   updatedAt?: string;
   drinkId?: string;
-  image?: string | null; // Lägg till image här 
+  image?: string | null; 
 }
 
 
@@ -31,10 +31,10 @@ export interface CartItem extends OrderItem {
   ingredientsToAdd?: string[];
   ingredientsToRemove?: string[];
   drinkId?: string;
-  drinkName?: string;  // Add this field
+  drinkName?: string;  
   lactoseFree?: boolean;
   glutenFree?: boolean;
-  description?: string; // Add this field
+  description?: string; 
   id: string;
   name: string;
   quantity: number;
@@ -47,14 +47,14 @@ export interface CustomerOrder {
   orderId: string;
   items: OrderItem[];
   totalPrice: number;
-  status: 'pending' | 'confirmed' | 'canceled';  // Order status
+  status: 'pending' | 'confirmed' | 'canceled'; 
 }
 
 // Ingredient interface for ingredient details
 export interface Ingredient {
   name: string;
   description?: string;
-  allergens?: string[];  // Possible allergens in the ingredient
+  allergens?: string[];  
 }
 
 const handleSave = async (
@@ -64,8 +64,24 @@ const handleSave = async (
   updatedIngredients: string[],
   updatedImage: string
 ) => {
-  updatedImage = updatedImage || '';  // Ensure it's a string
+  updatedImage = updatedImage || '';  
 
-  // Now you can safely use updatedImage
-  // ...
 };
+interface OrderData {
+  customerName: string;
+  customerPhone: string; 
+  items: any[];  
+  totalPrice: number;
+  orderId: string;
+}
+
+interface PaymentOverlayProps {
+  order: {
+    totalPrice: number;
+    customerName: string;
+    customerPhone: string;
+    items: CartItem[];
+  };
+  onClose: () => void;
+  onOrder: () => void;
+}
