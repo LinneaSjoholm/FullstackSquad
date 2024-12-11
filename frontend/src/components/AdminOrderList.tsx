@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { lockOrder, adminGetOrders, updateOrder, markOrderAsCompleted } from '../api/AdminOrderApi';
+import { lockOrder, adminGetOrders, updateOrder, markOrderAsComplete } from '../api/AdminOrderApi';
 import '../styles/adminOrderList.css';
 
 const AdminOrderList: React.FC = () => {
@@ -10,7 +10,9 @@ const AdminOrderList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [newStatus, setNewStatus] = useState<string>('');
-  const [commentToChef, setCommentToChef] = useState<string>(''); 
+  const [commentToChef, setCommentToChef] = useState<string>('');
+  const [updateMessage, setUpdateMessage] = useState<string | null>(null);
+  
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -20,7 +22,7 @@ const AdminOrderList: React.FC = () => {
         if (response.statusCode === 200) {
           setOrders(response.body);
         } else {
-          setError(response.body.message);
+          setError(response.body.message || 'Failed to fetch orders.');
         }
       } catch (err) {
         setError('An error occurred while fetching orders.');
@@ -31,6 +33,32 @@ const AdminOrderList: React.FC = () => {
 
     fetchOrders();
   }, []);
+
+  const handleUpdateOrder = async () => {
+    if (selectedOrderId && newStatus && commentToChef !== null) {
+      try {
+        const updatedOrder = await updateOrder(selectedOrderId, newStatus, commentToChef);
+
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.orderId === selectedOrderId
+              ? {
+                  ...order,
+                  status: updatedOrder.status,
+                  messageToChef: updatedOrder.messageToChef,
+                }
+              : order
+          )
+        );
+        setUpdateMessage('Order updated successfully!');
+      } catch (error) {
+        console.error('Error updating order:', error);
+        setUpdateMessage('Failed to update order.');
+      }
+    } else {
+      setUpdateMessage('Please provide a valid status and message to chef');
+    }
+  };
 
   const handleLockOrder = async (orderId: string) => {
     try {
@@ -48,53 +76,25 @@ const AdminOrderList: React.FC = () => {
 
   const handleMarkAsCompleted = async (orderId: string) => {
     try {
-      const updatedOrder = await markOrderAsCompleted(orderId);
+      const updatedOrder = await markOrderAsComplete(orderId);
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.orderId === orderId
-            ? { ...order, status: 'completed' } 
+            ? { ...order, status: 'completed' }
             : order
         )
       );
-      alert('Order marked as completed.');
     } catch (error) {
       console.error('Error marking order as completed:', error);
       alert('Failed to mark order as completed.');
     }
   };
 
-  const handleUpdateOrder = async () => {
-    if (selectedOrderId && newStatus && commentToChef !== null) {
-      try {
-        console.log('Updating order with values:', {
-          selectedOrderId,
-          newStatus,
-          commentToChef,
-        });
 
-        const updatedOrder = await updateOrder(selectedOrderId, newStatus, commentToChef);
 
-   
-        setOrders((prevOrders) =>
-          prevOrders.map((order) =>
-            order.orderId === selectedOrderId
-              ? {
-                  ...order,
-                  status: updatedOrder.status, 
-                  messageToChef: updatedOrder.messageToChef,
-                }
-              : order
-          )
-        );
-        alert('Order updated successfully!');
-        setIsModalOpen(false);
-      } catch (error) {
-        console.error('Error updating order:', error);
-        alert('Failed to update order.');
-      }
-    } else {
-      alert('Please provide a valid status and message to chef');
-    }
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setUpdateMessage(null); // Reset the message when the modal is closed
   };
 
   if (loading) return <p>Loading orders...</p>;
@@ -130,7 +130,6 @@ const AdminOrderList: React.FC = () => {
                     setSelectedOrderId(order.orderId);
                     setNewStatus(order.status || '');
                     setCommentToChef(order.messageToChef || '');
-                    console.log('Selected Order ID:', order.orderId);
                     setIsModalOpen(true);
                   }}
                 >
@@ -187,6 +186,9 @@ const AdminOrderList: React.FC = () => {
       {isModalOpen && (
         <div className="modal">
           <div className="modal-content">
+            <button className="close-btn-modal" onClick={closeModal}>
+              &times;
+            </button>
             <h3>Update Order Status</h3>
             <label>Status:</label>
             <input
@@ -200,8 +202,11 @@ const AdminOrderList: React.FC = () => {
               onChange={(e) => setCommentToChef(e.target.value)}
               placeholder="Add a comment for the chef (e.g. allergies, special requests)"
             />
-            <button className="update-btn" onClick={handleUpdateOrder}>Update</button>
-            <button className="cancel-btn" onClick={() => setIsModalOpen(false)}>
+            {updateMessage && <p className="update-message">{updateMessage}</p>}
+            <button className="update-btn-modal" onClick={handleUpdateOrder}>
+              Update
+            </button>
+            <button className="cancel-btn-modal" onClick={closeModal}>
               Cancel
             </button>
           </div>

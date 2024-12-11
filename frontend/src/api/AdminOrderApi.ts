@@ -31,7 +31,7 @@ export const adminGetOrders = async (): Promise<any> => {
 
 export const updateOrder = async (orderId: string, newStatus: string, commentToChef: string) => {
   try {
-    const response = await fetch(`https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/order/${orderId}/update`, {
+    const response = await fetch(`https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/order/update/${orderId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -42,8 +42,6 @@ export const updateOrder = async (orderId: string, newStatus: string, commentToC
         messageToChef: commentToChef,
       }),
     });
-
-    console.log('API response status:', response.status);
 
     // Kontrollera om svaret är OK
     if (!response.ok) {
@@ -66,11 +64,9 @@ export const updateOrder = async (orderId: string, newStatus: string, commentToC
 };
 
 export const lockOrder = async (orderId: string) => {
-  const apiUrl = `https://j9vnr3bolg.execute-api.eu-north-1.amazonaws.com/dev/admin/order/${orderId}/lock`;
-  
   try {
-    const response = await fetch(apiUrl, {
-      method: 'POST',
+    const response = await fetch(`https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/order/lock/${orderId}`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
@@ -88,10 +84,10 @@ export const lockOrder = async (orderId: string) => {
   }
 };
 
-export const markOrderAsCompleted = async (orderId: string) => {
+export const markOrderAsComplete = async (orderId: string) => {
   try {
-    const response = await fetch(`https://j9vnr3bolg.execute-api.eu-north-1.amazonaws.com/dev/admin/order/${orderId}/mark-as-completed`, {
-      method: 'POST',
+    const response = await fetch(`https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/order/complete/${orderId}`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',

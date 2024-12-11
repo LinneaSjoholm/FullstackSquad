@@ -137,6 +137,21 @@ functions:
             methods:
               - PATCH
 
+  adminMarkOrderAsComplete:
+    handler: src/handlers/adminMarkOrderAsComplete.adminMarkOrderAsComplete
+    events:
+      - httpApi:
+          path: /admin/order/complete/{id}
+          method: patch
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - Authorization
+              - x-api-key
+            methods:
+              - PATCH
+
   deleteOrder:
     handler: src/handlers/deleteOrder.deleteOrder
     events:

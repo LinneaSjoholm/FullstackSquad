@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../../../styles/adminDashboard.css';
 import { useNavigate } from 'react-router-dom';
+import { Navbar } from '../../../components/navbar';
 
 
 const Dashboard: React.FC = () => {
@@ -28,6 +29,9 @@ const Dashboard: React.FC = () => {
   }, []);
 
   return (
+    <>
+    <Navbar />
+    
     <div className="dashboard-container">
         
       <h1 className="dashboard-header">Dashboard</h1>
@@ -55,6 +59,7 @@ const Dashboard: React.FC = () => {
         </li>
       </ul>
     </div>
+    </>
   );
 };
 
