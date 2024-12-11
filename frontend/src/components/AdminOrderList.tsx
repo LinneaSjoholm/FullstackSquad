@@ -37,7 +37,7 @@ const AdminOrderList: React.FC = () => {
   const handleUpdateOrder = async () => {
     if (selectedOrderId && newStatus && commentToChef !== null) {
       try {
-        const updatedOrder = await updateOrder(selectedOrderId, newStatus, commentToChef);
+        const updatedOrder = await updateOrder(selectedOrderId, newStatus, commentToChef, false);
 
         setOrders((prevOrders) =>
           prevOrders.map((order) =>

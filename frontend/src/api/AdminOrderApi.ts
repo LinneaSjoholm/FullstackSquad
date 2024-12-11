@@ -29,7 +29,7 @@ export const adminGetOrders = async (): Promise<any> => {
   }
 };
 
-export const updateOrder = async (orderId: string, newStatus: string, commentToChef: string) => {
+export const updateOrder = async (orderId: string, newStatus: string, commentToChef: string, locked: boolean) => {
   try {
     const response = await fetch(`https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/order/update/${orderId}`, {
       method: 'PATCH',
@@ -40,6 +40,7 @@ export const updateOrder = async (orderId: string, newStatus: string, commentToC
       body: JSON.stringify({
         status: newStatus,
         messageToChef: commentToChef,
+        locked: locked, // Lägger till locked här
       }),
     });
 
@@ -62,6 +63,7 @@ export const updateOrder = async (orderId: string, newStatus: string, commentToC
     throw error; 
   }
 };
+
 
 export const lockOrder = async (orderId: string) => {
   try {
