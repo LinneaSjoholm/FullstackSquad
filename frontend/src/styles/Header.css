@@ -1,0 +1,131 @@
+.header {
+  color: #F4E7D3;
+  width: 100%;
+  height: 315px;
+  flex-shrink: 0;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  color: var(--color-beige)
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 110%;
+  height: 110%;
+  background-image: url('/images/background-header.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(2px);
+  z-index: -1;
+  transform: translate(-5%, -5%);
+}
+
+.header h1 {
+  font-family: Kolker Brush, sans-serif;
+  font-size: 15rem;
+  position: relative;
+  top: -20px;
+  text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.header p {
+  font-family: Roboto, sans-serif;
+  font-size: 1.5rem;
+  position: relative;
+  top: -100px;
+  left: 100px;
+  text-transform: uppercase;
+  text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  letter-spacing: 4px;
+  z-index: 1;
+}
+
+.menu-icon {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  color: var(--color-beige);
+}
+
+.sidebar {
+  font-family: Roboto, sans-serif;
+  text-transform: uppercase;
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: var(--color-button);
+  transition: left 0.3s ease;
+  z-index: 5;
+  padding-top: 50px;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 50px;
+}
+
+.sidebar ul li {
+  padding: 15px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--color-beige);
+}
+
+.sidebar ul li:hover {
+  background-color: var(--color-blue);
+}
+
+
+@media (max-width: 768px) {
+  .header {
+    height: 200px;
+    background-position: center;
+  }
+
+  .header h1 {
+    font-size: 8rem;
+    top: 0; 
+  }
+
+  .header p {
+    font-size: 1rem;
+    top: -40px;
+    left: 60px;
+    text-align: center;
+  }
+
+  .menu-icon {
+    font-size: 1.2rem;
+    top: 10px;
+    left: 10px;
+  }
+
+  .sidebar {
+    width: 200px;
+  }
+
+  .sidebar ul li {
+    font-size: 1rem;
+    padding: 10px;
+  }
+}

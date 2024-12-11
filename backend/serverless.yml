@@ -1,13 +1,20 @@
-service: restaurant-api
+service: take-away-backend
+
+frameworkVersion: "4"
 
 provider:
   name: aws
   runtime: nodejs18.x
   region: eu-north-1
+  environment:
+    API_KEY: ${env:API_KEY}
+    USERS_TABLE: UsersTable
+    PAYMENTS_TABLE: Payments
+    JWT_SECRET: ${env:JWT_SECRET}
   iam:
     role:
       statements:
-        - Effect: "Allow"
+        - Effect: Allow
           Action:
             - dynamodb:Query
             - dynamodb:Scan
@@ -15,208 +22,353 @@ provider:
             - dynamodb:PutItem
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
-          Resource: "*"
-  httpApi:
-      cors:
-        allowedOrigins:
-          - '*'  
-        allowedMethods:
-          - GET
-          - POST
-          - PUT
-          - DELETE
-        allowedHeaders:
-          - Content-Type
-          - X-Amz-Date
-          - Authorization
-          - X-Api-Key
-          - X-Amz-Security-Token
+            - dynamodb:BatchGetItem
+          Resource: 
+            - '*'
 
-package:
-  individually: true
-      
-# General Endpoints
 functions:
-  getHome:
-    handler: src/pages/getHome.home
-    events:
-      - httpApi:
-          path: /home
-          method: get
-
   getMenu:
-    handler: src/pages/getMenu.menu
+    handler: src/handlers/getMenu.getMenu
     events:
       - httpApi:
           path: /menu
           method: get
+          cors: true
 
   getAbout:
-    handler: src/pages/getAbout.about
+    handler: src/handlers/getAbout.handler
     events:
       - httpApi:
           path: /about
           method: get
 
   getConfirmation:
-    handler: src/pages/getConfirmation.confirmation
+    handler: src/handlers/getConfirmation.handler
     events:
       - httpApi:
-          path: /confirmation
+          path: /confirmation/{id}
           method: get
-        
+
   getContact:
-    handler: src/pages/getContact.contact
+    handler: src/handlers/getContact.handler
     events:
       - httpApi:
           path: /contact
           method: get
 
-# User Endpoints
-
-# Post
-  register:
-    handler: src/controllers/authController.register
+  postOrder:
+    handler: src/handlers/postOrder.postOrder
     events:
       - httpApi:
-          path: user/register
+          path: /order
           method: post
 
-  login:
-    handler: src/controllers/authController.login
+  getOrder:
+    handler: src/handlers/getOrder.getOrder
     events:
       - httpApi:
-          path: user/login
-          method: post
+          path: /order/{id}
+          method: get
 
-  logout:
-    handler: src/controllers/authController.logout
+  getOrderReview:
+    handler: src/handlers/getOrderReview.getOrderReview
     events:
       - httpApi:
-          path: user/logout
-          method: post
+          path: /order/review/{id}
+          method: get
 
-  order:
-    handler: src/controllers/orderController.submitOrder
+  putReviewOrder:
+    handler: src/handlers/putReviewOrder.putReviewOrder
     events:
       - httpApi:
-          path: user/order
-          method: post
-
-# Put
-  updateOrderOverview:
-    handler: src/controllers/orderController.updateOrderOverview
-    events:
-      - httpApi:
-          path: user/order/{orderId}/overview
+          path: /order/reviewOrder/{id}
           method: put
 
-# Delete
+  getStockStatus:
+    handler: src/handlers/getStockStatus.getStockStatus
+    events:
+      - httpApi:
+          path: /admin/stock-status
+          method: get
+
+  adminGetOrders:
+    handler: src/handlers/adminGetOrders.adminGetOrders
+    events:
+      - httpApi:
+          path: /admin/orders
+          method: get
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - Authorization
+              - x-api-key
+            methods:
+              - GET
+              - OPTIONS
+
+  updateOrderDetails:
+    handler: src/handlers/adminUpdateOrder.adminUpdateOrder
+    events:
+      - httpApi:
+          path: /admin/order/update/{id}
+          method: patch
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - Authorization
+              - x-api-key
+            methods:
+              - PATCH
+              - OPTIONS
+
+  adminMarkOrderAsCompleted:
+    handler: src/handlers/adminMarkOrderAsCompleted.adminMarkOrderAsCompleted
+    events:
+      - http:
+          path: /admin/order/mark-as-completed/{id}
+          method: post
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - Authorization
+              - x-api-key
+            methods:
+              - POST
+              - OPTIONS
+
+  adminLockOrder:
+    handler: src/handlers/adminLockOrder.adminLockOrder
+    events:
+      - http:
+          path: /admin/order/lock/{id}
+          method: post
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - Authorization
+              - X-Amz-Date
+              - X-Amz-Security-Token
+              - x-api-key
+            methods:
+              - POST
+              - OPTIONS
+
   deleteOrder:
-    handler: src/controllers/orderController.deleteOrder
+    handler: src/handlers/deleteOrder.deleteOrder
     events:
       - httpApi:
-          path: user/order/{id}
+          path: /order/delete/{id}
           method: delete
+          cors: true
 
-
-# Admin Endpoints
-
-# Get
-  getOrders:
-    handler: src/controllers/adminController.getOrders
+  putMenuAdmin:
+    handler: src/handlers/putMenuAdmin.putMenuAdmin
     events:
       - httpApi:
-          path: admin/orders
-          method: get
-
-  getInventory:
-    handler: src/controllers/adminController.getInventory
-    events:
-      - httpApi:
-          path: admin/inventory
-          method: get
-
-# Post
-
-  loginAdmin:
-    handler: src/controllers/authController.login
-    events:
-      - httpApi:
-          path: admin/login
-          method: post
-  
-  addMenuItem:
-    handler: src/controllers/adminController.addMenuItem
-    events:
-      - httpApi:
-          path: admin/menu
-          method: post
-
-  addOrderComment:
-    handler: src/controllers/adminController.addOrderComment
-    events:
-      - httpApi:
-          path: admin/orders/{orderId}/comment
-          method: post
-
-# Put
-  updateMenuItem:
-    handler: src/controllers/adminController.updateMenuItem
-    events:
-      - httpApi:
-          path: admin/menu/{itemId}
+          path: /admin/menu
           method: put
+          cors: true
+          headers:
+            x-api-key: true
 
-  lockOrder:
-    handler: src/controllers/adminController.lockOrder
+  postCreateUser:
+    handler: src/handlers/postcreateUser.handler
     events:
       - httpApi:
-          path: admin/orders/{orderId}/lock
-          method: put
+          path: /user/create
+          method: post
+          cors: 
+          origin: "*"
+          headers:
+            - Content-Type
+            - Authorization
+            - X-Requested-With
+            - Access-Control-Allow-Origin
+            - Access-Control-Allow-Headers
 
-  updateInventory:
-    handler: src/controllers/adminController.updateInventory
+
+  postLoginUser:
+    handler: src/handlers/postloginUser.handler
     events:
       - httpApi:
-          path: admin/inventory/{itemId}
-          method: put
+          path: /user/login
+          method: post
+          cors:
+          origin: "*"
+          headers:
+            - Content-Type
+            - Authorization
+            - X-Requested-With
+            - Access-Control-Allow-Origin
+            - Access-Control-Allow-Headers
+
+  postLoginAdmin:
+    handler: src/handlers/postloginAdmin.handler
+    events:
+      - httpApi:
+          path: /admin/login
+          method: post
+          cors: true
+
+  postPayment:
+    handler: src/handlers/postPayment.handler
+    events:
+      - httpApi:
+          path: /payment
+          method: post
+          cors: true
+          
+  postLogoutUser:
+    handler: src/handlers/logoutHandler.logoutHandler
+    events:
+      - httpApi:
+          path: /user/logout
+          method: post
+          cors: true
+
+  postLogoutAdmin:
+    handler: src/handlers/logoutHandler.logoutHandler
+    events:
+      - httpApi:
+          path: /admin/logout
+          method: post
+          cors: true
 
 resources:
   Resources:
+    IngredientsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: IngredientsTable
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
     MenuTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Menu
+        TableName: MenuTable
         AttributeDefinitions:
-          - AttributeName: id
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    PaymentsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Payments
+        AttributeDefinitions:
+          - AttributeName: paymentId
             AttributeType: S
         KeySchema:
-          - AttributeName: id
+          - AttributeName: paymentId
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
 
     OrdersTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Orders
+        TableName: OrdersTable
         AttributeDefinitions:
-          - AttributeName: orderId
-            AttributeType: S
+          - AttributeName: "orderId"
+            AttributeType: "S"
         KeySchema:
-          - AttributeName: orderId
-            KeyType: HASH
+          - AttributeName: "orderId"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    AboutTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: AboutTable
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    ContactTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ContactTable
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    ConfirmationTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ConfirmationTable
+        AttributeDefinitions:
+          - AttributeName: "id"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "id"
+            KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
     UsersTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: Users
+        TableName: UsersTable
         AttributeDefinitions:
-          - AttributeName: userId
-            AttributeType: S
+          - AttributeName: "userId"
+            AttributeType: "S"
         KeySchema:
-          - AttributeName: userId
-            KeyType: HASH
+          - AttributeName: "userId"
+            KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
 
+    AdminsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: AdminsTable
+        AttributeDefinitions:
+          - AttributeName: "adminID"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "adminID"
+            KeyType: "HASH" 
+        BillingMode: PAY_PER_REQUEST
+
+custom:
+  esbuild:
+    target: 'node18'
+    sourcemap: true
+    minify: false
+    bundle: true
+    loader:
+      '.ts': 'ts'
+      '.tsx': 'tsx'
+
+  serverless-offline:
+    cors:
+      allowOrigins:
+        - "*"
+      allowHeaders:
+        - Content-Type
+        - x-api-key
+      allowMethods:
+        - GET
+        - POST
+        - PATCH
+        - DELETE
+        - PUT
+        - OPTIONS

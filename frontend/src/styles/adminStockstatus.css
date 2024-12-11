@@ -1,0 +1,159 @@
+/* Stock Dashboard */
+.stock-dashboard-container {
+  padding: 10px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.stock-dashboard-header {
+  font-family: 'Source Serif 4', sans-serif;
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--color-beige);
+  text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+  position: relative;
+  text-align: center;
+}
+
+/* Table Styling */
+.stock-table {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+  background-color: #f9f9f9;
+}
+
+.stock-table th,
+.stock-table td {
+  padding: 10px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.stock-table th {
+  background-color: var(--color-light-blue);
+  color: var(--color-white);
+  text-transform: uppercase;
+}
+
+.stock-table td {
+  font-size: 0.9rem;
+}
+
+.stock-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Status colors */
+.stock-table .stock-status-sufficient {
+  color: #008000;
+  font-weight: bold;
+}
+
+.stock-table .stock-status-low {
+  color: #ffa500;
+  font-weight: bold;
+}
+
+.stock-table .stock-status-critical {
+  color: #ff0000;
+  font-weight: bold;
+}
+
+/* Button Styling */
+.button-container {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+button.lock-btn {
+  background-color: #10b981;
+  color: #fff;
+}
+
+button.lock-btn:hover {
+  background-color: #059669;
+}
+
+button.update-btn {
+  background-color: var(--color-light-blue);
+  color: #fff;
+}
+
+button.update-btn:hover {
+  background-color: var(--color-blue);
+}
+
+button.complete-btn {
+  background-color: #d97706;
+  color: #fff;
+}
+
+button.complete-btn:hover {
+  background-color: #b45309;
+}
+
+button.cancel-btn {
+  background-color: #ef4444;
+  color: #fff;
+}
+
+button.cancel-btn:hover {
+  background-color: #dc2626;
+}
+
+@media screen and (max-width: 390px) {
+  .stock-dashboard-header {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  .stock-table {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .stock-table th,
+  .stock-table td {
+    padding: 8px;
+    font-size: 1rem;
+  }
+
+  .button-container {
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+
+  /* Adjust navbar */
+  .navbar {
+    padding: 10px 10px;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar-item {
+    margin: 8px 0;
+    font-size: 1rem;
+  }
+}
