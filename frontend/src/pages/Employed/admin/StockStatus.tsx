@@ -48,7 +48,7 @@ const StockStatus: React.FC = () => {
     <Navbar />
 
     <div className="stock-dashboard-header-container">
-    <h1 className="stock-dashboard-header">Stock Status</h1>
+    <h1 className="stock-dashboard-header">Stock</h1>
     <p className="stock-dashboard-description">
         Below is a list of all ingredients in stock, along with their current stock levels and associated dishes.
         The stock levels are color-coded to indicate the status of each ingredient.

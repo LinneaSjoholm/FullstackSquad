@@ -4,7 +4,6 @@ import '../styles/adminOrderList.css';
 
 const AdminOrderList: React.FC = () => {
   const [orders, setOrders] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +15,6 @@ const AdminOrderList: React.FC = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      setLoading(true);
       try {
         const response = await adminGetOrders();
         if (response.statusCode === 200) {
@@ -26,9 +24,7 @@ const AdminOrderList: React.FC = () => {
         }
       } catch (err) {
         setError('An error occurred while fetching orders.');
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     fetchOrders();
@@ -90,14 +86,11 @@ const AdminOrderList: React.FC = () => {
     }
   };
 
-
-
   const closeModal = () => {
     setIsModalOpen(false);
-    setUpdateMessage(null); // Reset the message when the modal is closed
+    setUpdateMessage(null); 
   };
 
-  if (loading) return <p>Loading orders...</p>;
   if (error) return <p>{error}</p>;
 
   const newOrders = orders.filter((order) => !order.locked && order.status !== 'completed');

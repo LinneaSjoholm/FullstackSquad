@@ -8,14 +8,15 @@ const OrderDashboard: React.FC = () => {
   return (
 
   <>
-    <div className="orders-container">
-      <Navbar />
-      
-      <h1>Orders</h1>
-      <AdminOrderList />
+  
+  <Navbar />
     
+    <div className="orders-container">
+      <h1>Orders</h1>
     </div>
 
+  <AdminOrderList />
+  
   </>
   );
 };
