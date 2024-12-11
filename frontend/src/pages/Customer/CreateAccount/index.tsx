@@ -37,7 +37,7 @@ const CreateAccount = () => {
         const data = await response.json();
         console.log("Account created successfully:", data);
         setSuccess(true);
-        navigate("/user/login");
+        navigate("/");
       } else {
         const errorData = await response.json();
         console.error("Error response from server:", errorData);

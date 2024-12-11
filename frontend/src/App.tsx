@@ -47,11 +47,6 @@ const App: React.FC = () => {
   // Lista över sidor där Header och Footer ska döljas
   const hideHeaderFooterPaths = ['/admin/login', '/user/login', '/user/create', '/admin/dashboard', '/admin/orders', '/admin/stock', '/admin/menu'];
 
-  // Hämta den aktuella sökvägen
-  const location = useLocation();
-
-  // Lista över sidor där Header och Footer ska döljas
-  const hideHeaderFooterPaths = ['/admin/login', '/user/login', '/user/create', '/admin/dashboard', '/admin/orders', '/admin/stock', '/admin/menu', '/payment-test'];
 
   return (
     <>
