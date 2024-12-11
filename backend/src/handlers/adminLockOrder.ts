@@ -1,13 +1,15 @@
 import { db } from '../services/db';
 import { UpdateCommand, UpdateCommandInput } from '@aws-sdk/lib-dynamodb';
 
-export const adminLockAndMarkOrderAsCompleted = async (event: any): Promise<any> => {
+export const adminLockOrder = async (event: any): Promise<any> => {
   const orderId = event.pathParameters.id;
 
   try {
     // Hämta den aktuella beställningen
     const getOrderParams = { TableName: 'OrdersTable', Key: { orderId } };
     const orderData = await db.get(getOrderParams);
+
+    console.log('Order data retrieved:', orderData); // Logga orderData för att kontrollera
 
     if (!orderData.Item) {
       return {
@@ -32,38 +34,22 @@ export const adminLockAndMarkOrderAsCompleted = async (event: any): Promise<any>
       ReturnValues: 'ALL_NEW',
     };
 
+    console.log('Lock update params:', lockUpdateParams); // Logga parametrarna för att säkerställa att de är korrekta
+
     const lockCommand = new UpdateCommand(lockUpdateParams);
-    await db.send(lockCommand);
-
-    // Markera beställningen som tillagad och klar
-    const completedUpdateParams: UpdateCommandInput = {
-      TableName: 'OrdersTable',
-      Key: { orderId },
-      UpdateExpression: 'SET #status = :status, #updatedAt = :updatedAt',
-      ExpressionAttributeNames: {
-        '#status': 'status',
-        '#updatedAt': 'updatedAt',
-      },
-      ExpressionAttributeValues: {
-        ':status': 'completed',  // Markera som klar
-        ':updatedAt': new Date().toISOString(),
-      },
-      ReturnValues: 'ALL_NEW',
-    };
-
-    const completedCommand = new UpdateCommand(completedUpdateParams);
-    const updatedOrder = await db.send(completedCommand);
+    const lockResult = await db.send(lockCommand);
+    console.log('Lock result:', lockResult); // Logga resultatet av uppdateringen
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Order locked and marked as completed successfully.',
-        updatedOrder: updatedOrder.Attributes,
+        message: 'Order locked successfully.',
+        updatedOrder: lockResult.Attributes,
       }),
     };
   } catch (error) {
-    console.error('Error locking and marking order as completed:', error);
-    let errorMessage = 'Failed to lock and mark order as completed.';
+    console.error('Error locking the order:', error);
+    let errorMessage = 'Failed to lock the order.';
 
     if (error instanceof Error) {
       errorMessage = error.message;
