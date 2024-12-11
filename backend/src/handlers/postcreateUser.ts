@@ -11,6 +11,11 @@ export const handler = async (event: any) => {
     if (!email|| !name||  !password||  !address||  !phone) {
       return {
         statusCode: 400,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "Content-Type,Authorization",
+          "Access-Control-Allow-Methods": "GET,POST,OPTIONS"
+        },
         body: JSON.stringify({ error: "All fields are required" }),
       };
     }
@@ -40,6 +45,11 @@ export const handler = async (event: any) => {
     // Returnerar framgångsrespons
     return {
       statusCode: 201,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type,Authorization",
+        "Access-Control-Allow-Methods": "GET,POST,OPTIONS"
+      },
       body: JSON.stringify({ message: "User created successfully", userId: user.userId }), // Ändrat till userId
     };
   } catch (error: any) {
@@ -47,6 +57,11 @@ export const handler = async (event: any) => {
     console.error("Error occurred:", error.message);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type,Authorization",
+        "Access-Control-Allow-Methods": "GET,POST,OPTIONS"
+      },
       body: JSON.stringify({ error: error.message }),
     };
   }

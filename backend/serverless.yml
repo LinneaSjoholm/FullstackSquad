@@ -181,7 +181,15 @@ functions:
       - http:
           path: /user/create
           method: post
-          cors: true
+          cors: 
+          origin: "*"
+          headers:
+            - Content-Type
+            - Authorization
+            - X-Requested-With
+            - Access-Control-Allow-Origin
+            - Access-Control-Allow-Headers
+
 
   postLoginUser:
     handler: src/handlers/postloginUser.handler
@@ -189,7 +197,14 @@ functions:
       - http:
           path: /user/login
           method: post
-          cors: true
+          cors:
+          origin: "*"
+          headers:
+            - Content-Type
+            - Authorization
+            - X-Requested-With
+            - Access-Control-Allow-Origin
+            - Access-Control-Allow-Headers
 
   postLoginAdmin:
     handler: src/handlers/postloginAdmin.handler
