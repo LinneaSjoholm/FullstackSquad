@@ -12,12 +12,12 @@ import { UpdateCommand } from '@aws-sdk/lib-dynamodb';
 export const adminUpdateOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
     const orderId = event.pathParameters.id;
     const body = JSON.parse(event.body);
-    const { status, messageToChef } = body;
+    const { status, messageToChef, locked } = body;
     // Validera input
-    if (!status || !messageToChef) {
+    if (!status || !messageToChef || locked === undefined) {
         return {
             statusCode: 400,
-            body: JSON.stringify({ message: 'Both status and messageToChef are required to update the order.' }),
+            body: JSON.stringify({ message: 'Status, messageToChef, and locked are required to update the order.' }),
         };
     }
     try {
@@ -36,12 +36,15 @@ export const adminUpdateOrder = (event) => __awaiter(void 0, void 0, void 0, fun
         const expressionAttributeValues = {
             ':status': status,
             ':messageToChef': messageToChef,
+            ':locked': locked, // Uppdatera locked-fältet
             ':updatedAt': new Date().toISOString(),
         };
         updateExpression.push('#status = :status');
         expressionAttributeNames['#status'] = 'status';
         updateExpression.push('#messageToChef = :messageToChef');
         expressionAttributeNames['#messageToChef'] = 'messageToChef';
+        updateExpression.push('#locked = :locked'); // Lägg till locked i uttrycket
+        expressionAttributeNames['#locked'] = 'locked';
         updateExpression.push('#updatedAt = :updatedAt');
         expressionAttributeNames['#updatedAt'] = 'updatedAt';
         const updateParams = {

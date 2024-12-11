@@ -1,53 +1,43 @@
-// src/handlers/handleStock.ts
-import { db } from '../services/db';  
-import { UpdateCommand } from '@aws-sdk/lib-dynamodb'; // Importera rätt uppdateringskommando
+import { db } from '../services/db';
+import { getIngredientStock } from './getStockStatus';
 
-// Funktion för att uppdatera lagret för ingredienser
-export const handleStock = async (ingredientsToUpdate: { id: string; quantity: number }[]) => {
-  const updatePromises = ingredientsToUpdate.map(async (ingredient) => {
-    try {
-      // Hämta ingrediensen från DynamoDB
-      const result = await db.get({
-        TableName: 'IngredientsTable',
-        Key: { id: ingredient.id },  // Använd ingredientId som nyckel om det är korrekt
-      });
+export const updateStock = async (ingredientUsageList: { ingredientId: string, quantity: number }[]): Promise<void> => {
+  const updatePromises = ingredientUsageList.map(async (ingredientUsage) => {
+    
+    // Hämta den aktuella ingrediensen från databasen
+    const ingredient = await db.get({
+      TableName: 'IngredientsTable',
+      Key: { id: ingredientUsage.ingredientId },
+    });
 
-      if (!result.Item) {
-        throw new Error(`Ingredient ${ingredient.id} not found`);
-      }
+    if (ingredient.Item) {
+      const updatedStock = ingredient.Item.stock - ingredientUsage.quantity;
+      console.log(`Current stock for ${ingredientUsage.ingredientId}: ${ingredient.Item.stock}, updated stock: ${updatedStock}`);
 
-      // Hämtar aktuellt lager och kontrollerar det
-      const currentStock = result.Item.stock ? parseInt(result.Item.stock.N, 10) : 0;
-      if (isNaN(currentStock)) {
-        throw new Error(`Invalid stock value for ingredient ${ingredient.id}: ${result.Item.stock.N}`);
-      }
-
-      const updatedStock = currentStock - ingredient.quantity;
       if (updatedStock < 0) {
-        throw new Error(`Not enough stock for ingredient ${ingredient.id}`);
+        throw new Error(`Not enough stock for ingredient: ${ingredientUsage.ingredientId}`);
       }
 
-      // Förbered uppdateringsparametrar
-      const updateParams = {
+      // Uppdatera lagret i databasen
+      const params = {
         TableName: 'IngredientsTable',
-        Key: { id: ingredient.id },  // Uppdatera rätt nyckel
-        UpdateExpression: 'SET stock = :newStock',
+        Key: { id: ingredientUsage.ingredientId },
+        UpdateExpression: 'set stock = :stock',
         ExpressionAttributeValues: {
-          ':newStock': updatedStock.toString(),
+          ':stock': updatedStock,
         },
       };
 
-      // Använd UpdateCommand för att uppdatera lagret
-      const updateCommand = new UpdateCommand(updateParams);
-      await db.send(updateCommand);
-
-      console.log(`Lager för ingrediensen ${ingredient.id} uppdaterades till: ${updatedStock}`);
-
-    } catch (error) {
-      console.error(`Error updating stock for ingredient ${ingredient.id}:`, error);
+      await db.update(params);
+      console.log(`Stock updated for ingredientId: ${ingredientUsage.ingredientId}, new stock: ${updatedStock}`);
     }
   });
 
-  // Vänta på att alla uppdateringar ska genomföras innan funktionen avslutas
-  await Promise.all(updatePromises);
+  try {
+    await Promise.all(updatePromises);
+    console.log("Stock has been successfully updated.");
+  } catch (error) {
+    console.error("Error updating stock", error);
+    throw error;
+  }
 };
