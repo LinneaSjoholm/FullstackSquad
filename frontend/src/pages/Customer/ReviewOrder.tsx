@@ -198,18 +198,20 @@ const ReviewOrder: React.FC = () => {
     setPopupVisible(false); // Close the popup
     // Proceed with the order update logic here
     const updatedOrderData = {
-      orderId: orderId,
-      createdAt: new Date().toISOString(),
-      customerName: updatedName,
-      customerPhone: updatedPhone,
-      items: updatedItems.map(item => ({
-        id: item.id,
-        name: item.name,
-        quantity: item.quantity,
-        price: item.price,
-        drinkId: item.drinkId,
-        drinkName: item.drinkName,
-      })),
+        orderId: orderId,
+        createdAt: new Date().toISOString(),
+        customerName: updatedName,
+        customerPhone: updatedPhone,
+        items: updatedItems.map(item => ({
+            id: item.id,
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+            drinkId: item.drinkId,
+            drinkName: item.drinkName,
+            lactoseFree: item.lactoseFree,
+            glutenFree: item.glutenFree,
+        })),
       status: "pending",
     };
   
@@ -226,16 +228,21 @@ const ReviewOrder: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert('Order updated successfully!');
-        navigate(`/order/${orderId}`);
+          navigate('/confirmation', {
+              state: {
+                  orderId: orderId,
+                  updatedTotalPrice: updatedTotalPrice,
+                  updatedItems: updatedItems,
+              },
+          });
       } else {
-        alert('Failed to update order: ' + data.message);
+          alert('Failed to update order: ' + data.message);
       }
-    } catch (error) {
+  } catch (error) {
       console.error('Error:', error);
       alert('An error occurred while updating your order.');
-    }
-  };
+  }
+};
         
   // Handle the cancellation action (No, Change Order)
   const handleCancel = () => {

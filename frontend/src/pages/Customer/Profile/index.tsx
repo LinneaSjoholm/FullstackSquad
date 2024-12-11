@@ -21,11 +21,7 @@ const Profile = () => {
 
   return (
     <div>
-      <header className="profile-header">
-        <img src={Menu} alt="Menu Icon" className="menu-icon" />
-        <h1>Gusto</h1>
-        <h2>To Go</h2>
-      </header>
+      
       <div className="profile-section">
         <img src={profileIcon} alt="Profile Icon" className="profile-icon" />
         <h2>Welcome, {userName}!</h2>

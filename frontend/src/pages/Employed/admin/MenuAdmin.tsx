@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { MenuItem, OrderItem, CartItem } from '../../interfaces/index';
+import { MenuItem, OrderItem, CartItem } from '../../../interfaces/index';
 import { FaPen } from 'react-icons/fa'; 
-import pastaImages from '../../interfaces/pastaImages';
-import '../../styles/MenuAdmin.css'; 
-
+import pastaImages from '../../../interfaces/pastaImages';
+import '../../../styles/MenuAdmin.css';
+import { Navbar } from '../../../components/navBar';
 
 interface MenuAdminProps {
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
@@ -108,16 +108,8 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
 
   return (
     <div className="menu-admin-container">
+            <Navbar />
       <div className="menu-header"></div>
-      <div className="menu-admin-sidebar">
-        <ul>
-          <li>Current Orders</li>
-          <li>Completed Orders</li>
-          <li>Stock Status</li>
-          <li>Menu</li>
-          <li>Log Out</li>
-        </ul>
-      </div>
       
       <div className="menu-left">
         <h1>Menu</h1>

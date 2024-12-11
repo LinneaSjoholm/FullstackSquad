@@ -1,12 +1,22 @@
 import React from 'react';
 import AdminOrderList from '../../../components/AdminOrderList'
+import { useNavigate } from 'react-router-dom';
+import { Navbar } from '../../../components/navBar';
 
 const OrderDashboard: React.FC = () => {
+  const navigate = useNavigate();
   return (
-    <div>
-      <h1>Orders Dashboard</h1>
+
+  <>
+    <div className="orders-container">
+      <Navbar />
+      
+      <h1>Orders</h1>
       <AdminOrderList />
+    
     </div>
+
+  </>
   );
 };
 
