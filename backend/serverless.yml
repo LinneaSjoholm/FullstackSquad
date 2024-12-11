@@ -181,13 +181,7 @@ functions:
       - http:
           path: /user/create
           method: post
-          cors:
-          origin: "*"
-          headers:
-            - Content-Type
-          methods:
-            - POST
-            - OPTIONS
+          cors: true
 
   postLoginUser:
     handler: src/handlers/postloginUser.handler
@@ -201,7 +195,7 @@ functions:
     handler: src/handlers/postloginAdmin.handler
     events:
       - http:
-          path: admin/login
+          path: /admin/login
           method: post
           cors: true
 
@@ -251,18 +245,6 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
 
-    AdminsTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: AdminsTable
-        AttributeDefinitions:
-          - AttributeName: "adminID"
-            AttributeType: "S"
-        KeySchema:
-          - AttributeName: "adminID"
-            KeyType: "HASH"
-        BillingMode: PAY_PER_REQUEST
-
     OrdersTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -309,6 +291,30 @@ resources:
         KeySchema:
           - AttributeName: "id"
             KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: UsersTable
+        AttributeDefinitions:
+          - AttributeName: "userId"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "userId"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    AdminsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: AdminsTable
+        AttributeDefinitions:
+          - AttributeName: "adminID"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "adminID"
+            KeyType: "HASH" 
         BillingMode: PAY_PER_REQUEST
 
 custom:
