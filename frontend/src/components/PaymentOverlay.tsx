@@ -76,7 +76,7 @@ const PaymentOverlay: React.FC<PaymentOverlayProps> = ({
 
     try {
       const response = await fetch(
-        "https://cbcxsumuq8.execute-api.eu-north-1.amazonaws.com/dev/payment",
+        "https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/payment",
         {
           method: "POST",
           headers: {

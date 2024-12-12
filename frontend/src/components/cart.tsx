@@ -7,9 +7,10 @@ interface CartProps {
   orderItems: OrderItem[];
   calculateTotalPrice: () => number;
   removeFromOrder: (itemId: string) => void;
+  onClose: () => void; // Lägg till onClose för att stänga varukorgen
 }
 
-const Cart: React.FC<CartProps> = ({ orderItems, calculateTotalPrice, removeFromOrder }) => {
+const Cart: React.FC<CartProps> = ({ orderItems, calculateTotalPrice, removeFromOrder, onClose }) => {
   const navigate = useNavigate();
 
   const proceedToCheckout = () => {
@@ -18,6 +19,8 @@ const Cart: React.FC<CartProps> = ({ orderItems, calculateTotalPrice, removeFrom
 
   return (
     <div className="cart">
+            <button className="cart-close-button" onClick={onClose}>X</button>
+
       <h2>Your Order</h2>
       <ul>
         {orderItems.map((item) => (

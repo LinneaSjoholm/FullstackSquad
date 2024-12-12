@@ -1,9 +1,8 @@
 /* Cart container styling */
 .cart {
   position: fixed;
-  top: 30rem; /* Justera detta beroende på var du vill att den ska visas */
+  top: 24rem; /* Justera detta beroende på var du vill att den ska visas */
   right: 20px;
-  width: 400px;
   padding: 30px;
   background-color: black;
   border-radius: 8px;
@@ -19,17 +18,32 @@
 .cart h3{
   color: #fff;
 }
-/* Styling for the remove button */
+/* Container för varje rad */
+.cart ul li {
+  display: flex;
+  justify-content: space-between; /* Sprider ut maträtt och knapp */
+  align-items: center; /* Vertikal centrering */
+  margin-bottom: 10px;
+  flex-wrap: wrap; /* För att knappar kan hamna på nästa rad om nödvändigt */
+}
+
+/* Styling för maträttens namn och kvantitet */
+.cart ul li span {
+  flex: 1; /* Tar upp resten av utrymmet */
+}
+
+/* Styling för Remove-knappen */
 .cart .cart-remove-button {
-  margin-left: 10px;
   background-color: #0881A3;
   color: white;
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-top: 5px; /* Lägger till lite avstånd vid wrap */
+  flex: 0 0 auto; /* Gör så att knappen inte sträcks ut */
 }
+
 
 /* Styling for the checkout button */
 .cart .cart-checkout-button {

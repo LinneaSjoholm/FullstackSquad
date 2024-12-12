@@ -22,7 +22,7 @@ const CreateAccount = () => {
 
     try {
       const response = await fetch(
-        "https://bgqkhv8m9c.execute-api.eu-north-1.amazonaws.com/user/create",
+        "https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/user/create",
         {
           method: "POST",
           headers: {
@@ -127,7 +127,7 @@ const CreateAccount = () => {
           </button>
         </form>
       </div>
-    </div>
+      </div>
   );
 };
 

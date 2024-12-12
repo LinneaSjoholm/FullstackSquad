@@ -176,11 +176,21 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
+  function handleCloseCart(): void {
+    throw new Error('Function not implemented.');
+  }
+
   return (
     <div className="menu-container">
       <div className="menu-header">
         <h1></h1>
       </div>
+      <button
+          onClick={() => setCartVisible(!cartVisible)}
+          className="menu-cart-button"
+        >
+          <img src={shoppingBagIcon} alt="Cart icon" className="menu-cart-icon" />
+        </button>
       <div className="menu-left">
         <h1>Menu</h1>
         <h2>All dishes can be made gluten-free and lactose-free upon request.</h2>
@@ -196,7 +206,7 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
             <option value="name">Name</option>
           </select>
         </div>
-  
+        
         {Object.keys(sortedMenuItems).map((category) => (
   <div key={category}>
     <h2 className={category === 'pasta' || category === 'drink' ? 'hidden' : ''}>
@@ -281,20 +291,16 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
 ))}
 
   
-        <button
-          onClick={() => setCartVisible(!cartVisible)}
-          className="menu-cart-button"
-        >
-          <img src={shoppingBagIcon} alt="Cart icon" className="menu-cart-icon" />
-        </button>
+        
       </div>
   
       {cartVisible && (
         <Cart
-          orderItems={orderItems}
-          calculateTotalPrice={calculateTotalPrice}
-          removeFromOrder={removeFromOrder}
-        />
+        orderItems={orderItems}
+        calculateTotalPrice={calculateTotalPrice}
+        removeFromOrder={removeFromOrder}
+        onClose={handleCloseCart} // Skickar onClose här
+      />
       )}
   
     </div>
