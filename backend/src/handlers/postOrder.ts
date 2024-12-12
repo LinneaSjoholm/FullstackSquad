@@ -1,11 +1,11 @@
-import { db } from "../services/db"; // Importera db
-import jwt from "jsonwebtoken"; // För att hantera JWT-token
+import { db } from "../services/db"; 
+import jwt from "jsonwebtoken"; 
 
 const API_KEY = process.env.API_KEY || "your-default-api-key";
 
 export const postOrder = async (event: any) => {
-  // Kontrollera om API-nyckeln finns i begäran (kan tas bort för att göra API:et öppet)
   const apiKey = event.headers['x-api-key'];
+
   if (!apiKey) {
     return {
       statusCode: 400, // Bad Request
@@ -15,7 +15,7 @@ export const postOrder = async (event: any) => {
 
   if (apiKey !== process.env.API_KEY) {
     return {
-      statusCode: 403, // Forbidden om nyckeln inte är rätt
+      statusCode: 403, // Forbidden
       body: JSON.stringify({ message: 'Forbidden: Invalid API key' }),
     };
   }
@@ -30,7 +30,7 @@ export const postOrder = async (event: any) => {
     };
   }
 
-  const { customerName, customerPhone, items, userId } = orderDetails;
+  const { customerName, customerPhone, items, totalPrice, userId } = orderDetails;
 
   if (!customerName || !customerPhone || !Array.isArray(items) || items.length === 0) {
     return {
@@ -40,20 +40,27 @@ export const postOrder = async (event: any) => {
   }
 
   // Verifiera JWT-token om användaren är inloggad
-  let loggedInUserId = null;
+  let loggedInUserId = userId || null;
+
   if (event.headers.Authorization) {
     try {
+      // Extrahera token från Authorization headern
       const token = event.headers.Authorization.split(" ")[1];
+
+      // Dekoda och verifiera tokenen
       const decoded: any = jwt.verify(token, process.env.JWT_SECRET || "defaultSecret");
-      loggedInUserId = decoded.id;
+
+      // Extrahera userId från token och tilldela det till loggedInUserId
+      loggedInUserId = decoded.userId || "guest";  // Default to "guest" if not present in token
     } catch (error) {
-      console.error("Invalid token:", error);
       return {
         statusCode: 401,
         body: JSON.stringify({ message: "Unauthorized: Invalid token" }),
       };
     }
   }
+
+  const userIdToSave = loggedInUserId || "guest"; // Sätt till "guest" om ej inloggad
 
   // Skapa orderobjekt
   const orderId = `${Date.now()}${Math.floor(Math.random() * 1000)}`;
@@ -62,7 +69,8 @@ export const postOrder = async (event: any) => {
     customerName,
     customerPhone,
     items,
-    userId: loggedInUserId || null, // Om ingen användare är inloggad, lämna userId som null
+    totalPrice,
+    userId: userIdToSave, // Lägg till userId
     status: "pending",
     createdAt: new Date().toISOString(),
   };
@@ -83,47 +91,14 @@ export const postOrder = async (event: any) => {
         customerName,
         customerPhone,
         items,
+        totalPrice,
+        userId: userIdToSave,
       }),
     };
   } catch (error) {
-    console.error("Error creating order:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: "Error creating order", error }),
-    };
-  }
-};
-
-export const getOrders = async (event: any) => {
-  const userId = event.queryStringParameters?.userId;
-
-  if (!userId) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ message: 'Missing userId' }),
-    };
-  }
-
-  try {
-    const params = {
-      TableName: 'OrdersTable',
-      IndexName: 'UserIdIndex', // Skapa en GSI för userId om nödvändigt
-      KeyConditionExpression: 'userId = :userId',
-      ExpressionAttributeValues: {
-        ':userId': userId,
-      },
-    };
-
-    const result = await db.query(params);
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ orders: result.Items }),
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'Error fetching orders', error }),
     };
   }
 };

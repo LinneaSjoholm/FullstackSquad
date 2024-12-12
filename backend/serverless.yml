@@ -233,6 +233,21 @@ functions:
           method: post
           cors: true
 
+  getProfile:
+    handler: src/handlers/getProfile.getProfile
+    events:
+       - httpApi:
+          path: /user/profile/{id}
+          method: get
+          cors:
+          allowOrigins:
+          - "*"
+          allowHeaders:
+          - Content-Type
+          - Authorization
+          allowMethods:
+          - GET
+
 resources:
   Resources:
     IngredientsTable:
