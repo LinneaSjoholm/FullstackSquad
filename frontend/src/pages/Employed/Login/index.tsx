@@ -35,9 +35,11 @@ const LoginAdmin = () => {
         const data = await response.json();
         console.log("Admin login successful:", data);
 
+        // Spara token i localStorage
         localStorage.setItem("adminToken", data.token);
 
-        navigate("/admin/dashboard"); 
+        // Navigera till admin-dashboard
+        navigate("/admin/dashboard");
       } else {
         const errorData = await response.json();
         setError(errorData.error || "Failed to log in as admin");
@@ -50,8 +52,6 @@ const LoginAdmin = () => {
 
   return (
     <div className="admin-login-container">
-      
-
       <h2>Admin Login</h2>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleLogin} className="admin-login-form">
@@ -79,9 +79,9 @@ const LoginAdmin = () => {
           Log In
         </button>
         {/* Lägg till en knapp eller ikon för att gå tillbaka */}
-      <button onClick={handleBackToLogin} className="back-button">
-        ← Back to User Login
-      </button>
+        <button onClick={handleBackToLogin} className="back-button">
+          ← Back to User Login
+        </button>
       </form>
     </div>
   );

@@ -3,7 +3,7 @@ import { MenuItem, OrderItem, CartItem } from '../../../interfaces/index';
 import { FaPen } from 'react-icons/fa'; 
 import pastaImages from '../../../interfaces/pastaImages';
 import '../../../styles/MenuAdmin.css';
-import { Navbar } from '../../../components/navBar';
+import { Navbar } from '../../../components/navbar';
 
 interface MenuAdminProps {
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
@@ -18,13 +18,20 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
 
+  // Kontrollera om admin är inloggad
   useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) {
+      // Om inget token finns, omdirigera till admin login-sidan
+      window.location.href = '/admin/login';
+    }
+
     const fetchMenu = async () => {
       try {
         const response = await fetch('https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/menu', {
           method: 'GET',
           headers: {
-            'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
+            'Authorization': `Bearer ${token}`, // Lägg till token i header
             'Content-Type': 'application/json',
           },
         });
@@ -68,11 +75,12 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
       return updatedItems;
     });
 
+    const token = localStorage.getItem('adminToken');
     try {
       const response = await fetch('https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/menu/admin', {
         method: 'PUT',
         headers: {
-          'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
+          'Authorization': `Bearer ${token}`, // Lägg till token i header
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -108,7 +116,7 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
 
   return (
     <div className="menu-admin-container">
-            <Navbar />
+      <Navbar />
       <div className="menu-header"></div>
       
       <div className="menu-left">
