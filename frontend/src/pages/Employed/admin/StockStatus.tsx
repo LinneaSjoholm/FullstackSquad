@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../../styles/adminStockstatus.css';
 import { useNavigate } from 'react-router-dom';
-import { Navbar } from '../../../components/navBar';
+import { Navbar } from '../../../components/navbar';
 
 interface StockItem {
   id: string;
