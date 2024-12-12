@@ -2,27 +2,23 @@ import { db } from '../services/db';
 
 export const getIngredientStock = async (ingredientId: string) => {
   try {
-    
     const result = await db.get({
-      TableName: 'IngredientsTable',  
-      Key: { id: ingredientId },  
+      TableName: 'IngredientsTable',
+      Key: { id: ingredientId },
     });
 
     if (result.Item) {
-      
-      const stock = result.Item.stock.N; 
-      console.log(`Lagerstatus för ${ingredientId}: ${stock}`);
+      const stock = result.Item.stock.N;
       return stock; 
     } else {
-      console.log(`Ingrediensen med id ${ingredientId} finns inte i lagret.`);
       return null;
     }
   } catch (error) {
-    
     console.error('Error fetching ingredient stock:', error);
     return null;
   }
 };
+
 
 
 export const getStockStatus = async (event: any): Promise<any> => {

@@ -33,10 +33,14 @@ export const adminGetOrders = (event) => __awaiter(void 0, void 0, void 0, funct
                 body: JSON.stringify({ message: 'No orders found' }),
             };
         }
+        // Lägg till 'locked' fältet i varje order om det inte finns
+        const ordersWithLock = data.Items.map((order) => {
+            return Object.assign(Object.assign({}, order), { locked: order.locked !== undefined ? order.locked : false });
+        });
         return {
             statusCode: 200,
             headers: corsHeaders,
-            body: JSON.stringify(data.Items),
+            body: JSON.stringify(ordersWithLock),
         };
     }
     catch (error) {

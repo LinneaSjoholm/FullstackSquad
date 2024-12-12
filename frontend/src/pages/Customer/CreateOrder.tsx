@@ -49,44 +49,52 @@ const CreateOrder: React.FC = () => {
     setUpdatedTotalPrice(newTotalPrice);
   };
 
-  // Hantera formulärets inskickning
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
+  
     if (!customerName || !customerPhone) {
-      alert('Please enter your name and phone number');
+      alert("Please enter your name and phone number");
       return;
     }
-
+  
+    const token = localStorage.getItem("jwtToken"); // Hämta token om användaren är inloggad
     const orderData = {
       customerName,
       customerPhone,
       items: updatedOrderItems,
       totalPrice: updatedTotalPrice,
+      userId: token ? "loggedIn" : null, // Skicka "loggedIn" för inloggad användare eller null för gästanvändare
     };
-
+  
     try {
-      const response = await fetch('https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/order', {
-        method: 'POST',
+      const response = await fetch("https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/order", {
+        method: "POST",
         headers: {
-          'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
-          'Content-Type': 'application/json',
+          "x-api-key": "bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT", // Se till att denna nyckel matchar backend
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(orderData),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
-        navigate('/review/order', {
-          state: { customerName, customerPhone, orderItems: updatedOrderItems, totalPrice: updatedTotalPrice, orderId: data.orderId },
+        // Navigera till ordergranskning eller en annan sida
+        navigate("/review/order", {
+          state: {
+            customerName,
+            customerPhone,
+            orderItems: updatedOrderItems,
+            totalPrice: updatedTotalPrice,
+            orderId: data.orderId,
+          },
         });
       } else {
-        alert('Failed to place order: ' + data.message);
+        alert("Failed to place order: " + data.message);
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred while placing your order.');
+      console.error("Error:", error);
+      alert("An error occurred while placing your order.");
     }
   };
 

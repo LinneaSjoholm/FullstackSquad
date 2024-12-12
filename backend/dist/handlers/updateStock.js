@@ -7,48 +7,44 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-// src/handlers/handleStock.ts
 import { db } from '../services/db';
-import { UpdateCommand } from '@aws-sdk/lib-dynamodb'; // Importera rätt uppdateringskommando
-// Funktion för att uppdatera lagret för ingredienser
-export const handleStock = (ingredientsToUpdate) => __awaiter(void 0, void 0, void 0, function* () {
-    const updatePromises = ingredientsToUpdate.map((ingredient) => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            // Hämta ingrediensen från DynamoDB
-            const result = yield db.get({
-                TableName: 'IngredientsTable',
-                Key: { id: ingredient.id }, // Använd ingredientId som nyckel om det är korrekt
-            });
-            if (!result.Item) {
-                throw new Error(`Ingredient ${ingredient.id} not found`);
-            }
-            // Hämtar aktuellt lager och kontrollerar det
-            const currentStock = result.Item.stock ? parseInt(result.Item.stock.N, 10) : 0;
-            if (isNaN(currentStock)) {
-                throw new Error(`Invalid stock value for ingredient ${ingredient.id}: ${result.Item.stock.N}`);
-            }
-            const updatedStock = currentStock - ingredient.quantity;
+import { getIngredientStock } from './getStockStatus';
+export const updateStock = (ingredientUsageList) => __awaiter(void 0, void 0, void 0, function* () {
+    const updatePromises = ingredientUsageList.map((ingredientUsage) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log(`Updating stock for ingredientId: ${ingredientUsage.ingredientId}, quantity: ${ingredientUsage.quantity}`);
+        // Hämta den aktuella ingrediensen från databasen
+        const ingredient = yield db.get({
+            TableName: 'IngredientsTable',
+            Key: { id: ingredientUsage.ingredientId },
+        });
+        if (ingredient.Item) {
+            const updatedStock = ingredient.Item.stock - ingredientUsage.quantity;
+            console.log(`Current stock for ${ingredientUsage.ingredientId}: ${ingredient.Item.stock}, updated stock: ${updatedStock}`);
             if (updatedStock < 0) {
-                throw new Error(`Not enough stock for ingredient ${ingredient.id}`);
+                throw new Error(`Not enough stock for ingredient: ${ingredientUsage.ingredientId}`);
             }
-            // Förbered uppdateringsparametrar
-            const updateParams = {
+            // Uppdatera lagret i databasen
+            const params = {
                 TableName: 'IngredientsTable',
-                Key: { id: ingredient.id }, // Uppdatera rätt nyckel
-                UpdateExpression: 'SET stock = :newStock',
+                Key: { id: ingredientUsage.ingredientId },
+                UpdateExpression: 'set stock = :stock',
                 ExpressionAttributeValues: {
-                    ':newStock': updatedStock.toString(),
+                    ':stock': updatedStock,
                 },
             };
-            // Använd UpdateCommand för att uppdatera lagret
-            const updateCommand = new UpdateCommand(updateParams);
-            yield db.send(updateCommand);
-            console.log(`Lager för ingrediensen ${ingredient.id} uppdaterades till: ${updatedStock}`);
-        }
-        catch (error) {
-            console.error(`Error updating stock for ingredient ${ingredient.id}:`, error);
+            yield db.update(params);
+            console.log(`Stock updated for ingredientId: ${ingredientUsage.ingredientId}, new stock: ${updatedStock}`);
+            // Anropa getIngredientStock för att logga den uppdaterade lagerstatusen
+            const updatedStockStatus = yield getIngredientStock(ingredientUsage.ingredientId);
+            console.log(`Updated stock for ingredient ${ingredientUsage.ingredientId}: ${updatedStockStatus}`);
         }
     }));
-    // Vänta på att alla uppdateringar ska genomföras innan funktionen avslutas
-    yield Promise.all(updatePromises);
+    try {
+        yield Promise.all(updatePromises);
+        console.log("Stock has been successfully updated.");
+    }
+    catch (error) {
+        console.error("Error updating stock", error);
+        throw error;
+    }
 });

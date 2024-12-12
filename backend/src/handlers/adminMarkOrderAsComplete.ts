@@ -1,7 +1,7 @@
 import { db } from '../services/db';
 import { UpdateCommand, UpdateCommandInput } from '@aws-sdk/lib-dynamodb';
 
-export const adminMarkOrderAsCompleted = async (event: any): Promise<any> => {
+export const adminMarkOrderAsComplete = async (event: any): Promise<any> => {
   const orderId = event.pathParameters.id;
 
   try {

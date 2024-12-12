@@ -31,10 +31,18 @@ export const adminGetOrders = async (event: APIGatewayProxyEvent): Promise<APIGa
       };
     }
 
+    // Lägg till 'locked' fältet i varje order om det inte finns
+    const ordersWithLock = data.Items.map((order: any) => {
+      return {
+        ...order,
+        locked: order.locked !== undefined ? order.locked : false, // Lägg till locked: false om det saknas
+      };
+    });
+
     return {
       statusCode: 200,
       headers: corsHeaders,
-      body: JSON.stringify(data.Items),  
+      body: JSON.stringify(ordersWithLock),
     };
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';

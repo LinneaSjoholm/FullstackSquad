@@ -32,6 +32,8 @@ const Header: React.FC = () => {
           <li onClick={() => handleNavigation('/menu')}>Menu</li>
           <li onClick={() => handleNavigation('/about')}>About</li>
           <li onClick={() => handleNavigation('/contact')}>Contact</li>
+          <li onClick={() => handleNavigation('/profile')}>Profile</li>
+
         </ul>
       </div>
     </header>

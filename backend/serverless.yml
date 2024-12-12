@@ -121,41 +121,36 @@ functions:
               - x-api-key
             methods:
               - PATCH
-              - OPTIONS
-
-  adminMarkOrderAsCompleted:
-    handler: src/handlers/adminMarkOrderAsCompleted.adminMarkOrderAsCompleted
-    events:
-      - http:
-          path: /admin/order/mark-as-completed/{id}
-          method: post
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - Authorization
-              - x-api-key
-            methods:
-              - POST
-              - OPTIONS
 
   adminLockOrder:
     handler: src/handlers/adminLockOrder.adminLockOrder
     events:
-      - http:
+      - httpApi:
           path: /admin/order/lock/{id}
-          method: post
+          method: patch
           cors:
             origin: '*'
             headers:
               - Content-Type
               - Authorization
-              - X-Amz-Date
-              - X-Amz-Security-Token
               - x-api-key
             methods:
-              - POST
-              - OPTIONS
+              - PATCH
+
+  adminMarkOrderAsComplete:
+    handler: src/handlers/adminMarkOrderAsComplete.adminMarkOrderAsComplete
+    events:
+      - httpApi:
+          path: /admin/order/complete/{id}
+          method: patch
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - Authorization
+              - x-api-key
+            methods:
+              - PATCH
 
   deleteOrder:
     handler: src/handlers/deleteOrder.deleteOrder
@@ -178,23 +173,38 @@ functions:
   postCreateUser:
     handler: src/handlers/postcreateUser.handler
     events:
-      - http:
+      - httpApi:
           path: /user/create
           method: post
-          cors: true
+          cors: 
+          origin: "*"
+          headers:
+            - Content-Type
+            - Authorization
+            - X-Requested-With
+            - Access-Control-Allow-Origin
+            - Access-Control-Allow-Headers
+
 
   postLoginUser:
     handler: src/handlers/postloginUser.handler
     events:
-      - http:
+      - httpApi:
           path: /user/login
           method: post
-          cors: true
+          cors:
+          origin: "*"
+          headers:
+            - Content-Type
+            - Authorization
+            - X-Requested-With
+            - Access-Control-Allow-Origin
+            - Access-Control-Allow-Headers
 
   postLoginAdmin:
     handler: src/handlers/postloginAdmin.handler
     events:
-      - http:
+      - httpApi:
           path: /admin/login
           method: post
           cors: true
@@ -202,8 +212,24 @@ functions:
   postPayment:
     handler: src/handlers/postPayment.handler
     events:
-      - http:
+      - httpApi:
           path: /payment
+          method: post
+          cors: true
+          
+  postLogoutUser:
+    handler: src/handlers/logoutHandler.logoutHandler
+    events:
+      - httpApi:
+          path: /user/logout
+          method: post
+          cors: true
+
+  postLogoutAdmin:
+    handler: src/handlers/logoutHandler.logoutHandler
+    events:
+      - httpApi:
+          path: /admin/logout
           method: post
           cors: true
 
@@ -291,6 +317,30 @@ resources:
         KeySchema:
           - AttributeName: "id"
             KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: UsersTable
+        AttributeDefinitions:
+          - AttributeName: "userId"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "userId"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    AdminsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: AdminsTable
+        AttributeDefinitions:
+          - AttributeName: "adminID"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "adminID"
+            KeyType: "HASH" 
         BillingMode: PAY_PER_REQUEST
 
 custom:

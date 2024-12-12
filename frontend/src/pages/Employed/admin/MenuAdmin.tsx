@@ -3,7 +3,7 @@ import { MenuItem, OrderItem, CartItem } from '../../../interfaces/index';
 import { FaPen } from 'react-icons/fa'; 
 import pastaImages from '../../../interfaces/pastaImages';
 import '../../../styles/MenuAdmin.css';
-import { Navbar } from '../../../components/navBar';
+import { Navbar } from '../../../components/navbar';
 
 interface MenuAdminProps {
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;

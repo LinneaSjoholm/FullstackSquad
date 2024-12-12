@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { db } from "../services/db"; // Ändrat till db
+import { db } from "../services/db"; // För att interagera med databasen
 
 export const handler = async (event: any) => {
   try {
@@ -58,7 +58,7 @@ export const handler = async (event: any) => {
       // Uppdatera lösenordet i databasen
       await db.update({
         TableName: process.env.USERS_TABLE,
-        Key: { id: user.id },
+        Key: { userId: user.userId }, // Korrigera till användning av userId som primärnyckel
         UpdateExpression: "set #password = :password",
         ExpressionAttributeNames: {
           "#password": "password",
@@ -85,7 +85,8 @@ export const handler = async (event: any) => {
         statusCode: 401,
         headers: {
           "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Headers": "Content-Type,Authorization",
+          "Access-Control-Allow-Methods": "GET,POST,OPTIONS"
         },
         body: JSON.stringify({ error: "Invalid credentials" }),
       };
@@ -93,7 +94,7 @@ export const handler = async (event: any) => {
 
     // Generera JWT-token
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { userId: user.userId, email: user.email }, // Justerat till userId istället för id
       process.env.JWT_SECRET || "defaultSecret",
       { expiresIn: "1h" }
     );
@@ -104,7 +105,8 @@ export const handler = async (event: any) => {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Headers": "Content-Type,Authorization",
+        "Access-Control-Allow-Methods": "GET,POST,OPTIONS"
       },
       body: JSON.stringify({
         message: "Login successful!",
@@ -119,7 +121,8 @@ export const handler = async (event: any) => {
       statusCode: 500,
       headers: {
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Headers": "Content-Type,Authorization",
+        "Access-Control-Allow-Methods": "GET,POST,OPTIONS"
       },
       body: JSON.stringify({ error: error.message }),
     };

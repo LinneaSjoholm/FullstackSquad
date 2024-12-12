@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Importera useNavigate
+import { FaArrowLeft } from "react-icons/fa"; // Import back arrow icon from react-icons
 import "../../../styles/LoginUser.css";
 import AdminIcon from "../../../assets/loginicon.png";
 
@@ -19,7 +20,7 @@ const Login = () => {
 
     try {
       const response = await fetch(
-        "https://cbcxsumuq8.execute-api.eu-north-1.amazonaws.com/dev/user/login",
+        "https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/user/login",
         {
           method: "POST",
           headers: {
@@ -29,18 +30,15 @@ const Login = () => {
         }
       );
 
-      console.log("Response status:", response.status);
-      console.log("Response headers:", response.headers);
-
       if (response.ok) {
         const data = await response.json();
         console.log("Login successful:", data);
 
-        // Spara JWT-tokenet och användarnamnet
+        // Save token and userName to localStorage
         localStorage.setItem("token", data.token);
         localStorage.setItem("userName", data.name);
 
-        // Navigera till profilsidan
+        // Navigate to the profile page after successful login
         navigate("/profile");
       } else {
         const errorData = await response.json();
@@ -54,21 +52,28 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <div className="admin-icon-container">
-        <img
-          src={AdminIcon}
-          alt="Admin Login"
-          className="admin-icon"
-          onClick={() => navigate("/admin/login")} // Navigera till admin-login
-        />
+      {/* Back to homepage button */}
+      <div className="back-button" onClick={() => navigate("/")}>
+        <FaArrowLeft size={20} /> {/* You can adjust the size of the arrow */}
+        <span>Back to Home</span>
       </div>
       <div className="headertext">
         <h1>Gusto</h1>
         <h2>To Go</h2>
       </div>
+      
+      <div className="admin-icon-container">
+        <img
+          src={AdminIcon}
+          alt="Admin Login"
+          className="admin-icon"
+          onClick={() => navigate("/admin/login")} // Navigate to admin login
+        />
+      </div>
+      
       <div className="login-box">
         <h2>Log In</h2>
-        {error && <p className="error-message">{error}</p>} {/* Visa felmeddelande */}
+        {error && <p className="error-message">{error}</p>} {/* Display error */}
         <form onSubmit={handleLogin} className="login-form">
           <div className="form-group">
             <label htmlFor="email">E-mail:</label>

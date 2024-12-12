@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../../styles/adminStockstatus.css';
 import { useNavigate } from 'react-router-dom';
-import { Navbar } from '../../../components/navBar';
+import { Navbar } from '../../../components/navbar';
 
 interface StockItem {
   id: string;
@@ -39,24 +39,23 @@ const StockStatus: React.FC = () => {
     fetchStockData();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="spinner"></div>
-        <p className="stock-loading">Loading stock data...</p>
-      </div>
-    );
-  }
-
   if (error) {
     return <p className="stock-error">{error}</p>;
   }
 
   return (
-    <div className="stock-dashboard-container">
-      <Navbar />
-      <h1 className="stock-dashboard-header">Stock Status</h1>
+    <>
+    <Navbar />
 
+    <div className="stock-dashboard-header-container">
+    <h1 className="stock-dashboard-header">Stock</h1>
+    <p className="stock-dashboard-description">
+        Below is a list of all ingredients in stock, along with their current stock levels and associated dishes.
+        The stock levels are color-coded to indicate the status of each ingredient.
+      </p>
+    </div>
+
+    <div className="stock-dashboard-container">
       <div className="stock-table-wrapper">
         <table className="stock-table">
           <thead>
@@ -90,6 +89,7 @@ const StockStatus: React.FC = () => {
         </table>
       </div>
     </div>
+    </>
   );
 };
 

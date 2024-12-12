@@ -3,5 +3,6 @@ export interface Ingredient {
     name: string;
     stock: number;
     unit: string;
-    dishNames: string[];
-};
+    dishNames: string[]; 
+    usagePerDish: { [dishName: string]: number };
+}

@@ -86,10 +86,17 @@
     margin: 0 auto;
     background-color: rgba(0, 0, 0, 0.5);
     width: 50%;
-    height: 250px;
+    height: 500px;
     padding: 20px;
     border-radius: 10px;
   }
+  .favorite-item-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 10px;
+}
 
   @media (max-width: 768px) {
     .profile-header {

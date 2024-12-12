@@ -99,6 +99,19 @@
     margin-bottom: 15px;
   }
 
+  .back-button {
+    position: absolute;
+    top: 30px; /* Avstånd från toppen */
+    left: 30px; /* Avstånd från vänster */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #F4E7D3;
+    cursor: pointer;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+    font-family: "Jost", sans-serif;
+  }
+
   @media (max-width: 768px) {
     .create-account-container {
       padding: 20px; 
