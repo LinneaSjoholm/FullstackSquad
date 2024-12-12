@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../../styles/adminStockstatus.css';
-import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../../components/navbar';
+import { getAdminToken } from '../../../utils/auth';
 
 interface StockItem {
   id: string;
@@ -12,26 +12,28 @@ interface StockItem {
 }
 
 const StockStatus: React.FC = () => {
-  const navigate = useNavigate();
   const [stockItems, setStockItems] = useState<StockItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Hämta lagerstatus från API
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-      // Om inget token finns, omdirigera till login-sidan
-      navigate('/admin/login');
-      return;
-    }
-
-    // Hämta lagerstatusdata om användaren är inloggad
     const fetchStockData = async () => {
+      const token = getAdminToken();
+
+      if (!token) {
+        setError('You need to be logged in as Admin to view this page');
+        setLoading(false);
+        return;
+      }
+
       try {
         const response = await fetch('https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/stock-status', {
+          method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+            'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
           },
         });
 
@@ -51,15 +53,20 @@ const StockStatus: React.FC = () => {
     };
 
     fetchStockData();
-  }, [navigate]);
+  }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <p className="stock-error">{error}</p>;
+  // Hantera laddning och fel
+  if (loading) {
+    return <p>Loading stock data...</p>;
+  }
+
+  if (error) {
+    return <p className="stock-error">{error}</p>;
+  }
 
   return (
     <>
       <Navbar />
-
       <div className="stock-dashboard-header-container">
         <h1 className="stock-dashboard-header">Stock</h1>
         <p className="stock-dashboard-description">

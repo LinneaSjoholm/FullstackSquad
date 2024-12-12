@@ -4,6 +4,8 @@ import { FaPen } from 'react-icons/fa';
 import pastaImages from '../../../interfaces/pastaImages';
 import '../../../styles/MenuAdmin.css';
 import { Navbar } from '../../../components/navbar';
+import { useNavigate } from 'react-router-dom';  
+import { getAdminToken } from '../../../utils/auth'; 
 
 interface MenuAdminProps {
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
@@ -17,21 +19,24 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
+  const navigate = useNavigate();
 
-  // Kontrollera om admin är inloggad
+  // Kontrollera om användaren är inloggad
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
+    const token = getAdminToken();
     if (!token) {
-      // Om inget token finns, omdirigera till admin login-sidan
-      window.location.href = '/admin/login';
+      navigate("/admin/login"); 
     }
+  }, [navigate]);
 
+  // Hämta menyn från API
+  useEffect(() => {
     const fetchMenu = async () => {
       try {
         const response = await fetch('https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/menu', {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`, // Lägg till token i header
+            'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
             'Content-Type': 'application/json',
           },
         });
@@ -56,12 +61,14 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
     fetchMenu();
   }, []);
 
+  // Hantera redigering av en menyartikel
   const handleEdit = (itemId: string) => {
     const itemToEdit = Object.values(menuItems).flat().find((item) => item.id === itemId);
     setEditingItem(itemToEdit || null);
     setIsEditing(itemId);
   };
 
+  // Spara ändringar av menyartikel
   const handleSave = async (itemId: string, updatedPrice: number, updatedDescription: string, updatedIngredients: string[]) => {
     if (!editingItem) return;
 
@@ -75,12 +82,11 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
       return updatedItems;
     });
 
-    const token = localStorage.getItem('adminToken');
     try {
-      const response = await fetch('https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/menu/admin', {
+      const response = await fetch('https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/menu', {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`, // Lägg till token i header
+          'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -106,6 +112,7 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
     }
   };
 
+  // Avbryt redigering
   const handleCancel = () => {
     setIsEditing(null);
     setEditingItem(null);
@@ -118,7 +125,7 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
     <div className="menu-admin-container">
       <Navbar />
       <div className="menu-header"></div>
-      
+
       <div className="menu-left">
         <h1>Menu</h1>
         <div className="menu-items-container">

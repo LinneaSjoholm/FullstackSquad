@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/LoginAdmin.css";
+import { saveAdminToken, removeAdminToken } from "../../../utils/auth"; // Importera removeAdminToken
 
 const LoginAdmin = () => {
   const [adminID, setAdminID] = useState("");
@@ -10,8 +11,13 @@ const LoginAdmin = () => {
 
   // Funktion för att navigera tillbaka till användarens login
   const handleBackToLogin = () => {
-    navigate("/user/login"); // Här anger du rätt väg till användarens login-sida
+    navigate("/user/login");
   };
+
+  // Rensa gammal token när komponenten laddas
+  useEffect(() => {
+    removeAdminToken(); // Ta bort eventuell tidigare token
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,7 +27,7 @@ const LoginAdmin = () => {
 
     try {
       const response = await fetch(
-        "https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/login", // Ersätt med rätt endpoint
+        "https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/login",
         {
           method: "POST",
           headers: {
@@ -35,13 +41,12 @@ const LoginAdmin = () => {
         const data = await response.json();
         console.log("Admin login successful:", data);
 
-        // Spara JWT-token i localStorage
-        localStorage.setItem("adminToken", data.token);
+        // Spara JWT-token
+        saveAdminToken(data.token);
 
         // Navigera till admin-dashboard
         navigate("/admin/dashboard");
       } else {
-        // Felhantering om login misslyckas
         const errorData = await response.json();
         setError(errorData.error || "Failed to log in as admin");
       }
@@ -79,7 +84,6 @@ const LoginAdmin = () => {
         <button type="submit" className="admin-login-button">
           Log In
         </button>
-        {/* Lägg till en knapp för att gå tillbaka */}
         <button onClick={handleBackToLogin} className="back-button">
           ← Back to User Login
         </button>
