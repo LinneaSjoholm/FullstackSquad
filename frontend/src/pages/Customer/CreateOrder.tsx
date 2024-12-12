@@ -63,7 +63,7 @@ const CreateOrder: React.FC = () => {
       customerPhone,
       items: updatedOrderItems,
       totalPrice: updatedTotalPrice,
-      userId: token ? "loggedIn" : null, // Skicka "loggedIn" för inloggad användare eller null för gästanvändare
+      userId: token || "guest", // Skicka token om användaren är inloggad, annars "guest"
     };
   
     try {
@@ -163,7 +163,6 @@ const CreateOrder: React.FC = () => {
         </div>
         <button type="submit">Review order</button>
       </form>
-
     </div>
   );
 };
