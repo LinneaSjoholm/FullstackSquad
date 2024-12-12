@@ -9,55 +9,46 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { db } from '../services/db';
 import { UpdateCommand } from '@aws-sdk/lib-dynamodb';
-export const adminLockOrder = (event) => __awaiter(void 0, void 0, void 0, function* () {
+export const adminMarkOrderAsComplete = (event) => __awaiter(void 0, void 0, void 0, function* () {
     const orderId = event.pathParameters.id;
     try {
-        // Hämta den aktuella beställningen
         const getOrderParams = { TableName: 'OrdersTable', Key: { orderId } };
         const orderData = yield db.get(getOrderParams);
-        console.log('Order data retrieved:', orderData); // Logga orderData för att kontrollera
         if (!orderData.Item) {
             return {
                 statusCode: 404,
                 body: JSON.stringify({ message: 'Order not found.' }),
             };
         }
-        // Först, lås beställningen
-        const lockUpdateParams = {
+        const completedUpdateParams = {
             TableName: 'OrdersTable',
             Key: { orderId },
-            UpdateExpression: 'SET #locked = :locked, #updatedAt = :updatedAt',
+            UpdateExpression: 'SET #status = :status, #updatedAt = :updatedAt',
             ExpressionAttributeNames: {
-                '#locked': 'locked',
+                '#status': 'status',
                 '#updatedAt': 'updatedAt',
             },
             ExpressionAttributeValues: {
-                ':locked': true, // Lås beställningen
+                ':status': 'completed', // Markera som färdig
                 ':updatedAt': new Date().toISOString(),
             },
             ReturnValues: 'ALL_NEW',
         };
-        console.log('Lock update params:', lockUpdateParams); // Logga parametrarna för att säkerställa att de är korrekta
-        const lockCommand = new UpdateCommand(lockUpdateParams);
-        const lockResult = yield db.send(lockCommand);
-        console.log('Lock result:', lockResult); // Logga resultatet av uppdateringen
+        const completedCommand = new UpdateCommand(completedUpdateParams);
+        const updatedOrder = yield db.send(completedCommand);
         return {
             statusCode: 200,
             body: JSON.stringify({
-                message: 'Order locked successfully.',
-                updatedOrder: lockResult.Attributes,
+                message: 'Order marked as completed successfully.',
+                updatedOrder: updatedOrder.Attributes,
             }),
         };
     }
     catch (error) {
-        console.error('Error locking the order:', error);
-        let errorMessage = 'Failed to lock the order.';
-        if (error instanceof Error) {
-            errorMessage = error.message;
-        }
+        console.error('Error marking order as completed:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ message: errorMessage }),
+            body: JSON.stringify({ message: 'Failed to mark order as completed.' }),
         };
     }
 });

@@ -43,7 +43,8 @@
 
 /* Team Section */
 .team-section {
-  padding: 15px;
+  background-color: black;
+  padding: 15px; /* Mindre padding för mobil */
   border-radius: 10px;
 }
 

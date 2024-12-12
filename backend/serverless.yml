@@ -121,41 +121,36 @@ functions:
               - x-api-key
             methods:
               - PATCH
-              - OPTIONS
-
-  adminMarkOrderAsCompleted:
-    handler: src/handlers/adminMarkOrderAsCompleted.adminMarkOrderAsCompleted
-    events:
-      - http:
-          path: /admin/order/mark-as-completed/{id}
-          method: post
-          cors:
-            origin: '*'
-            headers:
-              - Content-Type
-              - Authorization
-              - x-api-key
-            methods:
-              - POST
-              - OPTIONS
 
   adminLockOrder:
     handler: src/handlers/adminLockOrder.adminLockOrder
     events:
-      - http:
+      - httpApi:
           path: /admin/order/lock/{id}
-          method: post
+          method: patch
           cors:
             origin: '*'
             headers:
               - Content-Type
               - Authorization
-              - X-Amz-Date
-              - X-Amz-Security-Token
               - x-api-key
             methods:
-              - POST
-              - OPTIONS
+              - PATCH
+
+  adminMarkOrderAsComplete:
+    handler: src/handlers/adminMarkOrderAsComplete.adminMarkOrderAsComplete
+    events:
+      - httpApi:
+          path: /admin/order/complete/{id}
+          method: patch
+          cors:
+            origin: '*'
+            headers:
+              - Content-Type
+              - Authorization
+              - x-api-key
+            methods:
+              - PATCH
 
   deleteOrder:
     handler: src/handlers/deleteOrder.deleteOrder

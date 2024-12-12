@@ -1,64 +1,126 @@
-/* Container för dashboard */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
 .dashboard-container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    text-align: center;
-    font-family: 'Roboto', sans-serif;
-    background-color: var(--color-button);
-    border-radius: 10px;
-  }
-  
-  /* Rubriken för dashboard */
-.dashboard-header {
-    font-size: 2rem;
-    color: var(--color-beige);
-    margin-bottom: 20px;
-    margin-top: 10px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  color: var(--color-beige);
+  letter-spacing: 2px;
+  background-color: var(--color-button);
+  padding: 20px;
+  min-height: 600px;
+  padding: 30px;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--color-button);
+  border-radius: 5px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-container h1 {
+  text-transform: uppercase;
+  font-size: 3rem;
+  font-family: 'Source Serif 4', sans-serif;
+  margin-top: 80px;
+}
+
+.dashboard-container h2 {
+  font-size: 1.2rem;
+  margin-top: -10px;
+  color: var(--color-light-blue);
+  font-family: 'Roboto', sans-serif;
+  text-transform: lowercase;
+}
 
 .dashboard-date {
-    font-size: 1rem;
-    color: var(--color-white);
-    margin-top: -10px;
-    margin-bottom: 20px;
-  }
-  
-  /* Navigationens lista */
+  font-size: 1rem;
+  color: var(--color-white);
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
 .dashboard-navigation {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.dashboard-item {
+  padding: 10px 15px;
+  background-color: #0881A3;
+  color: var(--color-white);
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1.2rem;
+  text-transform: capitalize;
+  cursor: pointer;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.dashboard-item:hover {
+  background-color: var(--color-blue);
+}
+
+.dashboard-item.logout {
+  background-color: #dc3545;
+}
+
+.dashboard-item.logout:hover {
+  background-color: #a71d2a;
+}
+
+/* Responsiv design för skärmar mindre än 390px */
+@media screen and (max-width: 390px) {
+  .dashboard-container {
+    margin: 20px auto; 
+    height: 50%;
+  }
+
+  .dashboard-header {
+    font-size: 2rem;
+  }
+
+  .dashboard-date {
+    font-size: 0.9rem; 
+  }
+
+  .dashboard-navigation {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
   }
-  
-  /* Varje enskild navigation-item */
-.dashboard-item {
-    padding: 10px 15px;
-    background-color: #0881A3;
-    color: var(--color-white);
-    border-radius: 5px;
-    text-align: center;
-    font-size: 1.2rem;
-    text-transform: capitalize;
-    cursor: pointer;
+
+  .dashboard-item {
+    font-size: 1rem;
   }
-  
-  /* Hover-effekt */
-.dashboard-item:hover {
-    background-color: var(--color-blue);
+}
+
+/* Större skärmjusteringar */
+@media screen and (min-width: 768px) {
+  .dashboard-container {
+    padding: 40px;
+    margin-top: 40px; 
   }
-  
-  /* Specifik stil för logga ut-knappen */
-.dashboard-item.logout {
-    background-color: #dc3545;
+
+  .dashboard-header-container {
+    margin-bottom: 40px; 
   }
-  
-.dashboard-item.logout:hover {
-    background-color: #a71d2a;
+
+  .dashboard-header-container h1 {
+    font-size: 4rem; 
   }
-  
+
+  .dashboard-header-container h2 {
+    font-size: 1.5rem; 
+  }
+}

@@ -54,8 +54,12 @@ const Login = () => {
     <div className="login-container">
       {/* Back to homepage button */}
       <div className="back-button" onClick={() => navigate("/")}>
-        <FaArrowLeft size={24} /> {/* You can adjust the size of the arrow */}
+        <FaArrowLeft size={20} /> {/* You can adjust the size of the arrow */}
         <span>Back to Home</span>
+      </div>
+      <div className="headertext">
+        <h1>Gusto</h1>
+        <h2>To Go</h2>
       </div>
       
       <div className="admin-icon-container">
@@ -66,10 +70,7 @@ const Login = () => {
           onClick={() => navigate("/admin/login")} // Navigate to admin login
         />
       </div>
-      <div className="headertext">
-        <h1>Gusto</h1>
-        <h2>To Go</h2>
-      </div>
+      
       <div className="login-box">
         <h2>Log In</h2>
         {error && <p className="error-message">{error}</p>} {/* Display error */}

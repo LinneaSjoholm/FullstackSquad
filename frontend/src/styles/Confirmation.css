@@ -22,12 +22,6 @@
   padding: 5px;
 }
 
-/* Mobilvy: Ta bort .message helt */
-@media (max-width: 768px) {
-  .message {
-    display: none;
-  }
-}
 
 .thank-you-message {
   margin: 0;
@@ -38,6 +32,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  text-align: center;
   align-items: center;
   background-color: #F4E7D3;
   padding: 20px;
@@ -48,16 +43,25 @@
 }
 
 .order-items {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  margin-bottom: 10px;
+  
 }
 
-.order-items li {
+.order-item {
   display: flex;
   justify-content: space-between;
-  margin: 10px 0;
 }
+
+.order-item-details {
+  text-align: left;
+  margin-left: 10px;
+}
+
 
 .order-total {
   display: flex;

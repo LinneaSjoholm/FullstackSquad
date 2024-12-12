@@ -31,7 +31,9 @@ const CreateAccount = () => {
           body: JSON.stringify(accountData),
         }
       );
-
+    
+      console.log("Response status:", response.status);
+    
       if (response.ok) {
         const data = await response.json();
         console.log("Account created successfully:", data);
@@ -42,16 +44,23 @@ const CreateAccount = () => {
         }, 2000); // Wait for 2 seconds before redirecting
       } else {
         const errorData = await response.json();
+        console.error("Error response from server:", errorData);
         setError(errorData.error || "Failed to create account.");
       }
     } catch (error) {
       console.error("Error during account creation:", error);
       setError("An error occurred. Please try again.");
     }
+    
   };
 
   return (
     <div className="create-account-container">
+      {/* Back to homepage button */}
+      <div className="back-button" onClick={() => navigate("/")}>
+        <FaArrowLeft size={24} /> {/* You can adjust the size of the arrow */}
+        <span>Back to Home</span>
+      </div>
       <div className="headertext">
         <h1>Gusto</h1>
         <h2>To Go</h2>

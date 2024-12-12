@@ -262,12 +262,18 @@ const handlePaymentFailure = () => {
         <h1></h1>
       </div>
       <h1 className="review-order-title">Review Your Order</h1>
+      
       <ul className="review-order-items">
         {updatedItems.map((item) => (
           <li key={item.id} className="review-order-item">
             <div className="review-order-item-details">
             <h2 className="review-order-subtitle">Your Order Details</h2>
-              <span className="review-order-item-name">{item.name}</span> x <span className="review-order-item-quantity">{item.quantity}</span> - <span className="review-order-item-price">${item.price * item.quantity}</span>
+
+              <div className="review-order-item-name">
+                <span>{item.name} x {item.quantity}</span> 
+                <span className="review-order-item-price">${item.price * item.quantity}</span>
+              </div>
+
               <div className="review-order-item-drink">
                 {item.drinkName && <p className="review-order-item-drink-name">Selected Drink: {item.drinkName}</p>}
               </div>
@@ -296,7 +302,7 @@ const handlePaymentFailure = () => {
 
               <div className="review-order-item-dietary-preferences">
                 <div className="dietary-preference-item">
-                  <p>{item.glutenFree ? 'Gluten Free' : 'Not Gluten Free'}</p>
+                  <p><strong>{item.glutenFree ? 'Gluten Free' : 'Not Gluten Free'}</strong></p>
                   <button
                     onClick={() => handleDietaryPreferenceChange(item.id, 'glutenFree', !item.glutenFree)}
                     className="review-dietary-button">
@@ -305,7 +311,7 @@ const handlePaymentFailure = () => {
                 </div>
 
                 <div className="dietary-preference-item">
-                  <p>{item.lactoseFree ? 'Lactose Free' : 'Not Lactose Free'}</p>
+                  <p><strong>{item.lactoseFree ? 'Lactose Free' : 'Not Lactose Free'}</strong></p>
                   <button
                     onClick={() => handleDietaryPreferenceChange(item.id, 'lactoseFree', !item.lactoseFree)}
                     className="review-dietary-button">
@@ -336,13 +342,12 @@ const handlePaymentFailure = () => {
 
               {/* Lägg till knapp för att ta bort artikel */}
               <button onClick={() => handleRemoveItem(item.id)} className="review-remove-item-button">Remove Meal</button>
-              <h3 className="review-total-price">Total Price: ${updatedTotalPrice}</h3>
             </div>
           </li>
         ))}
       </ul>
 
-      
+        <h3 className='review-total-price'>Total Price: ${updatedTotalPrice}</h3>
 
       <div className="review-customer-details-container">
         <h2 className="review-customer-details-heading">Customer Details</h2>

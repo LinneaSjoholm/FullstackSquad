@@ -4,13 +4,13 @@ import { UpdateCommand, UpdateCommandInput } from '@aws-sdk/lib-dynamodb';
 export const adminUpdateOrder = async (event: any): Promise<any> => {
   const orderId = event.pathParameters.id;
   const body = JSON.parse(event.body);
-  const { status, messageToChef } = body;
+  const { status, messageToChef, locked } = body;
 
   // Validera input
-  if (!status || !messageToChef) {
+  if (!status || !messageToChef || locked === undefined) {
     return {
       statusCode: 400,
-      body: JSON.stringify({ message: 'Both status and messageToChef are required to update the order.' }),
+      body: JSON.stringify({ message: 'Status, messageToChef, and locked are required to update the order.' }),
     };
   }
 
@@ -32,6 +32,7 @@ export const adminUpdateOrder = async (event: any): Promise<any> => {
     const expressionAttributeValues: Record<string, any> = {
       ':status': status,
       ':messageToChef': messageToChef,
+      ':locked': locked,  // Uppdatera locked-fältet
       ':updatedAt': new Date().toISOString(),
     };
 
@@ -40,6 +41,9 @@ export const adminUpdateOrder = async (event: any): Promise<any> => {
 
     updateExpression.push('#messageToChef = :messageToChef');
     expressionAttributeNames['#messageToChef'] = 'messageToChef';
+
+    updateExpression.push('#locked = :locked');  // Lägg till locked i uttrycket
+    expressionAttributeNames['#locked'] = 'locked';
 
     updateExpression.push('#updatedAt = :updatedAt');
     expressionAttributeNames['#updatedAt'] = 'updatedAt';
