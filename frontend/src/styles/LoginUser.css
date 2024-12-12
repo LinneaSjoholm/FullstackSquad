@@ -1,5 +1,4 @@
 .login-container {
-  position: relative; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,7 +7,7 @@
   background-size: cover; 
   background-position: center; 
   }
-.header
+
   .login-container::after {
     content: "";
     position: absolute;
@@ -131,6 +130,7 @@
 
   .login-button {
     padding: 10px 15px;
+    right: 5px;
     font-size: 1rem;
     color: #ffffff;
     background-color: #1E1E1E;
@@ -138,6 +138,23 @@
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
+  }
+
+  .login-button:hover {
+    background-color: #333;
+  }
+
+  .back-button {
+    position: absolute;
+    top: 30px; /* Avstånd från toppen */
+    left: 30px; /* Avstånd från vänster */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #F4E7D3;
+    cursor: pointer;
+    font-family: "Jost", sans-serif;
+    z-index: 100;
   }
   
   @media (max-width: 768px) {

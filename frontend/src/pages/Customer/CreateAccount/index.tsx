@@ -56,6 +56,11 @@ const CreateAccount = () => {
 
   return (
     <div className="create-account-container">
+      {/* Back to homepage button */}
+      <div className="back-button" onClick={() => navigate("/")}>
+        <FaArrowLeft size={24} /> {/* You can adjust the size of the arrow */}
+        <span>Back to Home</span>
+      </div>
       <div className="headertext">
         <h1>Gusto</h1>
         <h2>To Go</h2>
@@ -121,11 +126,6 @@ const CreateAccount = () => {
             Create Account
           </button>
         </form>
-        {/* Back to homepage button */}
-      <div className="back-button" onClick={() => navigate("/")}>
-        <FaArrowLeft size={24} /> {/* You can adjust the size of the arrow */}
-        <span>Back to Home</span>
-      </div>
       </div>
     </div>
   );
