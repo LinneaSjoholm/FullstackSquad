@@ -47,6 +47,7 @@ const App: React.FC = () => {
   // Lista över sidor där Header och Footer ska döljas
   const hideHeaderFooterPaths = ['/admin/login', '/user/login', '/user/create', '/admin/dashboard', '/admin/orders', '/admin/stock', '/admin/menu'];
 
+
   return (
     <>
       {!hideHeaderFooterPaths.includes(location.pathname) && <Header />}

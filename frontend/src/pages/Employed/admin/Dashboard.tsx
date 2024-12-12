@@ -58,7 +58,7 @@ const Dashboard: React.FC = () => {
 
         <li
           className="dashboard-item logout"
-          onClick={() => navigate('/admin/logout')}>
+          onClick={() => navigate('/')}>
           Log out
         </li>
       </ul>
