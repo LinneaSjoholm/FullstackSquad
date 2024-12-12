@@ -4,16 +4,19 @@ import { verifyAdmin } from '../middleware/verifyAdmin';
 
 export const adminUpdateOrder = async (event: any): Promise<any> => {
   // Anropa verifyAdmin och vänta på resultatet
-const authResult = await verifyAdmin(event);
+  const authResult = await verifyAdmin(event);
 
-// Om authResult inte är giltigt, returnera 401
-if (!authResult.isValid) {
-  return {
-    statusCode: 401,
-    message: 'Access Denied',
-    error: 'You do not have the necessary permissions to access this resource. Please ensure you are logged in as an administrator.',
-  };
-}
+  // Om authResult inte är giltigt, returnera 401
+  if (!authResult.isValid) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({
+        message: 'Access Denied',
+        error: 'You do not have the necessary permissions to access this resource. Please ensure you are logged in as an administrator.',
+      }),
+    };
+  }
+
   const orderId = event.pathParameters.id;
   const body = JSON.parse(event.body);
   const { status, messageToChef, locked } = body;

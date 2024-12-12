@@ -12,6 +12,7 @@ interface AdminJwtPayload extends JwtPayload {
   
       if (!token) {
         throw new Error("Authorization token is missing. Please provide a valid token to access this resource.");
+
       }
   
       const secret = process.env.JWT_SECRET || "defaultSecret";
