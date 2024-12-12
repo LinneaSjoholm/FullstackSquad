@@ -1,11 +1,3 @@
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-}
-
 .dashboard-container {
   display: flex;
   flex-direction: column;
