@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../../styles/LoginAdmin.css"; 
+import "../../../styles/LoginAdmin.css";
 
 const LoginAdmin = () => {
   const [adminID, setAdminID] = useState("");
@@ -8,7 +8,7 @@ const LoginAdmin = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Funktion för att navigera tillbaka till login
+  // Funktion för att navigera tillbaka till användarens login
   const handleBackToLogin = () => {
     navigate("/user/login"); // Här anger du rätt väg till användarens login-sida
   };
@@ -21,7 +21,7 @@ const LoginAdmin = () => {
 
     try {
       const response = await fetch(
-        "https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/login", 
+        "https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/login", // Ersätt med rätt endpoint
         {
           method: "POST",
           headers: {
@@ -35,12 +35,13 @@ const LoginAdmin = () => {
         const data = await response.json();
         console.log("Admin login successful:", data);
 
-        // Spara token i localStorage
+        // Spara JWT-token i localStorage
         localStorage.setItem("adminToken", data.token);
 
         // Navigera till admin-dashboard
         navigate("/admin/dashboard");
       } else {
+        // Felhantering om login misslyckas
         const errorData = await response.json();
         setError(errorData.error || "Failed to log in as admin");
       }
@@ -78,7 +79,7 @@ const LoginAdmin = () => {
         <button type="submit" className="admin-login-button">
           Log In
         </button>
-        {/* Lägg till en knapp eller ikon för att gå tillbaka */}
+        {/* Lägg till en knapp för att gå tillbaka */}
         <button onClick={handleBackToLogin} className="back-button">
           ← Back to User Login
         </button>
