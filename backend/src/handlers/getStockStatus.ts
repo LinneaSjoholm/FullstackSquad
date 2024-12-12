@@ -1,6 +1,20 @@
 import { db } from '../services/db';
+import { verifyAdmin } from '../middleware/verifyAdmin';
 
 export const getIngredientStock = async (ingredientId: string) => {
+
+  // Anropa verifyAdmin och vänta på resultatet
+const authResult = await verifyAdmin(event);
+
+// Om authResult inte är giltigt, returnera 401
+if (!authResult.isValid) {
+  return {
+    statusCode: 401,
+    message: 'Access Denied',
+    error: 'You do not have the necessary permissions to access this resource. Please ensure you are logged in as an administrator.',
+  };
+}
+
   try {
     const result = await db.get({
       TableName: 'IngredientsTable',
@@ -22,6 +36,18 @@ export const getIngredientStock = async (ingredientId: string) => {
 
 
 export const getStockStatus = async (event: any): Promise<any> => {
+
+// Anropa verifyAdmin och vänta på resultatet
+const authResult = await verifyAdmin(event);
+
+// Om authResult inte är giltigt, returnera 401
+if (!authResult.isValid) {
+  return {
+    statusCode: 401,
+    body: JSON.stringify({ message: 'Unauthorized', error: authResult.message }),
+  };
+}
+  
   const params = {
     TableName: 'IngredientsTable',
   };

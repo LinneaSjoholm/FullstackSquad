@@ -112,7 +112,7 @@ export const handler = async (
 
       // Om lösenordet är korrekt, skapa en JWT-token
       const token = jwt.sign(
-        { adminID },
+        { adminID, role: "admin" },
         process.env.JWT_SECRET || "defaultSecret", // Använd miljövariabeln för JWT hemligheten
         { expiresIn: "2h" }
       );

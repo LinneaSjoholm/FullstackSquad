@@ -1,7 +1,19 @@
 import { db } from '../services/db';
 import { UpdateCommand, UpdateCommandInput } from '@aws-sdk/lib-dynamodb';
+import { verifyAdmin } from '../middleware/verifyAdmin';
 
 export const adminMarkOrderAsComplete = async (event: any): Promise<any> => {
+  // Anropa verifyAdmin och vänta på resultatet
+const authResult = await verifyAdmin(event);
+
+// Om authResult inte är giltigt, returnera 401
+if (!authResult.isValid) {
+  return {
+    statusCode: 401,
+    message: 'Access Denied',
+    error: 'You do not have the necessary permissions to access this resource. Please ensure you are logged in as an administrator.',
+  };
+}
   const orderId = event.pathParameters.id;
 
   try {
