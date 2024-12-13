@@ -21,7 +21,7 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
   const [cartVisible, setCartVisible] = useState<boolean>(false);
   const [favorites, setFavorites] = useState<string[]>([]);  // State för favoriter
 
-
+  
   // Kontrollera om användaren är inloggad genom att kolla efter ett token i localStorage
   const isLoggedIn = !!localStorage.getItem('token'); // true om token finns, false annars
   // Hämta favoriter från localStorage vid första renderingen
@@ -31,28 +31,8 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
       setFavorites(JSON.parse(storedFavorites));
     }
   }, []);
-
-  // Uppdatera localStorage när favoriter ändras
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
-
-  const toggleFavorite = (itemId: string) => {
-    setFavorites((prevFavorites) => {
-      const updatedFavorites = prevFavorites.includes(itemId)
-        ? prevFavorites.filter((id) => id !== itemId)  // Remove from favorites
-        : [...prevFavorites, itemId];  // Add to favorites
-  
-      // Update favorites in localStorage
-      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-      return updatedFavorites;
-    });
-  };
-  
-  
   
 
-  
   // För att stänga varukorgen automatiskt när den är tom
   useEffect(() => {
     if (orderItems.length === 0) {
@@ -149,7 +129,6 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
       return updatedOrder;
     });
   };
-
   const calculateTotalPrice = () => {
     return orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
@@ -173,11 +152,9 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
     return acc;
   }, {} as { [key: string]: MenuItem[] });
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-
-  function handleCloseCart(): void {
-    throw new Error('Function not implemented.');
+   // Uppdaterad version av handleCloseCart
+   function handleCloseCart() {
+    setCartVisible(false);  // Stänger varukorgen
   }
 
   return (
@@ -192,10 +169,12 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
       <div className="menu-bar">
         <div className='menu-header'>
         <h1>Menu</h1>
-        <h2>All dishes can be made gluten-free and lactose-free upon request.</h2>
+        <h2>
+        All dishes can be made <span className="gluten-free"> Gluten-free </span> and 
+        <span className="lactose-free"> Lactose-free </span> upon request.
+      </h2>
 
         </div>
-
         <div className="menu-sort-container">
           <label  className="menu-sort-label" htmlFor="sortBy">Sort by:</label>
           <select
@@ -208,107 +187,73 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
             <option value="name">Name</option>
           </select>
         </div>
-
-
-        
         {Object.keys(sortedMenuItems).map((category) => (
   <div key={category}>
-    <h2 className={category === 'pasta' || category === 'drink' ? 'hidden' : ''}>
-      {category}
-    </h2>
-
-    {category !== 'drink' && <h1></h1>}
-
-    <ul className="menu-list">
-      {sortedMenuItems[category].map((item) => (
-        <li key={item.id} className="menu-item">
-          <div className='menu-info'>
+  <h2 className={category === 'pasta' || category === 'drink' ? 'hidden' : ''}>
+    {category}
+  </h2>
+  {category !== 'drink' && <h1></h1>}
+  
+  {/* Lägg till en dynamisk klass för ul baserat på kategori */}
+  <ul className={`menu-list ${category === 'pasta' ? 'pasta-style' : ''} ${category === 'drink' ? 'drink-style' : ''}`}>
+    {sortedMenuItems[category].map((item) => (
+      <li key={item.id} className="menu-item">
+        <div className='menu-info'>
           <h3>{item.name}</h3>
           <h3>${item.price}</h3>
+        </div>
+        {category === 'pasta' && (
+          <img
+            src={pastaImages[item.name]}
+            alt={item.name}
+            className="menu-item-image"
+          />
+        )}
+
+        {category !== 'drink' && (
+          <div className='menu-description'>
+            <p>{item.description}</p>
+            
+            <p> Ingredients: {item.ingredients.join(', ')}</p>
           </div>
-          {category === 'pasta' && (
-            <img
-              src={pastaImages[item.name]}
-              alt={item.name}
-              className="menu-item-image"
-            />
-          )}
+        )}
 
-          {category !== 'drink' && (
-            <>
-              <div className='menu-description'>
-                <p>{item.description}</p>
-                <p> Ingredients: {item.ingredients.join(', ')}
-                </p>
-              </div>
-            </>
-          )}
-
-          {category !== 'drink' && (
-            <div className="menu-diet-info">
-              <p
-                className={`menu-inline-text ${item.lactoseFree ? 'lactose-free' : ''}`}
-              >
-                {item.lactoseFree ? 'Lacoste ' : ''} 
-              </p>
-              <p
-                className={`menu-inline-text ${item.glutenFree ? 'gluten-free' : ''}`}
-              >
-                {item.glutenFree ? 'Gluten' : ''}
-              </p>
-            </div>
-          )}
-
-          {category === 'pasta' && (
-            <div className="menu-centered-container">
-              {renderStars(item.popularity || 0)}
-            </div>
-          )}
-          
-          <div className="menu-button-container">
-            {/* {category !== 'drink' && (
-              <button
-                className="menu-favorite-button"
-                onClick={() => toggleFavorite(item.id)}
-              ></button>
-            )} */}
-
-            {category !== 'drink' && (
-              <button
-                className="menu-add-to-order-button"
-                onClick={() => addToOrder(item.id)}
-              >
-                Add to order
-              </button>
-            )}
+        {category !== 'drink' && (
+          <div className="menu-diet-info">
           </div>
+        )}
 
-          {/* Render the FavoriteButton here for each item */}
-          {/* <FavoriteButton
-              itemId={item.id} 
-              isFavorite={favorites.includes(item.id)}
-              onToggleFavorite={toggleFavorite} 
-              isLoggedIn={isLoggedIn}
-            /> */}
+        {category === 'pasta' && (
+          <div className="menu-centered-container">
+            {renderStars(item.popularity || 0)}
+          </div>
+        )}
+        
+        <div className="menu-button-container">
+          {category !== 'drink' && (
+            <button
+              className="menu-add-to-order-button"
+              onClick={() => addToOrder(item.id)}
+            >
+              Add to order
+            </button>
+          )}
+
+          </div>
         </li>
       ))}
     </ul>
   </div>
-))}
-
-  
-        
+))}  
       </div>
-  
       {cartVisible && (
         <Cart
-        orderItems={orderItems}
-        calculateTotalPrice={calculateTotalPrice}
-        removeFromOrder={removeFromOrder}
-        onClose={handleCloseCart} // Skickar onClose här
-      />
+          orderItems={orderItems}
+          calculateTotalPrice={calculateTotalPrice}
+          removeFromOrder={removeFromOrder}
+          onClose={handleCloseCart} // Skickar handleCloseCart här
+        />
       )}
-  
     </div>
   );
 }

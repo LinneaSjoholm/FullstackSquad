@@ -1,5 +1,13 @@
-.menu-container {
+/* Styling för glutenfri text */
+.gluten-free {
+  color: green; /* Grön text */
+  font-weight: bold; /* Fetstil för att framhäva ordet */
+}
 
+/* Styling för laktosfri text */
+.lactose-free {
+  color: rgb(160, 10, 10); /* Röd text */
+  font-weight: bold; /* Fetstil för att framhäva ordet */
 }
 
 /* För sorteringscontainer */
@@ -7,9 +15,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0px; 
+  margin-bottom: 20px; 
+  font-family: 'Arial', sans-serif; 
   margin: 20px auto; /* Ger en top-marginal och centrering horisontellt */
   position: relative; 
 }
+
+/* Label styling */
+.menu-sort-label {
+  font-size: 16px;
+  font-weight: 600; /* För att göra texten lite tjockare */
+  
+}
+
+/* Styling för select elementet */
+.menu-sort-container select {
+  padding: 4px 4px;
+  font-size: 14px;
+  border: 2px solid #ccc;
+  border-radius: 4px; /* Rundade hörn */
+  background-color: #f3dfbb;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Lägger till en smidig övergång vid hover */
+}
+
 
 .menu-cart-button {
   display: flex;
@@ -19,7 +50,6 @@
 
 .menu-cart-icon {
   background-color: transparent;
-  background-image: #FFEAC9;
 }
 
 .menu-info {
@@ -64,27 +94,6 @@
   font-size: 3rem;
 }
 
-
-.menu-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 50px;
-  margin: auto;
-  padding-bottom: 30px;
-  max-width: 800px;
-}
-
-.menu-item {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  background-color: #FFEAC9;
-  border-radius: 8px;
-  padding: 15px;
-  margin-top: 10px; 
-
-}
-
 .menu-description{
   font-size: 14px;
   color: #333;
@@ -94,12 +103,21 @@
   text-align: center;
 }
 
+/* Stilen för den andra p-taggen (ingredienser) */
+.menu-description p:nth-of-type(2) {
+  font-size: 12px; /* Större textstorlek för ingredienser */
+  color: #555; /* En annan färg för ingredienser */
+  font-style: italic; /* Gör ingredienserna kursiva */
+  margin-top: 10px; /* Lite avstånd över ingredienserna */
+}
 
 .menu-diet-info {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap: 8px;
   padding: 0;
   margin: 0;
+  
 }
 
 .menu-diet-info .lactose-free {
@@ -131,7 +149,7 @@
   border: none; 
   outline: none; 
   padding: 1rem;
-  margin: 0;
+  margin: 10;
   color: #fff;
 }
 
@@ -142,4 +160,28 @@
 
 .menu-favorite-button {
 visibility: hidden;
+}
+
+.menu-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Skapar två kolumner */
+  gap: 50px;
+  padding: 0;   /* Tar bort paddingen */
+  margin: 0;    /* Tar bort eventuell margin */
+  max-width: 900px;  /* Begränsar max bredd */
+  margin-left: auto;  /* Centrerar horisontellt */
+  margin-right: auto; /* Centrerar horisontellt */
+  padding-bottom: 30px; /* Lägger till lite bottenpadding om du vill ha det */
+}
+
+
+.menu-item {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #FFEAC9;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px; 
+
 }
