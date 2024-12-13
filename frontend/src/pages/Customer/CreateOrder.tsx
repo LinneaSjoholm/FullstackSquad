@@ -100,20 +100,20 @@ const CreateOrder: React.FC = () => {
 
   return (
     <div className="create-container">
-      <div className="menu-header">
+      <div className="create-back-button-container">
         {/* Bakåt-knapp */}
         <button onClick={() => navigate('/menu')} className="create-back-button">
           &larr; Back To Menu
         </button>
       </div>
 
-      <div className="create-menu-left">
+      <div className="create-menu-header">
         <h1>Your Order</h1>
       </div>
 
       <div className="create-items-container">
         {updatedOrderItems.map((item: CartItem) => (
-          <div key={item.id} className="order-item">
+          <div key={item.id} className="create-order-item">
             <div className="create-item-details">
               <img 
                 src={pastaImages[item.name] || ''} 
@@ -122,8 +122,8 @@ const CreateOrder: React.FC = () => {
               />
               <div className="create-item-info">
                 <h3>{item.name}</h3>
-                <p>Quantity: {item.quantity}</p>
-                <p>Price: ${item.price * item.quantity}</p>
+                <p>Quantity: <strong>{item.quantity}</strong></p>
+                <p>Price: <strong>${item.price * item.quantity}</strong></p>
 
                 {/* Knapp för att lägga till eller ta bort */}
                 <div className="create-item-actions">
@@ -137,12 +137,12 @@ const CreateOrder: React.FC = () => {
       </div>
 
       <div className="create-item-info">
-        <h4>Total Price: ${updatedTotalPrice}</h4>
+        <h2>Total Price: ${updatedTotalPrice}</h2>
       </div>
 
       <form onSubmit={handleSubmit} className="create-form">
-        <div>
-          <label htmlFor="customerName">Your Name:</label>
+        <div className='name-input'>
+          <label htmlFor="customerName">Name:</label>
           <input
             type="text"
             id="customerName"
@@ -151,8 +151,8 @@ const CreateOrder: React.FC = () => {
             required
           />
         </div>
-        <div>
-          <label htmlFor="customerPhone">Your Phone Number:</label>
+        <div className='number-input'>
+          <label htmlFor="customerPhone">Number:</label>
           <input
             type="tel"
             id="customerPhone"
@@ -161,8 +161,10 @@ const CreateOrder: React.FC = () => {
             required
           />
         </div>
-        <button type="submit">Review order</button>
       </form>
+      <div className='review-button'>
+        <button type="submit">Review order</button>
+        </div>
     </div>
   );
 };

@@ -181,21 +181,23 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
   }
 
   return (
-    <div className="menu-container">
-      <div className="menu-header">
-        <h1></h1>
-      </div>
-      <button
+    <div className='menu-container'>
+      <div className="menu-cart-button">
+      <button className="menu-cart-icon"
           onClick={() => setCartVisible(!cartVisible)}
-          className="menu-cart-button"
         >
-          <img src={shoppingBagIcon} alt="Cart icon" className="menu-cart-icon" />
+          <img src={shoppingBagIcon} alt="Cart icon"  />
         </button>
-      <div className="menu-left">
+      </div>
+      <div className="menu-bar">
+        <div className='menu-header'>
         <h1>Menu</h1>
         <h2>All dishes can be made gluten-free and lactose-free upon request.</h2>
+
+        </div>
+
         <div className="menu-sort-container">
-          <label htmlFor="sortBy">Sort by:</label>
+          <label  className="menu-sort-label" htmlFor="sortBy">Sort by:</label>
           <select
             id="sortBy"
             value={sortBy}
@@ -206,6 +208,8 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
             <option value="name">Name</option>
           </select>
         </div>
+
+
         
         {Object.keys(sortedMenuItems).map((category) => (
   <div key={category}>
@@ -218,9 +222,10 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
     <ul className="menu-list">
       {sortedMenuItems[category].map((item) => (
         <li key={item.id} className="menu-item">
-          <h3>
-            {item.name} - ${item.price}
-          </h3>
+          <div className='menu-info'>
+          <h3>{item.name}</h3>
+          <h3>${item.price}</h3>
+          </div>
           {category === 'pasta' && (
             <img
               src={pastaImages[item.name]}
@@ -231,10 +236,11 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
 
           {category !== 'drink' && (
             <>
-              <p className="menu-description-text">{item.description}</p>
-              <p className="menu-ingredients-text">
-                Ingredients: {item.ingredients.join(', ')}
-              </p>
+              <div className='menu-description'>
+                <p>{item.description}</p>
+                <p> Ingredients: {item.ingredients.join(', ')}
+                </p>
+              </div>
             </>
           )}
 
@@ -243,12 +249,12 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
               <p
                 className={`menu-inline-text ${item.lactoseFree ? 'lactose-free' : ''}`}
               >
-                {item.lactoseFree ? 'L ' : ''} 
+                {item.lactoseFree ? 'Lacoste ' : ''} 
               </p>
               <p
                 className={`menu-inline-text ${item.glutenFree ? 'gluten-free' : ''}`}
               >
-                {item.glutenFree ? 'G' : ''}
+                {item.glutenFree ? 'Gluten' : ''}
               </p>
             </div>
           )}
@@ -260,12 +266,12 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
           )}
           
           <div className="menu-button-container">
-            {category !== 'drink' && (
+            {/* {category !== 'drink' && (
               <button
                 className="menu-favorite-button"
                 onClick={() => toggleFavorite(item.id)}
               ></button>
-            )}
+            )} */}
 
             {category !== 'drink' && (
               <button
@@ -276,14 +282,14 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
               </button>
             )}
           </div>
-          
+
           {/* Render the FavoriteButton here for each item */}
-          <FavoriteButton
+          {/* <FavoriteButton
               itemId={item.id} 
-              isFavorite={favorites.includes(item.id)}  // Check if item is a favorite
+              isFavorite={favorites.includes(item.id)}
               onToggleFavorite={toggleFavorite} 
               isLoggedIn={isLoggedIn}
-            />
+            /> */}
         </li>
       ))}
     </ul>

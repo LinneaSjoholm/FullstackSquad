@@ -1,22 +1,6 @@
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Menu-specific body style */
 .menu-container {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  position: relative;
-  width: 100%;
-  overflow-x: hidden;
-}
 
+}
 
 /* För sorteringscontainer */
 .menu-sort-container {
@@ -27,103 +11,95 @@
   position: relative; 
 }
 
+.menu-cart-button {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.menu-cart-icon {
+  background-color: transparent;
+  background-image: #FFEAC9;
+}
+
+.menu-info {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 15px;
+  margin: 0;
+
+}
+
+.menu-header h1 {
+  margin: 0;  
+  text-align: center; 
+  color: #FFEAC9;
+  margin-bottom: 30px;
+  font-size: 30px;
+}
+.menu-header h2 {
+  margin: 0;  
+  text-align: center; 
+  color: #FFEAC9;
+  margin-bottom: 30px;
+  font-size: 20px;
+}
+
 /* För etiketten */
 .menu-sort-container label {
   font-size: 16px; 
   margin-right: 8px; /* Gör lite utrymme mellan etikett och select */
-  color: #000000; 
-}
-
-/* För select när användaren väljer */
-.menu-sort-container select:focus {
-  border-color: #0881A3; 
-  outline: none; 
+  color: #FFEAC9; 
 }
 
 
 .hidden {
-  display: none;
-}
-
-/* För att placera sort-container ovanför .menu-item */
-.menu-left {
-  margin-top: 50px; 
-}
-
-.menu-inline-text {
-  display: inline-block;
-  margin-right: 5px;
-}
-
-.menu-left h1 {
-  margin: 0;  
-  text-align: center; 
-  color: #000000;
-  margin-bottom: 30px;
-  font-size: 30px;
-}
-.menu-left h2 {
-  margin: 0;  
-  text-align: center; 
-  color: #000000;
-  margin-bottom: 30px;
-  font-size: 20px;
-}
-/* Skapa ett avstånd mellan sorteringscontainer och menyn */
-.menu-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Skapar två kolumner */
-  gap: 20px;
-  padding: 0;
-  list-style: none;
-  width: 100%; 
-  max-width: 1200px; 
-  margin: 20px auto; 
-}
-
-/* För att anpassa varje menypunkt */
-.menu-item {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  color: black;
-  margin-top: 10px; 
-}
-.menu-list h3{
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 30px;
+  margin: 20px auto; /* Ger en top-marginal och centrering horisontellt */
+  color: #FFEAC9;
+  text-transform: capitalize;
+  font-size: 3rem;
 }
 
 
-/* För att styla bilden av varje rätt */
-.menu-item-image {
-  width: 70%;
-  height: auto;
-  object-fit: cover; /* För att inte förvränga bilden */
-  margin-left: 5rem;
+.menu-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px;
+  margin: auto;
+  padding-bottom: 30px;
+  max-width: 800px;
 }
 
-.menu-description-text, .menu-ingredients-text {
+.menu-item {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #FFEAC9;
+  border-radius: 8px;
+  padding: 15px;
+  margin-top: 10px; 
+
+}
+
+.menu-description{
   font-size: 14px;
   color: #333;
   line-height: 1.5;
   max-width: 410px;
-  margin-left: auto;
-  margin-right: auto;
   margin-top: 10px;
+  text-align: center;
 }
 
 
 .menu-diet-info {
-  margin-top: 20px;
-  font-size: 14px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
+  justify-content: space-evenly;
+  padding: 0;
+  margin: 0;
 }
 
 .menu-diet-info .lactose-free {
@@ -145,40 +121,25 @@
 .menu-button-container {
   display: flex; 
   justify-content: center;
-  padding: 20px;
+  padding: 0px;
 }
 
-.menu-favorite-button {
-  padding: 10px 15px; 
-  font-size: 14px; 
-  cursor: pointer; 
-  border: none; 
-  outline: none; 
-  background-color: transparent;  
-}
+
 
 .menu-add-to-order-button{
   background-color: #0881A3;
   border: none; 
   outline: none; 
   padding: 1rem;
+  margin: 0;
   color: #fff;
 }
 
-/* För shoppingBagIcon */
-.menu-cart-button {
-  position: absolute; 
-  top: 1rem; 
-  right: 20px; 
-  display: flex;
-  gap: 1rem;
-  filter: grayscale(100%) brightness(0) invert(0); 
+
+.favorite-button {
+  visibility: hidden;
 }
 
-/* För hjärta-ikonen */
-.menu-heart-button, .menu-cart-button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  color: black;
+.menu-favorite-button {
+visibility: hidden;
 }

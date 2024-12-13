@@ -7,8 +7,8 @@ const Footer: React.FC = () => {
     <footer className="footer">
       {/* Adress Sektion */}
       <address>
-        123 Flavor Street <br />
-        Food City <br />
+        Gusto Road 2 <br />
+        Garden Beach <br />
         +123 456 789
       </address>
 
