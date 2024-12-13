@@ -6,10 +6,14 @@ import shoppingBagIcon from '../assets/shopping-bag.png';
 import pastaImages from '../interfaces/pastaImages'; 
 import '../styles/Cart.css';
 import FavoriteButton from '../components/FavoriteButton';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+
 
 interface MenuProps {
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
   cart: CartItem[];
+  user: { id: string | null };  
+  token: string | null;  
 }
 
 const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
@@ -19,18 +23,35 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<'popularity' | 'price' | 'name'>('popularity');
   const [cartVisible, setCartVisible] = useState<boolean>(false);
-  const [favorites, setFavorites] = useState<string[]>([]);  // State för favoriter
+  const [favorites, setFavorites] = useState<string[]>([]); // Manages the list of favorite item IDs
 
   
-  // Kontrollera om användaren är inloggad genom att kolla efter ett token i localStorage
-  const isLoggedIn = !!localStorage.getItem('token'); // true om token finns, false annars
-  // Hämta favoriter från localStorage vid första renderingen
   useEffect(() => {
     const storedFavorites = localStorage.getItem('favorites');
+    console.log('Stored favorites:', storedFavorites);  // Lägg till logg för att kolla om favoriter finns
     if (storedFavorites) {
       setFavorites(JSON.parse(storedFavorites));
     }
   }, []);
+  
+
+  const toggleFavorite = (itemId: string) => {
+    setFavorites((prevFavorites: string[]) => {
+      const newFavorites = [...prevFavorites];
+      const index = newFavorites.indexOf(itemId);
+  
+      if (index === -1) {
+        newFavorites.push(itemId);  
+      } else {
+        newFavorites.splice(index, 1); 
+      }
+  
+      localStorage.setItem('favorites', JSON.stringify(newFavorites));  // Uppdatera localStorage
+      console.log('Updated favorites:', newFavorites);  // Loggar nya favoriter
+      return newFavorites;
+    });
+  };
+  
   
 
   // För att stänga varukorgen automatiskt när den är tom
@@ -64,7 +85,7 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
         }
 
         const data = await response.json();
-
+        
         if (data.menu) {
           setMenuItems(data.menu);
         } else {
@@ -230,16 +251,29 @@ const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {
         )}
         
         <div className="menu-button-container">
-          {category !== 'drink' && (
+        {category !== 'drink' && (
+          <div className="button-with-heart"> 
+            {/* Favorite button with heart icon */}
+            <button
+              className="menu-favorite-button"
+              onClick={() => toggleFavorite(item.id)}
+            >
+              {favorites.includes(item.id) ? (
+                <FaHeart className="heart-icon-filled" /> // Fyllt hjärta
+              ) : (
+                <FaRegHeart className="heart-icon-empty" /> // Tomt hjärta
+              )}
+            </button>
             <button
               className="menu-add-to-order-button"
               onClick={() => addToOrder(item.id)}
             >
               Add to order
             </button>
-          )}
-
+           
           </div>
+        )}
+      </div>
         </li>
       ))}
     </ul>

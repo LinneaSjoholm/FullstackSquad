@@ -137,22 +137,21 @@
 
 
 .menu-button-container {
-  display: flex; 
+  display: flex;
   justify-content: center;
+  gap: 15px; /* För att lägga till mellanrum mellan knapparna */
   padding: 0px;
 }
 
 
-
-.menu-add-to-order-button{
+.menu-add-to-order-button {
   background-color: #0881A3;
-  border: none; 
-  outline: none; 
+  border: none;
+  outline: none;
   padding: 1rem;
-  margin: 10;
   color: #fff;
+  margin-right: 70px;
 }
-
 
 .favorite-button {
   visibility: hidden;
@@ -184,4 +183,29 @@ visibility: hidden;
   padding: 15px;
   margin-top: 10px; 
 
+}
+.menu-favorite-button {
+  visibility: visible;
+  display: inline-flex;  /* Använd flex för att centrera ikonen inom knappen */
+  justify-content: center;
+  align-items: center;
+  background-color: #FFEAC9;
+  padding: 10px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 15px;
+  width: 40px; /* Fixera bredden */
+  height: 40px; /* Fixera höjden */
+  transition: all 0.3s ease; /* För smidig transition */
+}
+
+.heart-icon-empty, .heart-icon-filled {
+  font-size: 20px; /* Justera storleken på hjärtikonen */
+  transition: color 0.3s ease; /* Lägger till en mjuk övergång när hjärtat ändras */
+}
+
+.heart-icon-filled {
+  color: red; /* Fyllt hjärta */
+  font-size: 22px; /* Fyllt hjärta större */
 }
