@@ -21,8 +21,7 @@ const LoginAdmin = () => {
     const loginData = { adminID, adminPassword };
 
     try {
-      const response = await fetch(
-        "https://9we9kddgf2.execute-api.eu-north-1.amazonaws.com/admin/login", 
+      const response = await fetch("https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/login", 
         {
           method: "POST",
           headers: {
