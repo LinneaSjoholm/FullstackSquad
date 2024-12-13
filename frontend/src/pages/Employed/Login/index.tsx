@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
-import "../../../styles/LoginAdmin.css"; 
+import "../../../styles/LoginAdmin.css";
+import { FaArrowLeft } from "react-icons/fa"; // Importera tillbaka-pilen från react-icons
+import { saveAdminToken, removeAdminToken } from "../../../utils/auth"; // Importera removeAdminToken
 
 const LoginAdmin = () => {
   const [adminID, setAdminID] = useState("");
@@ -9,10 +10,15 @@ const LoginAdmin = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Funktion för att navigera tillbaka till login
+  // Funktion för att navigera tillbaka till användarens login
   const handleBackToLogin = () => {
-    navigate("/user/login"); // Här anger du rätt väg till användarens login-sida
+    navigate("/user/login");
   };
+
+  // Rensa gammal token när komponenten laddas
+  useEffect(() => {
+    removeAdminToken(); // Ta bort eventuell tidigare token
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,9 +41,11 @@ const LoginAdmin = () => {
         const data = await response.json();
         console.log("Admin login successful:", data);
 
-        localStorage.setItem("adminToken", data.token);
+        // Spara JWT-token
+        saveAdminToken(data.token);
 
-        navigate("/admin/dashboard"); 
+        // Navigera till admin-dashboard
+        navigate("/admin/dashboard");
       } else {
         const errorData = await response.json();
         setError(errorData.error || "Failed to log in as admin");

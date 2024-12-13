@@ -51,35 +51,35 @@ const CreateOrder: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-  
+
     if (!customerName || !customerPhone) {
       alert("Please enter your name and phone number");
       return;
     }
-  
+
     const token = localStorage.getItem("jwtToken"); // Hämta token om användaren är inloggad
     const orderData = {
-      customerName,
-      customerPhone,
+      customerName: customerName || localStorage.getItem("userName") || "Guest",  // Använd användarnamn om inloggad, annars "Guest"
+      customerPhone: customerPhone || localStorage.getItem("userPhone") || "",  // Hämta telefonnummer om tillgängligt
       items: updatedOrderItems,
       totalPrice: updatedTotalPrice,
       userId: token || "guest", // Skicka token om användaren är inloggad, annars "guest"
     };
-  
+
     try {
       const response = await fetch("https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/order", {
         method: "POST",
         headers: {
-          "x-api-key": "bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT", // Se till att denna nyckel matchar backend
+          "x-api-key": "bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT", // API-nyckel, kontrollera om den är korrekt
           "Content-Type": "application/json",
         },
         body: JSON.stringify(orderData),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
-        // Navigera till ordergranskning eller en annan sida
+        // Navigera till ordergranskning eller annan sida efter lyckad order
         navigate("/review/order", {
           state: {
             customerName,

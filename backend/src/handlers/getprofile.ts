@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import { db } from "../services/db"; // För DynamoDB
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt, { JwtPayload, JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 
 export const getProfile: APIGatewayProxyHandler = async (event) => {
   const token = event.headers["Authorization"]?.split("Bearer ")[1];
@@ -53,10 +53,22 @@ export const getProfile: APIGatewayProxyHandler = async (event) => {
         };
       }
     } catch (error) {
-      return {
-        statusCode: 401,
-        body: JSON.stringify({ error: "Invalid or expired token" }),
-      };
+      if (error instanceof TokenExpiredError) {
+        return {
+          statusCode: 401,
+          body: JSON.stringify({ error: "Token has expired" }),
+        };
+      } else if (error instanceof JsonWebTokenError) {
+        return {
+          statusCode: 401,
+          body: JSON.stringify({ error: "Invalid token" }),
+        };
+      } else {
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ error: "Internal server error" }),
+        };
+      }
     }
   } catch (error: unknown) {
     if (error instanceof Error) {

@@ -1,7 +1,22 @@
 import { db } from '../services/db';
 import { APIGatewayProxyResult, APIGatewayProxyEvent } from 'aws-lambda';
+import { verifyAdmin } from '../middleware/verifyAdmin';
 
 export const adminGetOrders = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
+
+  // Anropa verifyAdmin och vänta på resultatet
+  const authResult = await verifyAdmin(event);
+
+  // Om authResult inte är giltigt, returnera 401
+  if (!authResult.isValid) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({
+        message: 'Access Denied',
+        error: 'You do not have the necessary permissions to access this resource. Please ensure you are logged in as an administrator.',
+      }),
+    };
+  }
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
