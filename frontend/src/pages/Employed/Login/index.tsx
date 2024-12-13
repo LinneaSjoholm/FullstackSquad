@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/LoginAdmin.css";
+import { FaArrowLeft } from "react-icons/fa"; // Importera tillbaka-pilen från react-icons
 import { saveAdminToken, removeAdminToken } from "../../../utils/auth"; // Importera removeAdminToken
 
 const LoginAdmin = () => {
@@ -58,6 +59,11 @@ const LoginAdmin = () => {
 
   return (
     <div className="admin-login-container">
+      {/* Lägg till en knapp eller ikon för att gå tillbaka */}
+      <div className="back-button" onClick={() => navigate("/user/login")}>
+              <FaArrowLeft size={20} /> {/* You can adjust the size of the arrow */}
+              <span>Back to User Login</span>
+            </div>
       <h2>Admin Login</h2>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleLogin} className="admin-login-form">
@@ -83,9 +89,6 @@ const LoginAdmin = () => {
         </div>
         <button type="submit" className="admin-login-button">
           Log In
-        </button>
-        <button onClick={handleBackToLogin} className="back-button">
-          ← Back to User Login
         </button>
       </form>
     </div>
