@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-// Definiera en anpassad typ för vår JWT-payload
+
 interface AdminJwtPayload extends JwtPayload {
   adminID: string;
   role: string;
@@ -22,7 +22,7 @@ interface AdminJwtPayload extends JwtPayload {
         throw new Error("Not authorized as admin");
       }
   
-      // Om allt är OK, returnera ett objekt med isValid och decoded admin info
+
       return { isValid: true, adminID: decoded.adminID };
     } catch (error) {
       console.error("Authorization error:", (error as Error).message);
