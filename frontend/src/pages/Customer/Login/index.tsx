@@ -40,7 +40,7 @@ const Login: React.FC = () => {
         localStorage.setItem("userId", data.userId); // Här sparas userId också
 
         // Navigera till profil-sidan efter inloggning
-        navigate("/profile");
+        navigate("/user/profile");
       } else {
         const errorData = await response.json();
         setError(errorData.error || "Failed to log in");

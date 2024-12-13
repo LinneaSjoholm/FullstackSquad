@@ -13,34 +13,35 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const token = localStorage.getItem("userToken");  // Fetch the token from localStorage
-      if (!token) {
+      const token = localStorage.getItem("userToken");
+      const userId = localStorage.getItem("userId");
+    
+      if (!token || !userId) {
+        console.error("Token or User ID is missing.");
         navigate("/user/login");
         return;
       }
-
-      const userId = localStorage.getItem("userId"); // Hämta användarens ID från localStorage
-      if (!userId) {
-        console.error("User ID is not available");
-        return;
-      }
-
+    
       try {
-        const response = await fetch(`https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/user/profile/${userId}`, {
-          method: 'GET',
-          headers: {
-            "Authorization": `Bearer ${token}`,  // Include token in Authorization header
-            "Content-Type": "application/json"
-          },
-        });
-
+        const response = await fetch(
+          `https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/user/profile/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+    
         if (!response.ok) {
+          console.error("Failed to fetch user profile:", response.status);
+          const errorData = await response.json();
+          console.error("Error message:", errorData); // Lägg till felmeddelande
           throw new Error("Failed to fetch user profile");
         }
-
+    
         const data = await response.json();
-
-        // Uppdatera tillstånden med data från API:t
         setUserName(data.userName);
         setFavorites(data.favorites);
         setOrderHistory(data.orderHistory);
@@ -48,6 +49,7 @@ const Profile = () => {
         console.error("Error fetching profile:", error);
       }
     };
+    
 
     fetchProfile();
   }, [navigate]);

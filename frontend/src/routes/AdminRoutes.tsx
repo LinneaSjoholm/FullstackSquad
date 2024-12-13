@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import StockDashboard from './admin/StockStatus';
-import MenuAdmin from './admin/MenuAdmin';
-import { CartItem } from '../../interfaces/index'; 
-import OrderDashboard from './admin/OrderDashboard';
-import Dashboard from './admin/Dashboard';
-import { AdminRouteGuard } from '../../utils/AdminRouteGuard';
+import StockDashboard from '../pages/Employed/admin/StockStatus';
+import MenuAdmin from '../pages/Employed/admin/MenuAdmin';
+import { CartItem } from '../interfaces/index'; 
+import OrderDashboard from '../pages/Employed/admin/OrderDashboard';
+import Dashboard from '../pages/Employed/admin/Dashboard';
+import { AdminRouteGuard } from '../guard/AdminRouteGuard';
 
 const AdminRoutes: React.FC = () => {
       const [cart, setCart] = useState<CartItem[]>([]);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { getAdminToken } from './auth';  // Antag att detta hämtar token från lokal lagring eller liknande
+import { getAdminToken } from '../utils/auth';  // Antag att detta hämtar token från lokal lagring eller liknande
 
 const AdminRouteGuard: React.FC = () => {
   const token = getAdminToken(); // Hämtar token

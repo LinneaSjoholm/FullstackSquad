@@ -40,7 +40,7 @@ const CreateAccount = () => {
         setSuccess(true);
 
         setTimeout(() => {
-          navigate("/"); // Redirect to homepage after account creation
+          navigate("/user/login"); // Redirect to homepage after account creation
         }, 2000); // Wait for 2 seconds before redirecting
       } else {
         const errorData = await response.json();

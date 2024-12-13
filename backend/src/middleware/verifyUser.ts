@@ -17,6 +17,8 @@ export const verifyUser = async (event: any) => {
     const secret = process.env.JWT_SECRET || "defaultSecret"; 
     const decoded = jwt.verify(token, secret) as UserJwtPayload;
 
+    console.log("Decoded token:", decoded);
+
     // Kontrollera om användaren har en specifik roll (om det krävs, annars ta bort detta block)
     if (decoded.role && decoded.role !== "user") {
       throw new Error("Not authorized for this resource");

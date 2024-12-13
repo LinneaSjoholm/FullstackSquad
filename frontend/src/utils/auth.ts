@@ -1,4 +1,3 @@
-// auth.ts
 
 // Spara token i localStorage
 export const saveAdminToken = (token: string) => {

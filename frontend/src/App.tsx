@@ -15,7 +15,8 @@ import Confirmation from './pages/Customer/Confirmation';
 import CreateAccount from './pages/Customer/CreateAccount';
 import Login from './pages/Customer/Login';
 import Profile from './pages/Customer/Profile';
-import AdminRoutes from './pages/Employed/AdminRoutes';
+import AdminRoutes from './routes/AdminRoutes';
+import { UserRouteGuard } from './guard/UserRouteGuard';
 
 const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -51,7 +52,14 @@ const App: React.FC = () => {
 
         <Route path="/user/create" element={<CreateAccount />} />
         <Route path="/user/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route
+          path="/user/profile"
+          element={
+            <UserRouteGuard>
+              <Profile />
+            </UserRouteGuard>
+          }
+        />
 
         <Route
           path="/payment"
