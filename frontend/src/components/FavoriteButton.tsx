@@ -18,6 +18,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
   isLoggedIn
 }) => {
   return (
+    <div className='favorite-button'>
     <button
       className="menu-favorite-button"
       onClick={() => onToggleFavorite(itemId)} // Call onToggleFavorite when clicked
@@ -27,9 +28,10 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({
         // Flip the condition: use outlined heart when NOT a favorite, and filled heart when it IS a favorite
         src={isFavorite ? heartOutlineIcon : heartIcon}
         alt="Heart icon"
-        className="icon small-icon"
+        className="heart-icon"
       />
     </button>
+    </div>
   );
 };
 
