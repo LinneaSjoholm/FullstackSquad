@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 import "../../../styles/LoginAdmin.css"; 
 
 const LoginAdmin = () => {
@@ -21,7 +22,7 @@ const LoginAdmin = () => {
 
     try {
       const response = await fetch(
-        "https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/login", 
+        "https://9we9kddgf2.execute-api.eu-north-1.amazonaws.com/admin/login", 
         {
           method: "POST",
           headers: {
@@ -50,8 +51,11 @@ const LoginAdmin = () => {
 
   return (
     <div className="admin-login-container">
-      
-
+      {/* Lägg till en knapp eller ikon för att gå tillbaka */}
+      <div className="back-button" onClick={() => navigate("/user/login")}>
+              <FaArrowLeft size={20} /> {/* You can adjust the size of the arrow */}
+              <span>Back to User Login</span>
+            </div>
       <h2>Admin Login</h2>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleLogin} className="admin-login-form">
@@ -78,10 +82,6 @@ const LoginAdmin = () => {
         <button type="submit" className="admin-login-button">
           Log In
         </button>
-        {/* Lägg till en knapp eller ikon för att gå tillbaka */}
-      <button onClick={handleBackToLogin} className="back-button">
-        ← Back to User Login
-      </button>
       </form>
     </div>
   );
