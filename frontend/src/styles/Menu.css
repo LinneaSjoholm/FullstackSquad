@@ -209,3 +209,75 @@ visibility: hidden;
   color: red; /* Fyllt hjärta */
   font-size: 22px; /* Fyllt hjärta större */
 }
+
+/* För iPhone Pro Max och mindre skärmar */
+@media (max-width: 430px) {
+  .menu-list {
+    grid-template-columns: 1fr; 
+    gap: 20px; 
+    margin: 0 auto; 
+    max-width: 90%; 
+  }
+
+  .menu-header h1 {
+    font-size: 34px; 
+    text-align: center; 
+  }
+
+  .menu-header h2 {
+    font-size: 25px; 
+    text-align: center; 
+  }
+
+  .menu-sort-container {
+    flex-direction: column;
+    align-items: center; 
+    gap: 10px; 
+    padding: 0 10px; 
+  }
+
+  .menu-cart-button {
+    padding: 15px; 
+    text-align: center; 
+  }
+
+  .menu-description {
+    font-size: 12px; 
+    max-width: 100%; 
+    text-align: center; 
+    margin: 0 auto; 
+  }
+
+  .menu-item {
+    padding: 10px; 
+    width: 20rem; 
+    margin: 0 auto; 
+  }
+
+  .menu-diet-info {
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+  }
+
+  .menu-button-container {
+    flex-direction: column; 
+    gap: 10px;
+    align-items: center; 
+  }
+
+  .menu-add-to-order-button {
+    padding: 15px; 
+    text-align: center; 
+  }
+
+  .favorite-button {
+    width: 100%; 
+    padding: 10px; 
+    text-align: center; 
+  }
+
+  .heart-icon-empty, .heart-icon-filled {
+    font-size: 18px; 
+  }
+}
