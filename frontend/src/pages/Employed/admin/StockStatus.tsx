@@ -28,7 +28,7 @@ const StockStatus: React.FC = () => {
       }
 
       try {
-        const response = await fetch('https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/stock-status', {
+        const response = await fetch('https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/stock-status', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

@@ -83,7 +83,7 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
     });
 
     try {
-      const response = await fetch('https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/admin/menu', {
+      const response = await fetch('https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/menu', {
         method: 'PUT',
         headers: {
           'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
