@@ -162,12 +162,9 @@ const CreateOrder: React.FC = () => {
           />
         </div>
       </form>
-<<<<<<< HEAD
-=======
       <div className='review-button'>
         <button type="submit">Review order</button>
         </div>
->>>>>>> Lam
     </div>
   );
 };
