@@ -16,7 +16,7 @@
   --font-size-medium-button: 1rem;
 
   background-color: var(--color-blue);
-  background-image: url('../images/B.jpg');
+  /*background-image: url('../images/B.jpg');*/
   background-size: cover; 
   background-repeat: no-repeat; 
   background-position: center; 

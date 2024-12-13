@@ -35,27 +35,45 @@ const HomePage: React.FC = () => {
       <Icon icon={fingerTapLine} className="icon" />
 
       <article className="months-favorites">
-        <span className="header-dishes1">
-          <h2>Month's favorites</h2>
-        </span>
-        <p>Discover the most popular dishes of the month.</p>
-        <section className="menu-items">
-          <img src={Arrabbiata} alt="Arrabbiata" className="dish-image" />
-          <img src={CreamyAlfredo} alt="Creamy Alfredo" className="dish-image" />
-          <img src={GardenPesto} alt="Garden Pesto" className="dish-image" />
-          <img src={LemonChicken} alt="Lemon Chicken" className="dish-image" />
-        </section>
-      </article>
+  <span className="header-dishes1">
+    <h2>Month's favorites</h2>
+  </span>
+  <p>Discover the most popular dishes of the month.</p>
+  <section className="menu-items">
+    <div className="dish">
+      <img src={Arrabbiata} alt="Arrabbiata" className="dish-image" />
+      <p className="dish-info">Arrabbiata Penne - $11.99</p>
+    </div>
+    <div className="dish">
+      <img src={CreamyAlfredo} alt="Creamy Alfredo" className="dish-image" />
+      <p className="dish-info">Creamy Alfredo - $10.99</p>
+    </div>
+    <div className="dish">
+      <img src={GardenPesto} alt="Garden Pesto" className="dish-image" />
+      <p className="dish-info">Garden Pesto - $9.99</p>
+    </div>
+    <div className="dish">
+      <img src={LemonChicken} alt="Lemon Chicken" className="dish-image" />
+      <p className="dish-info">Lemon Herb - $13.49</p>
+    </div>
+  </section>
+</article>
 
-      <article className="customers-favorites">
-        <span className="header-dishes2">
-          <h2>Our customers favorites</h2>
-        </span>
-        <section className="customers-items">
-          <img src={Tortellini} alt="Tortellini" className="dish-image" />
-          <img src={CreamyAlfredo} alt="Creamy Alfredo" className="dish-image" />
-        </section>
-      </article>
+<article className="customers-favorites">
+  <span className="header-dishes2">
+    <h2>Our customers favorites</h2>
+  </span>
+  <section className="customers-items">
+    <div className="dish">
+      <img src={Tortellini} alt="Tortellini" className="dish-image" />
+      <p className="dish-info">Tortellini - $12.49</p>
+    </div>
+    <div className="dish">
+      <img src={CreamyAlfredo} alt="Creamy Alfredo" className="dish-image" />
+      <p className="dish-info">Creamy Alfredo - $10.99</p>
+    </div>
+  </section>
+</article>
 
       <section className="reviews">
         <h1>Reviews</h1>
