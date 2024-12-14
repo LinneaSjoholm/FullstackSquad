@@ -4,6 +4,8 @@ import profileIcon from "../../../assets/profileIcon.png";
 import favorite from "../../../assets/favorite.png";
 import pastaImages from "../../../interfaces/pastaImages"; // Importera pastaImages
 import "../../../styles/Profile.css";
+import { getUserToken, removeUserToken } from '../../../utils/authUser'
+import { fetchUserProfile } from "../../../api/UserProfileApi";
 
 const Profile = () => {
   const [userName, setUserName] = useState("Guest");
@@ -13,7 +15,9 @@ const Profile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const token = localStorage.getItem("userToken");
+      const token = getUserToken();
+      console.log("Token from localStorage:", token); // Logga token för att säkerställa att den finns där
+      
       const userId = localStorage.getItem("userId");
     
       if (!token || !userId) {
@@ -29,6 +33,7 @@ const Profile = () => {
             method: "GET",
             headers: {
               "Authorization": `Bearer ${token}`,
+              'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
               "Content-Type": "application/json",
             },
           }
@@ -56,7 +61,7 @@ const Profile = () => {
 
   // Logout handler
   const handleLogout = () => {
-    localStorage.removeItem("userToken");
+    removeUserToken();
     localStorage.removeItem("userName");
     localStorage.removeItem("favorites");
     localStorage.removeItem("orderHistory");
