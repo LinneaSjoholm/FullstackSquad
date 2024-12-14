@@ -74,18 +74,26 @@ const Profile = () => {
   };
 
   return (
-    <div>
+    <div className="profile-container">
+      <div className="profile-buttons">
+        <button className="logout-button" onClick={handleLogout}>Log Out</button>
+      </div>
       <div className="profile-section">
         <img src={profileIcon} alt="Profile Icon" className="profile-icon" />
         <h2>Welcome, {userName}!</h2>
         {/* Log out button */}
-        <button onClick={handleLogout}>Log Out</button>
       </div>
       <div className="profile-content">
-        <div className="favorites-section">
+        <div className="profile-header-section">
+          <div className="profile-favorite-section">
           <h3>Your Favorites</h3>
           <img src={favorite} alt="Favorite Icon" className="favorite-icon" />
-          <div className="favorites-list">
+          </div>
+          <h3>Order History</h3>
+        </div>
+        <div className="profile-both-list">
+        <div>
+          <div className="profile-favorites-list">
             {favorites.length > 0 ? (
               favorites.map((item, index) => {
                 // Om 'item' är ett ID, hämta rätt namn
@@ -127,7 +135,6 @@ const Profile = () => {
           </div>
         </div>
         <div className="orderhistory-section">
-          <h3>Order History</h3>
           <div className="order-list">
             {orderHistory.length > 0 ? (
               orderHistory.map((item, index) => (
@@ -146,6 +153,11 @@ const Profile = () => {
             )}
           </div>
         </div>
+        </div>
+        
+      </div>
+      <div className="profile-bottom-text">
+      <p>Need help? Contact us at support@gustotogo.com or call +123 456 789</p>
       </div>
     </div>
   );
