@@ -1,35 +1,45 @@
 /* Cart container styling */
 .cart {
   position: fixed;
-  top: 24rem; /* Justera detta beroende på var du vill att den ska visas */
+  top: 24rem; 
   right: 20px;
-  padding: 30px;
-  background-color: black;
+  padding: 20px;
+  background-color: #FFEAC9;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  color: rgb(255, 255, 255);
-  max-height: 80vh; /* Förhindrar att varukorgen blir för stor */
-  overflow-y: auto; /* Gör att varukorgen blir scrollbar om innehållet är för stort */
+  color: rgb(0, 0, 0);
+  max-height: 80vh; 
+  overflow-y: auto; 
 }
-.cart h2{
-  color: #fff;
+
+/* Remove padding from the <ul> element */
+.cart ul {
+  padding: 0; /* Ta bort paddingen från ul */
+  margin: 0; /* Ta bort eventuell margin om det finns */
 }
-.cart h3{
-  color: #fff;
+
+/* Styling for h2 and h3 in cart */
+.cart h2,
+.cart h3 {
+  color: #000000;
+  text-align: center; 
+  margin: 0; 
+  padding: 10px 0; 
 }
+
 /* Container för varje rad */
 .cart ul li {
   display: flex;
-  justify-content: space-between; /* Sprider ut maträtt och knapp */
-  align-items: center; /* Vertikal centrering */
+  justify-content: space-between; 
+  align-items: center; 
   margin-bottom: 10px;
-  flex-wrap: wrap; /* För att knappar kan hamna på nästa rad om nödvändigt */
+  flex-wrap: wrap; 
 }
 
 /* Styling för maträttens namn och kvantitet */
 .cart ul li span {
-  flex: 1; /* Tar upp resten av utrymmet */
+  flex: 1; 
 }
 
 /* Styling för Remove-knappen */
@@ -40,12 +50,11 @@
   border-radius: 5px;
   padding: 5px 10px;
   cursor: pointer;
-  margin-top: 5px; /* Lägger till lite avstånd vid wrap */
-  flex: 0 0 auto; /* Gör så att knappen inte sträcks ut */
+  margin-top: 5px; 
+  flex: 0 0 auto; 
 }
 
-
-/* Styling for the checkout button */
+/* Checkout button styling */
 .cart .cart-checkout-button {
   margin-top: 10px;
   background-color: #0881A3;
@@ -53,8 +62,12 @@
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
-  width: 100%;
+  width: 60%; 
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 70px;
 }
 
 /* Optional: Add some hover effects for buttons */
@@ -63,19 +76,90 @@
   background-color: #076b85;
 }
 
-/* Stängningsknapp (X) */
+/* Close button (X) */
 .cart .cart-close-button {
   position: absolute;
   top: 10px;
   right: 10px;
   font-size: 24px;
-  color: #fff;
+  color: #000000;
   cursor: pointer;
   background: none;
   border: none;
 }
 
-/* Hover-effekt på stängknappen */
+/* Hover effect for close button */
 .cart .cart-close-button:hover {
-  color: #ff0000; /* Ändrar färg vid hover */
+  color: #ff0000;
+}
+
+/* For screens smaller than 480px (phones) */
+@media (max-width: 480px) {
+  /* Centrera hela varukorgen */
+  .cart {
+    top: 17rem; /* Adjust cart position for very small screens */
+    left:65%; /* Centrerar varukorgen horisontellt */
+    transform: translateX(-50%); /* Justera så att den är exakt centrerad */
+    padding: 5px; /* Less padding */
+    width: 60%; /* Gör varukorgen bredare på små skärmar */
+  }
+
+  /* Centrera innehållet i varukorgen */
+  .cart h2,
+  .cart h3 {
+    text-align: center; /* Centrera texten */
+    margin: 0; 
+    padding: 10px 0;
+  }
+
+  .cart ul {
+    padding: 0; /* Ta bort paddingen från ul */
+    margin: 0; /* Ta bort eventuell margin */
+    list-style-type: none; /* Ta bort punkterna på listan */
+  }
+
+  /* Styla varje listobjekt för att centrera det */
+  .cart ul li {
+    display: flex;
+    flex-direction: column; /* Ställ in vertikal layout */
+    align-items: center; /* Centrera innehållet horisontellt */
+    margin-bottom: 5px; /* Minska mellanrummet */
+  }
+
+  /* Centrera checkout-knappen */
+  .cart .cart-checkout-button {
+    width: 80%; /* Gör checkout-knappen full bredd */
+    margin-left: 30px; /* Ta bort eventuell vänstermarginal */
+    margin-bottom: 20px;
+    padding: 10px; /* Lägg till padding */
+    display: flex;
+    justify-content: center; /* Centrera texten i knappen */
+    align-items: center;
+  }
+
+  /* Styla Remove-knappen */
+  .cart .cart-remove-button {
+    width: 80%; /* Gör Remove-knappen nästan lika bred som varukorgen */
+    padding: 8px; /* Justera padding */
+    margin-top: 5px; /* Lite avstånd ovanför knappen */
+    display: flex;
+    justify-content: center; /* Centrera texten i knappen */
+  }
+
+  /* Centrera stängknappen (X) */
+  .cart .cart-close-button {
+    font-size: 20px; /* Mindre storlek på stängknappen */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #000000;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  /* Hover-effekt för stängknappen */
+  .cart .cart-close-button:hover {
+    color: #ff0000; /* Ändrar färg när användaren hovrar */
+  }
 }
