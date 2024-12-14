@@ -79,7 +79,7 @@
   margin: 0;
 }
 .create-item-info p {
-  margin: 0;
+  margin: 5px;
 }
 
 .create-item-info h2 {
@@ -111,18 +111,38 @@
 }
 
 .create-form {
+  margin-top: 60px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
+  flex-direction: column; 
+  align-items: center;    
   color: #FFEAC9;
   font-size: 30px;
+  gap: 1rem;              
 }
+
+.create-input-group {
+  display: flex;
+  flex-direction: row;   
+  gap: 4rem;              
+  justify-content: center; 
+}
+
+.name-input label,
+.number-input label {
+  font-weight: bold;      
+  color: #0881A3;        
+  margin-bottom: 5px;     
+  display: block;  
+  font-size: 15px; 
+  display: flex;
+}
+
 
 .name-input {
   display: flex;
   flex-direction: column;
   text-align: center;
-  width: 200px;
+  width: 200px;  
 
 }
 
@@ -131,7 +151,6 @@
   flex-direction: column;
   text-align: center;
   width: 200px;
-
 }
 
 .review-button {
@@ -140,7 +159,7 @@
   flex-direction: column;
   justify-content: center;
   text-align: center;
-
+  margin-top: 20px;
 }
 
 
@@ -176,3 +195,28 @@
   background-color: #076b85;
 } 
 
+/* För ännu mindre skärmar, t.ex. 320px */
+@media (max-width: 430px) {
+  .create-form {
+    font-size: 18px; /* Ytterligare minskning av fontstorlek för mycket små skärmar */
+  }
+
+  .create-add-button,
+  .create-remove-button {
+    width: 50px;
+
+  }
+  .create-input-group {
+    width: 300px;
+    gap: 1rem;
+  }
+
+  .name-input, .number-input {
+    width: 100%; /* 100% bredd för input-fälten */
+  }
+
+  .review-button button {
+    padding: 12px 0;
+    font-size: 1rem; /* Mindre fontstorlek för knappen */
+  }
+}

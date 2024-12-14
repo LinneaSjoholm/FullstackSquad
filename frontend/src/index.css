@@ -15,8 +15,9 @@
   --font-size-small-button: 0.75rem;
   --font-size-medium-button: 1rem;
 
-  background-color: var(--color-blue);
-  /*background-image: url('../images/B.jpg');*/
+  background: rgb(2,50,79);
+  background: radial-gradient(circle, rgba(2,50,79,1) 17%, rgba(26,73,87,1) 65%, rgba(8,65,68,1) 80%);
+  /*background-image: url('../images/B.jpg'); */
   background-size: cover; 
   background-repeat: no-repeat; 
   background-position: center; 
