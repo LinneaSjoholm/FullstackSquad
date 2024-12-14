@@ -1,14 +1,12 @@
-import { v4 as uuidv4 } from "uuid"; // För att generera unika ID:n
-import bcrypt from "bcryptjs"; // För att hasha lösenord
-import { db } from "../services/db"; // För att interagera med databasen
+import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcryptjs";
+import { db } from "../services/db";
 
 export const handler = async (event: any) => {
   try {
-    // Parsear body från request
-    const { email, name, password, address, phone } = JSON.parse(event.body);
+    const { email, name, password, address, phone, role } = JSON.parse(event.body);
 
-    // Validerar att alla fält finns
-    if (!email|| !name||  !password||  !address||  !phone) {
+    if (!email || !name || !password || !address || !phone) {
       return {
         statusCode: 400,
         headers: {
@@ -20,29 +18,52 @@ export const handler = async (event: any) => {
       };
     }
 
-    // Hashar lösenordet
-    const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("Hashed password:", hashedPassword); // Loggar det hashade lösenordet
+    // Kontrollera om e-posten redan finns
+    const result = await db.scan({
+      TableName: process.env.USERS_TABLE,
+      FilterExpression: "#email = :email",
+      ExpressionAttributeNames: {
+        "#email": "email",
+      },
+      ExpressionAttributeValues: {
+        ":email": email.trim(),
+      },
+    });
 
-    // Skapar en användare med ett unikt UUID (för intern användning)
+    if (result.Items && result.Items.length > 0) {
+      return {
+        statusCode: 400,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "Content-Type,Authorization",
+          "Access-Control-Allow-Methods": "GET,POST,OPTIONS"
+        },
+        body: JSON.stringify({ error: "Email is already in use" }), 
+      };
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Om ingen roll är angiven, sätt "user" som default
+    const userRole = role || "user";  
+
     const user = {
-      userId: uuidv4(), // Skapar ett unikt UUID för användaren (ändrat till userId)
+      userId: uuidv4(),
       email,
       name,
       password: hashedPassword,
       address,
       phone,
+      role: userRole,  
     };
 
-    console.log("User object to save:", user); // Loggar användarobjektet innan det sparas
-
-    // Lägger till användaren i DynamoDB
+    // Spara användaren i databasen
     await db.put({
-      TableName: process.env.USERS_TABLE, // Tabellnamnet från serverless.yml
+      TableName: process.env.USERS_TABLE,
       Item: user,
     });
 
-    // Returnerar framgångsrespons
+    // Skicka tillbaka användarens information (inklusive roll)
     return {
       statusCode: 201,
       headers: {
@@ -50,10 +71,13 @@ export const handler = async (event: any) => {
         "Access-Control-Allow-Headers": "Content-Type,Authorization",
         "Access-Control-Allow-Methods": "GET,POST,OPTIONS"
       },
-      body: JSON.stringify({ message: "User created successfully", userId: user.userId }), // Ändrat till userId
+      body: JSON.stringify({
+        message: "User created successfully",
+        userId: user.userId,
+        role: userRole, 
+      }),
     };
   } catch (error: any) {
-    // Hanterar eventuella fel
     console.error("Error occurred:", error.message);
     return {
       statusCode: 500,
