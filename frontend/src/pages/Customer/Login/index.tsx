@@ -4,10 +4,10 @@ import { FaArrowLeft } from "react-icons/fa"; // Import back arrow icon from rea
 import "../../../styles/LoginUser.css";
 import AdminIcon from "../../../assets/loginicon.png";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // För att visa felmeddelanden
+const Login: React.FC = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>(""); // För att visa felmeddelanden
   const navigate = useNavigate(); // Skapa navigate-funktionen
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -34,12 +34,13 @@ const Login = () => {
         const data = await response.json();
         console.log("Login successful:", data);
 
-        // Save token and userName to localStorage
-        localStorage.setItem("token", data.token);
+        // Spara token, användarnamn och userId i localStorage
+        localStorage.setItem("userToken", data.token);  // Save token with the key 'userToken'
         localStorage.setItem("userName", data.name);
+        localStorage.setItem("userId", data.userId); // Här sparas userId också
 
-        // Navigate to the profile page after successful login
-        navigate("/profile");
+        // Navigera till profil-sidan efter inloggning
+        navigate("/user/profile");
       } else {
         const errorData = await response.json();
         setError(errorData.error || "Failed to log in");
@@ -105,3 +106,4 @@ const Login = () => {
 };
 
 export default Login;
+

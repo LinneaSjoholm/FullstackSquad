@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../../../styles/adminDashboard.css';
 import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../../components/navbar';
+import { removeAdminToken } from '../../../utils/auth';
 
 
 const Dashboard: React.FC = () => {
@@ -58,9 +59,12 @@ const Dashboard: React.FC = () => {
 
         <li
           className="dashboard-item logout"
-          onClick={() => navigate('/')}>
+          onClick={() => {
+          navigate('/admin/login');
+          }}>
           Log out
         </li>
+      
       </ul>
     </div>
     </>

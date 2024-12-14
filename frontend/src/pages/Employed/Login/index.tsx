@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../../styles/LoginAdmin.css"; 
+import "../../../styles/LoginAdmin.css";
+import { FaArrowLeft } from "react-icons/fa"; // Importera tillbaka-pilen från react-icons
+import { saveAdminToken, removeAdminToken } from "../../../utils/auth"; // Importera removeAdminToken
 
 const LoginAdmin = () => {
   const [adminID, setAdminID] = useState("");
@@ -8,10 +10,15 @@ const LoginAdmin = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Funktion för att navigera tillbaka till login
+  // Funktion för att navigera tillbaka till användarens login
   const handleBackToLogin = () => {
-    navigate("/user/login"); // Här anger du rätt väg till användarens login-sida
+    navigate("/user/login");
   };
+
+  // Rensa gammal token när komponenten laddas
+  useEffect(() => {
+    removeAdminToken(); // Ta bort eventuell tidigare token
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,8 +27,7 @@ const LoginAdmin = () => {
     const loginData = { adminID, adminPassword };
 
     try {
-      const response = await fetch(
-        "https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/login", 
+      const response = await fetch("https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/login", 
         {
           method: "POST",
           headers: {
@@ -35,9 +41,11 @@ const LoginAdmin = () => {
         const data = await response.json();
         console.log("Admin login successful:", data);
 
-        localStorage.setItem("adminToken", data.token);
+        // Spara JWT-token
+        saveAdminToken(data.token);
 
-        navigate("/admin/dashboard"); 
+        // Navigera till admin-dashboard
+        navigate("/admin/dashboard");
       } else {
         const errorData = await response.json();
         setError(errorData.error || "Failed to log in as admin");
@@ -50,8 +58,11 @@ const LoginAdmin = () => {
 
   return (
     <div className="admin-login-container">
-      
-
+      {/* Lägg till en knapp eller ikon för att gå tillbaka */}
+      <div className="back-button" onClick={() => navigate("/user/login")}>
+              <FaArrowLeft size={20} /> {/* You can adjust the size of the arrow */}
+              <span>Back to User Login</span>
+            </div>
       <h2>Admin Login</h2>
       {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleLogin} className="admin-login-form">
@@ -78,10 +89,6 @@ const LoginAdmin = () => {
         <button type="submit" className="admin-login-button">
           Log In
         </button>
-        {/* Lägg till en knapp eller ikon för att gå tillbaka */}
-      <button onClick={handleBackToLogin} className="back-button">
-        ← Back to User Login
-      </button>
       </form>
     </div>
   );

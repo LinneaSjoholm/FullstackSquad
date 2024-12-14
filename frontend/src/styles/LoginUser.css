@@ -97,13 +97,12 @@
   .login-form {
     display: flex;
     flex-direction: column;
-    gap: 15px; 
-    width: 200px; 
   }
   
   .form-group {
     display: flex;
     flex-direction: column;
+    margin: 10px;
   }
   
   .form-group label {
@@ -116,7 +115,7 @@
     padding: 10px;
     font-size: 1rem;
     color: #000;
-    background-color: lightyellow;
+    background-color: #ffffe0;
     border: 1px solid #000;
     border-radius: 5px;
   }
@@ -129,8 +128,8 @@
   }
 
   .login-button {
-    padding: 10px 15px;
-    right: 5px;
+    padding: 10px;
+    margin-right: 10px;
     font-size: 1rem;
     color: #ffffff;
     background-color: #1E1E1E;
@@ -162,13 +161,6 @@
       padding: 10px;
     }
   
-    .headertext {
-      top: 10px; 
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-    }
-  
     .headertext h1 {
       font-size: 3rem; 
       top: 0;
@@ -178,14 +170,6 @@
       font-size: 1rem; 
       left: 10; 
       top: 5px; 
-    }
-  
-    .login-box {
-      width: 90%; 
-      max-width: 400px;
-      height: auto; 
-      margin: auto; 
-      padding: 20px; 
     }
   
     .login-box h2 {
@@ -198,16 +182,16 @@
     }
   
     .form-group input {
-      padding: 8px; 
       font-size: 1rem; 
     }
   
     .login-button {
-      padding: 12px;
+      width: 90%;
+      margin-left: 10px;
       font-size: 1rem; 
     }
-  }
 
-  .back-button {
-    font-size: 15px;
+    .back-button {
+      font-size: 15px;
+    }
   }

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../../components/navbar';
 
 const OrderDashboard: React.FC = () => {
-  const navigate = useNavigate();
   return (
 
   <>

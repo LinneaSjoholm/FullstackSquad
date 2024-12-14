@@ -12,33 +12,56 @@ const Profile = () => {
   const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
-    // Check if user is logged in by checking for a token in localStorage
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/user/login");
-      return;
-    }
+    const fetchProfile = async () => {
+      const token = localStorage.getItem("userToken");
+      const userId = localStorage.getItem("userId");
+    
+      if (!token || !userId) {
+        console.error("Token or User ID is missing.");
+        navigate("/user/login");
+        return;
+      }
+    
+      try {
+        const response = await fetch(
+          `https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/user/profile/${userId}`,
+          {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+    
+        if (!response.ok) {
+          console.error("Failed to fetch user profile:", response.status);
+          const errorData = await response.json();
+          console.error("Error message:", errorData); // Lägg till felmeddelande
+          throw new Error("Failed to fetch user profile");
+        }
+    
+        const data = await response.json();
+        setUserName(data.userName);
+        setFavorites(data.favorites);
+        setOrderHistory(data.orderHistory);
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
+    
 
-    const name = localStorage.getItem("userName");
-    if (name) setUserName(name);
-
-    // Fetch favorites and order history from localStorage
-    const storedFavorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    const storedOrderHistory = JSON.parse(localStorage.getItem("orderHistory") || "[]");
-
-    setFavorites(storedFavorites);
-    setOrderHistory(storedOrderHistory);
-  }, [navigate]); // Depends on navigate to avoid stale closures
+    fetchProfile();
+  }, [navigate]);
 
   // Logout handler
   const handleLogout = () => {
-    // Remove token and username from localStorage
-    localStorage.removeItem("token");
+    localStorage.removeItem("userToken");
     localStorage.removeItem("userName");
     localStorage.removeItem("favorites");
     localStorage.removeItem("orderHistory");
+    localStorage.removeItem("userId"); // Ta bort userId vid utloggning
 
-    // Redirect to login page after logout
     navigate("/user/login");
   };
 
@@ -69,7 +92,6 @@ const Profile = () => {
   // Hantera att användaren klickar på "Order Again"
   const handleOrderAgain = (item: string) => {
     const pastaName = getPastaNameById(item); 
-    // Navigera till order-sidan och skicka pasta-namn som state
     navigate("/menu", { state: { pastaName } });
   };
 
@@ -81,12 +103,11 @@ const Profile = () => {
       <div className="profile-section">
         <img src={profileIcon} alt="Profile Icon" className="profile-icon" />
         <h2>Welcome, {userName}!</h2>
-        {/* Log out button */}
       </div>
       <div className="profile-content">
         <div className="profile-header-section">
           <div className="profile-favorite-section">
-          <h3>Your Favorites</h3>
+          <h3>Favorites</h3>
           <img src={favorite} alt="Favorite Icon" className="favorite-icon" />
           </div>
           <h3>Order History</h3>
@@ -96,34 +117,21 @@ const Profile = () => {
           <div className="profile-favorites-list">
             {favorites.length > 0 ? (
               favorites.map((item, index) => {
-                // Om 'item' är ett ID, hämta rätt namn
                 const pastaName = getPastaNameById(item); 
-                const image = pastaImages[pastaName]; // Hämta rätt bild med pastaName
-                console.log('Image for', pastaName, ':', image); // Logga värdet av pastaImages[pastaName]
+                const image = pastaImages[pastaName];
                 
                 return (
                   <div key={index} className="favorite-item">
-                    {/* Kontrollera om bild finns */}
                     {image ? (
                       <img src={image} alt={pastaName} className="favorite-item-image" />
                     ) : (
                       <p>No image available</p>
                     )}
-                    
-                    {/* Visa namn på rätten under bilden */}
                     <p>{pastaName}</p>
-                    <button 
-                      className="order-again-btn" 
-                      onClick={() => handleOrderAgain(item)} // Kalla på funktionen för att order igen
-                    >
+                    <button className="order-again-btn" onClick={() => handleOrderAgain(item)}>
                       Order Again
                     </button>
-                    
-                    {/* Ta bort från favoriter-knapp */}
-                    <button 
-                      className="remove-favorite-btn"
-                      onClick={() => removeFavorite(item)} 
-                    >
+                    <button className="remove-favorite-btn" onClick={() => removeFavorite(item)}>
                       Remove from Favorites
                     </button>
                   </div>
@@ -140,10 +148,7 @@ const Profile = () => {
               orderHistory.map((item, index) => (
                 <div key={index} className="order-item">
                   <p>{item}</p>
-                  <button 
-                    className="order-again-btn" 
-                    onClick={() => handleOrderAgain(item)} // Kalla på funktionen för att order igen
-                  >
+                  <button className="order-again-btn" onClick={() => handleOrderAgain(item)}>
                     Order Again
                   </button>
                 </div>
