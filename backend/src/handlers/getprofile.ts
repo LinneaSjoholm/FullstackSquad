@@ -32,10 +32,10 @@ export const getProfile = async (event: any) => {
     // Hämta orderhistorik från OrdersTable
     const ordersResult = await db.query({
       TableName: "OrdersTable",
-      IndexName: "UserIdIndex",  // GSI för att söka på userId
+      IndexName: "UserIdIndex", // Om du har skapat en secondary index för userId
       KeyConditionExpression: "userId = :userId",
       ExpressionAttributeValues: {
-        ":userId": userId || "guest",  // Använd userId eller 'guest' för gäster
+        ":userId": userId,
       },
     });
 
