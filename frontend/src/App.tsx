@@ -26,6 +26,8 @@ const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [updatedItems] = useState<CartItem[]>(cart);
   const [updatedTotalPrice] = useState<number>(0);
+  const [user, setUser] = useState<{ id: string | null } | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
   // Hämta den aktuella sökvägen
   const location = useLocation();
@@ -47,7 +49,7 @@ const App: React.FC = () => {
 
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/menu" element={<Menu setCart={setCart} cart={cart} />} />
+        <Route path="/menu" element={<Menu setCart={setCart} cart={cart} user={user} token={token} />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/confirmation" element={<Confirmation />} />

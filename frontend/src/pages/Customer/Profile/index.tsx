@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import profileIcon from "../../../assets/profileIcon.png";
 import favorite from "../../../assets/favorite.png";
-import pastaImages from "../../../interfaces/pastaImages"; // Importera pastaImages
+import pastaImages from "../../../interfaces/pastaImages"; // Import pastaImages
 import "../../../styles/Profile.css";
 
 const Profile = () => {
   const [userName, setUserName] = useState("Guest");
-  const [favorites, setFavorites] = useState<string[]>([]); // Favorites data (nu som namn eller ID)
-  const [orderHistory, setOrderHistory] = useState<string[]>([]); // Order history data
+  const [favorites, setFavorites] = useState<any[]>([]); // Handle favorites as an array of objects
+  const [orderHistory, setOrderHistory] = useState<any[]>([]); // Handle order history as an array of objects
   const navigate = useNavigate(); // Initialize navigate
 
   useEffect(() => {
@@ -43,10 +43,10 @@ const Profile = () => {
 
         const data = await response.json();
         
-        // Uppdatera användarens namn, favoriter och orderhistorik
-        setUserName(data.user?.name || "Guest"); // Uppdatera till "name" istället för "userName"
-        setFavorites(data.favorites || []);  // Om inga favoriter, sätt en tom array
-        setOrderHistory(data.orders || []); // Om inga beställningar, sätt en tom array
+        // Update user data: name, favorites, and order history
+        setUserName(data.user?.name || "Guest");
+        setFavorites(data.favorites || []); // Use the actual favorites data
+        setOrderHistory(data.orders || []); // Use the actual order history data
       } catch (error) {
         console.error("Error fetching profile:", error);
       }
@@ -61,19 +61,19 @@ const Profile = () => {
     localStorage.removeItem("userName");
     localStorage.removeItem("favorites");
     localStorage.removeItem("orderHistory");
-    localStorage.removeItem("userId"); // Ta bort userId vid utloggning
+    localStorage.removeItem("userId"); // Remove userId during logout
 
     navigate("/user/login");
   };
 
   // Handle removing an item from favorites
-  const removeFavorite = (item: string) => {
-    const updatedFavorites = favorites.filter(fav => fav !== item); // Remove the item
+  const removeFavorite = (item: any) => {
+    const updatedFavorites = favorites.filter(fav => fav.id !== item.id); // Remove the item by ID
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites)); // Update localStorage
   };
 
-  // Översätt ID till namn (om favorites är lagrade som ID:n)
+  // Map pasta ID to name (or handle pasta object if it's more complex)
   const getPastaNameById = (id: string): string => {
     const pastaMapping: { [key: string]: string } = {
       '2': 'Arrabbiata Penne',
@@ -87,12 +87,12 @@ const Profile = () => {
       '9': 'Seafood Marinara',
       '4': 'Spaghetti Bolognese',
     };
-    return pastaMapping[id] || ''; // Returnerar namnet om det finns, annars en tom sträng
+    return pastaMapping[id] || ''; // Return the pasta name if exists
   };
 
-  // Hantera att användaren klickar på "Order Again"
-  const handleOrderAgain = (item: string) => {
-    const pastaName = getPastaNameById(item); 
+  // Handle re-ordering a past order
+  const handleOrderAgain = (item: any) => {
+    const pastaName = getPastaNameById(item.id); // Use item ID to get pasta name
     navigate("/menu", { state: { pastaName } });
   };
 
@@ -110,7 +110,7 @@ const Profile = () => {
           <div className="favorites-list">
             {favorites.length > 0 ? (
               favorites.map((item, index) => {
-                const pastaName = getPastaNameById(item); 
+                const pastaName = getPastaNameById(item.id); // Use the ID to get pasta name
                 const image = pastaImages[pastaName];
                 
                 return (
@@ -139,10 +139,11 @@ const Profile = () => {
           <h3>Order History</h3>
           <div className="order-list">
             {orderHistory.length > 0 ? (
-              orderHistory.map((item, index) => (
+              orderHistory.map((order, index) => (
                 <div key={index} className="order-item">
-                  <p>{item}</p>
-                  <button className="order-again-btn" onClick={() => handleOrderAgain(item)}>
+                  <p>Order ID: {order.orderId}</p>
+                  <p>Total Price: ${order.totalPrice}</p>
+                  <button className="order-again-btn" onClick={() => handleOrderAgain(order)}>
                     Order Again
                   </button>
                 </div>
