@@ -1,2 +1,29 @@
+.admin-menu-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  top: 90px;
+}
 
+.admin-menu-container h1 {
+  font-family: 'Source Serif 4', sans-serif;
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--color-beige);
+  text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.admin-menu-category h2{
+    font-family: 'Source Serif 4', sans-serif;
+    font-size: 20px;
+    color: var(--color-beige);
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+}
