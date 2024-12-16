@@ -1,3 +1,8 @@
+body {
+  font-family: 'Source Serif 4', sans-serif;
+
+}
+
 /* Styling för glutenfri text */
 .gluten-free {
   color: green; /* Grön text */
@@ -17,7 +22,6 @@
   justify-content: center;
   gap: 0px; 
   margin-bottom: 20px; 
-  font-family: 'Arial', sans-serif; 
   margin: 20px auto; /* Ger en top-marginal och centrering horisontellt */
   position: relative; 
 }
@@ -67,6 +71,7 @@
   color: #FFEAC9;
   margin-bottom: 30px;
   font-size: 30px;
+
 }
 .menu-header h2 {
   margin: 0;  
@@ -74,6 +79,7 @@
   color: #FFEAC9;
   margin-bottom: 30px;
   font-size: 20px;
+
 }
 
 /* För etiketten */
@@ -92,6 +98,8 @@
   color: #FFEAC9;
   text-transform: capitalize;
   font-size: 3rem;
+
+
 }
 
 .menu-description{

@@ -132,7 +132,7 @@ const CreateOrder: React.FC = () => {
 
       <form onSubmit={handleSubmit} className="create-form">
         <div className="create-input-group">
-          <div className="name-input">
+          <div className="create-name-input">
             <label htmlFor="customerName">Full Name:</label>
             <input
               type="text"
@@ -142,7 +142,7 @@ const CreateOrder: React.FC = () => {
               required
             />
           </div>
-          <div className="number-input">
+          <div className="create-number-input">
             <label htmlFor="customerPhone">Phone Number:</label>
             <input
               type="tel"
@@ -153,13 +153,10 @@ const CreateOrder: React.FC = () => {
             />
           </div>
         </div>
-        <div className="review-button">
+        <div className="create-review-button">
           <button type="submit">Review order</button>
         </div>
       </form>
-
-
-          
         </div>
       );
     };
