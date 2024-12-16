@@ -15,16 +15,16 @@ const Profile = () => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("userToken");
       const userId = localStorage.getItem("userId");
-    
+
       if (!token || !userId) {
         console.error("Token or User ID is missing.");
         navigate("/user/login");
         return;
       }
-    
+
       try {
         const response = await fetch(
-          `https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/user/profile/${userId}`,
+          `https://8yanxxf6q0.execute-api.eu-north-1.amazonaws.com/user/profile/${userId}`,
           {
             method: "GET",
             headers: {
@@ -33,23 +33,24 @@ const Profile = () => {
             },
           }
         );
-    
+
         if (!response.ok) {
           console.error("Failed to fetch user profile:", response.status);
           const errorData = await response.json();
-          console.error("Error message:", errorData); // Lägg till felmeddelande
+          console.error("Error message:", errorData);
           throw new Error("Failed to fetch user profile");
         }
-    
+
         const data = await response.json();
-        setUserName(data.userName);
-        setFavorites(data.favorites);
-        setOrderHistory(data.orderHistory);
+        
+        // Uppdatera användarens namn, favoriter och orderhistorik
+        setUserName(data.user?.name || "Guest"); // Uppdatera till "name" istället för "userName"
+        setFavorites(data.favorites || []);  // Om inga favoriter, sätt en tom array
+        setOrderHistory(data.orders || []); // Om inga beställningar, sätt en tom array
       } catch (error) {
         console.error("Error fetching profile:", error);
       }
     };
-    
 
     fetchProfile();
   }, [navigate]);

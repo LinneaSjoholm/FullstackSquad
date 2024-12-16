@@ -15,8 +15,8 @@ import CreateAccount from './pages/Customer/CreateAccount';
 import Login from './pages/Customer/Login';
 import Profile from './pages/Customer/Profile';
 import { UserRouteGuard } from './guard/UserRouteGuard';
-import StockStatus from './pages/Employed/admin/StockStatus';
 import MenuAdmin from './pages/Employed/admin/MenuAdmin';
+import StockStatus from './pages/Employed/admin/StockStatus';
 import { CartItem } from './interfaces/index'; 
 import OrderDashboard from './pages/Employed/admin/OrderDashboard';
 import Dashboard from './pages/Employed/admin/Dashboard';
@@ -77,7 +77,7 @@ const App: React.FC = () => {
             />
           }
         />
-
+        
         <Route path="/admin/login" element={<LoginAdmin />} />
         <Route element={<AdminRouteGuard />}>
         <Route path="/admin/dashboard" element={<Dashboard />} />

@@ -12,8 +12,6 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 interface MenuProps {
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>;
   cart: CartItem[];
-  user: { id: string | null };  
-  token: string | null;  
 }
 
 const Menu: React.FC<MenuProps> = ({ setCart, cart }) => {

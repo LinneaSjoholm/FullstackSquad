@@ -122,15 +122,14 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="menu-admin-container">
+    <div className="admin-menu-container">
       <Navbar />
-      <div className="menu-header"></div>
-
-      <div className="menu-left">
+      <div className="admin-menu-header"></div>
+      <div className="admin-menu-left">
         <h1>Menu</h1>
-        <div className="menu-items-container">
+        <div className="admin-menu-items-container">
           {Object.keys(menuItems).map((category: string) => (
-            <div key={category} className="menu-category">
+            <div key={category} className="admin-menu-category">
               <h2>{category}</h2>
               <div className="menu-list">
                 {menuItems[category].map((item: MenuItem) => (
@@ -181,10 +180,6 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
           ))}
         </div>
       </div>
-      {/* Footer */}
-      <footer className="footer">
-        <p>&copy; 2024 Your Company. All rights reserved.</p>
-      </footer>
     </div>
   );
 };

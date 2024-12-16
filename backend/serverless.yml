@@ -292,10 +292,19 @@ resources:
         AttributeDefinitions:
           - AttributeName: "orderId"
             AttributeType: "S"
+          - AttributeName: "userId"
+            AttributeType: "S"
         KeySchema:
           - AttributeName: "orderId"
             KeyType: "HASH"
         BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes: 
+          - IndexName: "UserIdIndex"
+            KeySchema:
+              - AttributeName: "userId"
+                KeyType: "HASH"
+            Projection:
+              ProjectionType: "ALL" 
 
     AboutTable:
       Type: AWS::DynamoDB::Table
@@ -337,6 +346,18 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: UsersTable
+        AttributeDefinitions:
+          - AttributeName: "userId"
+            AttributeType: "S"
+        KeySchema:
+          - AttributeName: "userId"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+
+    FavoritesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: FavoritesTable
         AttributeDefinitions:
           - AttributeName: "userId"
             AttributeType: "S"

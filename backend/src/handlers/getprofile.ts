@@ -1,86 +1,66 @@
-import { APIGatewayProxyHandler } from "aws-lambda";
-import { db } from "../services/db"; // För DynamoDB
-import jwt, { JwtPayload, JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import { db } from "../services/db";
+import jwt from "jsonwebtoken";
 
-export const getProfile: APIGatewayProxyHandler = async (event) => {
-  const token = event.headers["Authorization"]?.split("Bearer ")[1];
-
-  if (!token) {
-    return {
-      statusCode: 401,
-      body: JSON.stringify({ error: "No token provided" }),
-    };
-  }
-
+export const getProfile = async (event: any) => {
   try {
+    // Extrahera JWT-token från Authorization headern
+    const token = event.headers['authorization']?.split(" ")[1] || event.headers['Authorization']?.split(" ")[1];
+    if (!token) {
+      return {
+        statusCode: 401,
+        body: JSON.stringify({ error: "Unauthorized: Token is missing" }),
+      };
+    }
+
     // Verifiera token
-    let decodedToken: JwtPayload | string;
-    try {
-      decodedToken = jwt.verify(token, process.env.JWT_SECRET || "defaultSecret");
+    const decoded: any = jwt.verify(token, process.env.JWT_SECRET || "defaultSecret");
+    const userId = decoded.userId;
 
-      if (typeof decodedToken !== 'string') {
-        const userId = decodedToken.userId;
+    // Hämta användardata från UsersTable
+    const userResult = await db.get({
+      TableName: process.env.USERS_TABLE!,
+      Key: { userId },
+    });
 
-        // Hämta användarens data från UsersTable
-        const result = await db.get({
-          TableName: process.env.USERS_TABLE || "UsersTable",
-          Key: { userId },
-        });
-
-        if (!result.Item) {
-          return {
-            statusCode: 404,
-            body: JSON.stringify({ error: "User not found" }),
-          };
-        }
-
-        const user = result.Item;
-
-        // Skicka tillbaka användarens profilinformation
-        return {
-          statusCode: 200,
-          body: JSON.stringify({
-            userName: user.name,
-            email: user.email, // You can add more fields if needed
-            favorites: user.favorites || [],
-            orderHistory: user.orderHistory || [],
-          }),
-        };
-      } else {
-        return {
-          statusCode: 401,
-          body: JSON.stringify({ error: "Invalid token format" }),
-        };
-      }
-    } catch (error) {
-      if (error instanceof TokenExpiredError) {
-        return {
-          statusCode: 401,
-          body: JSON.stringify({ error: "Token has expired" }),
-        };
-      } else if (error instanceof JsonWebTokenError) {
-        return {
-          statusCode: 401,
-          body: JSON.stringify({ error: "Invalid token" }),
-        };
-      } else {
-        return {
-          statusCode: 500,
-          body: JSON.stringify({ error: "Internal server error" }),
-        };
-      }
-    }
-  } catch (error: unknown) {
-    if (error instanceof Error) {
+    if (!userResult.Item) {
       return {
-        statusCode: 500,
-        body: JSON.stringify({ error: error.message }),
-      };
-    } else {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "Internal Server Error" }),
+        statusCode: 404,
+        body: JSON.stringify({ error: "User not found" }),
       };
     }
+
+    // Hämta orderhistorik från OrdersTable
+    const ordersResult = await db.query({
+      TableName: "OrdersTable",
+      IndexName: "UserIdIndex",  // GSI för att söka på userId
+      KeyConditionExpression: "userId = :userId",
+      ExpressionAttributeValues: {
+        ":userId": userId || "guest",  // Använd userId eller 'guest' för gäster
+      },
+    });
+
+    // Hämta favoritiserade rätter (detta kan bero på hur du lagrar favoritiserade rätter)
+    const favoritesResult = await db.query({
+      TableName: "FavoritesTable", // Förutsatt att du har en tabell för favoriter
+      KeyConditionExpression: "userId = :userId",
+      ExpressionAttributeValues: {
+        ":userId": userId,
+      },
+    });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        user: userResult.Item,
+        orders: ordersResult.Items,
+        favorites: favoritesResult.Items,
+      }),
+    };
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Error fetching profile" }),
+    };
   }
 };
