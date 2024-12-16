@@ -11,21 +11,23 @@ const Confirmation: React.FC = () => {
   const { orderId, updatedTotalPrice, updatedItems }: { orderId: string; updatedTotalPrice: number; updatedItems: CartItem[] } = location.state || {};
 
   return (
-    <div className="container">
-      <div className="container-message">
-        <h2 className="thank-you-message">Thank you for choosing Gusto to Go</h2>
+    <div className="confirmation-container">
+      <div className="confirmation-container-message">
+        <h2 className="confirmation-thank-you-message">Thank you for choosing Gusto to Go</h2>
         <p className="confirmation-message">Your order is on its way!</p>
       </div>
 
-      <main className="order-content">
-        <section className="order-summary">
+      <main className="confirmation-order-content">
+        <section className="confirmation-order-summary">
           <h2>Order #{orderId}</h2>
-          <ul className="order-items">
+          <ul className="confirmation-order-items">
             {updatedItems?.map((item: CartItem, index: number) => (
-              <li key={index} className="order-item">
+              <li key={index}>
+                <div className="confirmation-order-item">
                 <h3><strong>{item.name} x {item.quantity}</strong></h3>
-                <h3><strong>${(item.price * item.quantity).toFixed(2)}</strong></h3>
-              <div className="order-item-details">
+                <h3><strong>${item.price}</strong></h3>
+                </div>
+              <div className="confirmation-order-item-details">
                 {/* Visa vald dryck */}
                 {item.drinkName && (
                   <p><strong>Drink:</strong> {item.drinkName}</p>
@@ -55,21 +57,21 @@ const Confirmation: React.FC = () => {
 
           <hr />
 
-          <div className="order-total">
+          <div className="confirmation-order-total">
             <h2>Total</h2>
             <h2>${updatedTotalPrice?.toFixed(2)}</h2>
           </div>
 
-          <div className="delivery-info">
+          <div className="confirmation-delivery-info">
             <p>Your food will be delivered in approximately 30 minutes</p>
-            <p className="delivery-icon">🚗</p>
-            <button className="back-to-menu" onClick={() => navigate("/menu")}>
+            <p className="confirmation-delivery-icon">🚗</p>
+            <button className="confirmation-back-to-menu" onClick={() => navigate("/menu")}>
               Go Back to Menu
             </button>
           </div>
         </section>
 
-        <p className="contact-info">
+        <p className="confirmation-contact-info">
           Need help? Contact us at <a href="mailto:support@gustotogo.com">support@gustotogo.com</a> or call +123 456 789
         </p>
       </main>

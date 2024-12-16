@@ -77,6 +77,7 @@ const FavoritesPage = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div className="favorites-page">
       <h2>Your Favorite Dishes</h2>
       {loading ? (
@@ -96,6 +97,60 @@ const FavoritesPage = () => {
                     <p>No image available</p>
                   )}
                   <p>{pastaName}</p>
+=======
+    <div className="profile-container">
+      <div className="profile-buttons">
+        <button className="logout-button" onClick={handleLogout}>Log Out</button>
+      </div>
+      <div className="profile-section">
+        <img src={profileIcon} alt="Profile Icon" className="profile-icon" />
+        <h2>Welcome, {userName}!</h2>
+      </div>
+      <div className="profile-content">
+        <div className="profile-header-section">
+          <div className="profile-favorite-section">
+          <h3>Favorites</h3>
+          <img src={favorite} alt="Favorite Icon" className="favorite-icon" />
+          </div>
+          <h3>Order History</h3>
+        </div>
+        <div className="profile-both-list">
+        <div>
+          <div className="profile-favorites-list">
+            {favorites.length > 0 ? (
+              favorites.map((item, index) => {
+                const pastaName = getPastaNameById(item); 
+                const image = pastaImages[pastaName];
+                
+                return (
+                  <div key={index} className="favorite-item">
+                    {image ? (
+                      <img src={image} alt={pastaName} className="favorite-item-image" />
+                    ) : (
+                      <p>No image available</p>
+                    )}
+                    <p>{pastaName}</p>
+                    <button className="order-again-btn" onClick={() => handleOrderAgain(item)}>
+                      Order Again
+                    </button>
+                    <button className="remove-favorite-btn" onClick={() => removeFavorite(item)}>
+                      Remove from Favorites
+                    </button>
+                  </div>
+                );
+              })
+            ) : (
+              <p>You have no favorites yet.</p>
+            )}
+          </div>
+        </div>
+        <div className="orderhistory-section">
+          <div className="order-list">
+            {orderHistory.length > 0 ? (
+              orderHistory.map((item, index) => (
+                <div key={index} className="order-item">
+                  <p>{item}</p>
+>>>>>>> Lam
                   <button className="order-again-btn" onClick={() => handleOrderAgain(item)}>
                     Order Again
                   </button>
@@ -106,10 +161,19 @@ const FavoritesPage = () => {
             <p>You have no favorites yet.</p>
           )}
         </div>
+<<<<<<< HEAD
       )}
       <button className="back-btn" onClick={() => navigate("/user/profile")}>
         Back to Profile
       </button>
+=======
+        </div>
+        
+      </div>
+      <div className="profile-bottom-text">
+      <p>Need help? Contact us at support@gustotogo.com or call +123 456 789</p>
+      </div>
+>>>>>>> Lam
     </div>
   );
 };

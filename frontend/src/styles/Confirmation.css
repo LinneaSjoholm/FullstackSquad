@@ -1,4 +1,4 @@
-.container {
+.confirmation-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,27 +8,19 @@
   color: black;
 }
 
-.container-message {
+.confirmation-container-message {
   text-align: center;
   margin-bottom: 20px;
   font-size: 1.5rem;
   color: #F4E7D3;
 }
 
-/* Gör message osynlig som standard */
-.message {
-  /* visibility: hidden; */
-  margin: 0;
-  padding: 5px;
-}
-
-
-.thank-you-message {
+.confirmation-thank-you-message {
   margin: 0;
   padding: 10px;
 }
 
-.order-content {
+.confirmation-order-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -42,28 +34,21 @@
   max-width: 500px; /* Begränsa maxbredden */
 }
 
-.order-items {
+.confirmation-order-items {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  align-items: center;
-  margin-bottom: 10px;
-  
+  justify-content: space-between;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.order-item {
+.confirmation-order-item {
   display: flex;
   justify-content: space-between;
 }
 
-.order-item-details {
-  text-align: left;
-  margin-left: 10px;
-}
-
-
-.order-total {
+.confirmation-order-total {
   display: flex;
   justify-content: space-between;
   font-weight: bold;
@@ -71,7 +56,7 @@
   margin-top: 10px;
 }
 
-.order-number {
+.confirmation-order-number {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -80,7 +65,7 @@
   margin-top: 10px;
 }
 
-.delivery-info {
+.confirmation-delivery-info {
   margin-top: 10px;
   font-size: 0.9rem;
   color: black;
@@ -90,12 +75,12 @@
   flex-direction: column;
 }
 
-.delivery-icon {
+.confirmation-delivery-icon {
   font-size: 2rem;
   margin: 10px 0;
 }
 
-.back-to-menu {
+.confirmation-back-to-menu {
   background-color: #0881A3;
   color: white;
   border: none;
@@ -106,17 +91,17 @@
   margin-top: 10px;
 }
 
-.back-to-menu:hover {
+.confirmation-back-to-menu:hover {
   background-color: #004c99;
 }
 
-.contact-info {
+.confirmation-contact-info {
   margin-top: 20px;
   font-size: 0.8rem;
   color: #000000;
 }
 
-.contact-info a {
+.confirmation-contact-info a {
   color: #0066cc;
   text-decoration: none;
 }
