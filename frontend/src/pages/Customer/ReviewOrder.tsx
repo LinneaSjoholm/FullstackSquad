@@ -258,9 +258,6 @@ const handlePaymentFailure = () => {
 
   return (
     <div className="review-container">
-      <div className="menu-header">
-        <h1></h1>
-      </div>
       <h1 className="review-order-title">Review Your Order</h1>
       
       <ul className="review-order-items">
