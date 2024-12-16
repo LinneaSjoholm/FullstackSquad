@@ -10,12 +10,12 @@ body {
     font-weight: bold;
     color: var(--color-beige);
     text-align: center;
-    top: -210px;
+    top: -210px; 
     left: 450px;
     z-index: 2;
     position: relative;
     transform: rotate(15deg);
-    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 1.5);
 }
 
 .tagline2 {
@@ -195,6 +195,7 @@ button .btn__container, .account-btn, .login-btn {
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
     text-align: center;
     top: -80px;
+    margin-bottom:40px;
 }
 
 .image-container {
@@ -212,6 +213,19 @@ button .btn__container, .account-btn, .login-btn {
     opacity: 0.6;
     position: relative;
     top: -50px;
+}
+
+.menu-items .dish-info {
+    display: flex;
+    justify-content: center;
+    color: var(--color-beige);
+    top: -1px;
+}
+
+.dish-info {
+    display: flex;
+    justify-content: center;
+    color: var(--color-beige);
 }
 
 .cta-section {
@@ -287,12 +301,12 @@ button .btn__container, .account-btn, .login-btn {
     color: rgb(255, 217, 0);
   }
   
-@media screen and (max-width: 390px) {
+  @media (max-width: 768px) {
 
     .tagline1 {
-        font-size: 1.4rem;
+        font-size: 1rem;
         top: -180px;
-        left: 30px;
+        left: 60px;
         rotate: -10deg;
         margin-bottom: 50px;
     }
@@ -301,7 +315,7 @@ button .btn__container, .account-btn, .login-btn {
         width: 85%;
         justify-content: center;
         gap: 15px;
-        top: -135px;
+        top: -115px;
     }
 
     .account-btn, .login-btn {
@@ -310,6 +324,7 @@ button .btn__container, .account-btn, .login-btn {
     }
 
     .tagline2 {
+        left: 5px;
         font-size: 1.8rem;
         transform: rotate(-10deg);
         top: -110px;
@@ -322,6 +337,12 @@ button .btn__container, .account-btn, .login-btn {
         font-size: 1rem;
         top: -110px;
         margin-bottom: -70px;
+    }
+
+    .dish-info {
+        display: flex;
+        justify-content: center;
+        color: var(--color-beige);
     }
 
     .icon {
