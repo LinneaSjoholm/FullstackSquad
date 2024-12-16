@@ -157,9 +157,6 @@ const CreateOrder: React.FC = () => {
           <button type="submit">Review order</button>
         </div>
       </form>
-
-
-          
         </div>
       );
     };
