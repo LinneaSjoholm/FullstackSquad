@@ -1,5 +1,6 @@
 import { db } from "../services/db";
 import jwt from "jsonwebtoken";
+import { saveFavorites } from "../services/favoriteService";
 
 const API_KEY = process.env.API_KEY;
 
@@ -112,21 +113,9 @@ export const postOrder = async (event: any) => {
     await db.put(params);
 
     // Kontrollera om användaren är inloggad (inte "guest") och spara favoriter
+
     if (loggedInRole !== "guest") {
-      console.log("Saving favorite items for logged-in user:", loggedInUserId);
-      const favoriteItems = items.map(item => ({
-        userId: loggedInUserId,
-        itemId: item.id,
-      }));
-
-      for (const favorite of favoriteItems) {
-        const favoriteParams = {
-          TableName: "FavoritesTable",
-          Item: favorite,
-        };
-
-        await db.put(favoriteParams); // Spara varje favorit i tabellen
-      }
+      await saveFavorites(loggedInUserId, items); // Spara favoriter för inloggad användare
     } else {
       console.log("User is guest. Skipping saving favorite items.");
     }

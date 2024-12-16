@@ -21,6 +21,7 @@ import { CartItem } from './interfaces/index';
 import OrderDashboard from './pages/Employed/admin/OrderDashboard';
 import Dashboard from './pages/Employed/admin/Dashboard';
 import { AdminRouteGuard } from './guard/AdminRouteGuard';
+import FavoritesPage from './pages/Customer/Favorites/FavoritesPage';
 
 const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -66,6 +67,13 @@ const App: React.FC = () => {
             </UserRouteGuard>
           }
         />
+        <Route 
+        path="/user/favorites" 
+        element={
+        <UserRouteGuard>
+        <FavoritesPage />
+        </UserRouteGuard>
+        } />
 
         <Route
           path="/payment"

@@ -23,6 +23,7 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
             - dynamodb:BatchGetItem
+            - dynamodb:BatchWriteItem 
           Resource: 
             - '*'
 
@@ -247,6 +248,20 @@ functions:
             methods:
               - GET
 
+  getFavorites:
+    handler: src/handlers/getFavorites.getFavoritesHandler
+    events:
+      - httpApi:
+          path: /user/favorites/{id}
+          method: get
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - Authorization
+            methods:
+              - GET
+
 resources:
   Resources:
     IngredientsTable:
@@ -305,6 +320,27 @@ resources:
                 KeyType: "HASH"
             Projection:
               ProjectionType: "ALL" 
+    
+    FavoritesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: FavoritesTable
+        AttributeDefinitions:
+          - AttributeName: "userId"
+            AttributeType: "S"
+          - AttributeName: "itemId"
+            AttributeType: "S"  # Lägg till itemId i AttributeDefinitions för att använda det i GSI
+        KeySchema:
+          - AttributeName: "userId"
+            KeyType: "HASH"
+        BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          - IndexName: "ItemIdIndex"
+            KeySchema:
+              - AttributeName: "itemId"
+                KeyType: "HASH"  # itemId används som nyckel för GSI
+            Projection:
+              ProjectionType: "ALL"  # Inkludera alla attribut i indexet
 
     AboutTable:
       Type: AWS::DynamoDB::Table
@@ -346,18 +382,6 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: UsersTable
-        AttributeDefinitions:
-          - AttributeName: "userId"
-            AttributeType: "S"
-        KeySchema:
-          - AttributeName: "userId"
-            KeyType: "HASH"
-        BillingMode: PAY_PER_REQUEST
-
-    FavoritesTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: FavoritesTable
         AttributeDefinitions:
           - AttributeName: "userId"
             AttributeType: "S"

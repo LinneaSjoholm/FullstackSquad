@@ -1,5 +1,7 @@
 import { db } from "../services/db";
 import jwt from "jsonwebtoken";
+import { getFavorites } from "../services/favoriteService";
+
 
 export const getProfile = async (event: any) => {
   try {
@@ -12,7 +14,7 @@ export const getProfile = async (event: any) => {
       };
     }
 
-    // Verifiera token
+    // Verifiera token och få userId
     const decoded: any = jwt.verify(token, process.env.JWT_SECRET || "defaultSecret");
     const userId = decoded.userId;
 
@@ -29,7 +31,7 @@ export const getProfile = async (event: any) => {
       };
     }
 
-    // Hämta orderhistorik från OrdersTable
+    // Hämta orderhistorik
     const ordersResult = await db.query({
       TableName: "OrdersTable",
       IndexName: "UserIdIndex", // Om du har skapat en secondary index för userId
@@ -39,21 +41,15 @@ export const getProfile = async (event: any) => {
       },
     });
 
-    // Hämta favoritiserade rätter (detta kan bero på hur du lagrar favoritiserade rätter)
-    const favoritesResult = await db.query({
-      TableName: "FavoritesTable", // Förutsatt att du har en tabell för favoriter
-      KeyConditionExpression: "userId = :userId",
-      ExpressionAttributeValues: {
-        ":userId": userId,
-      },
-    });
+    // Hämta favoriter genom att anropa getFavorites
+    const favorites = await getFavorites(userId);
 
     return {
       statusCode: 200,
       body: JSON.stringify({
         user: userResult.Item,
         orders: ordersResult.Items,
-        favorites: favoritesResult.Items,
+        favorites: favorites, // Lägg till favoriter här
       }),
     };
   } catch (error) {
