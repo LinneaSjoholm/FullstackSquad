@@ -1,40 +1,46 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
+  margin: 0 auto;
   color: var(--color-beige);
   letter-spacing: 2px;
   background-color: var(--color-button);
-  padding: 20px;
   min-height: 600px;
-  padding: 30px;
+  width: 80%;
   text-align: center;
   font-family: 'Roboto', sans-serif;
   background-color: var(--color-button);
   border-radius: 5px;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+  position: relative;
+  top: 200px;
 }
 
 .dashboard-container h1 {
   text-transform: uppercase;
   font-size: 3rem;
   font-family: 'Source Serif 4', sans-serif;
-  margin-top: 80px;
+  position: relative;
+  top: 40px;
 }
 
 .dashboard-container h2 {
-  font-size: 1.2rem;
-  margin-top: -10px;
+  font-size: 1rem;
+  position: relative;
+  top: -15px;
   color: var(--color-light-blue);
   font-family: 'Roboto', sans-serif;
   text-transform: lowercase;
+  letter-spacing: 4px;
 }
 
 .dashboard-date {
-  font-size: 1rem;
+  font-size: 0.7rem;
   color: var(--color-white);
-  margin-top: -10px;
-  margin-bottom: 20px;
+  position: relative;
+  top: -30px;
+  letter-spacing: 3px;
 }
 
 .dashboard-navigation {
@@ -44,6 +50,8 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  position: relative;
+  top: 30px;
 }
 
 .dashboard-item {
@@ -55,7 +63,7 @@
   font-size: 1.2rem;
   text-transform: capitalize;
   cursor: pointer;
-  width: 100%;
+  width: 50%;
   margin: 0 auto;
 }
 
@@ -73,46 +81,20 @@
 
 /* Responsiv design för skärmar mindre än 390px */
 @media screen and (max-width: 390px) {
+  .dashboard-container h1 {
+    font-size: 2.5rem;
+  }
+  .dashboard-container h2 {
+    top: -10px;
+  }
   .dashboard-container {
-    margin: 20px auto; 
-    height: 50%;
-  }
-
-  .dashboard-header {
-    font-size: 2rem;
-  }
-
-  .dashboard-date {
-    font-size: 0.9rem; 
+    top: 200px;
+    min-height: 60%;
   }
 
   .dashboard-navigation {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    top: 10px;
   }
 
-  .dashboard-item {
-    font-size: 1rem;
-  }
 }
 
-/* Större skärmjusteringar */
-@media screen and (min-width: 768px) {
-  .dashboard-container {
-    padding: 40px;
-    margin-top: 40px; 
-  }
-
-  .dashboard-header-container {
-    margin-bottom: 40px; 
-  }
-
-  .dashboard-header-container h1 {
-    font-size: 4rem; 
-  }
-
-  .dashboard-header-container h2 {
-    font-size: 1.5rem; 
-  }
-}

@@ -38,10 +38,6 @@
 
 /* Responsiv design för skärmar mindre än 390px */
 @media screen and (max-width: 390px) {
-  .navbar {
-    padding: 20px; 
-  }
-
   .navbar-links {
     display: flex !important; 
     flex-direction: row !important;

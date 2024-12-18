@@ -55,22 +55,13 @@ const StockStatus: React.FC = () => {
     fetchStockData();
   }, []);
 
-  // Hantera laddning och fel
-  if (loading) {
-    return <p>Loading stock data...</p>;
-  }
-
-  if (error) {
-    return <p className="stock-error">{error}</p>;
-  }
-
   return (
     <>
       <Navbar />
       <div className="stock-dashboard-header-container">
         <h1 className="stock-dashboard-header">Stock</h1>
         <p className="stock-dashboard-description">
-          Below is a list of all ingredients in stock, along with their current stock levels and associated dishes.
+          Below is a list of all ingredients in stock, along with their current stock levels and associated dishes.<br />
           The stock levels are color-coded to indicate the status of each ingredient.
         </p>
       </div>

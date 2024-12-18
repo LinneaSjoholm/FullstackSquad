@@ -35,7 +35,7 @@ const Dashboard: React.FC = () => {
 
     <div className="dashboard-container">
     <h1 className="dashboard-header">Dashboard</h1>
-    <h2 className="dashboard-subheader">Welcome back!</h2>
+    <h2 className="dashboard-subheader">Welcome back</h2>
     <p className="dashboard-date">{currentDateTime}</p>
 
       <ul className="dashboard-navigation">

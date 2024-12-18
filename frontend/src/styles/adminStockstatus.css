@@ -2,10 +2,9 @@
 .stock-dashboard-header-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
   position: relative;
-  top: 150px;
+  top: 140px;
+  text-align: center;
 }
 
 .stock-dashboard-header {
@@ -16,24 +15,27 @@
   text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
   letter-spacing: 1px;
   text-transform: uppercase;
+  padding: 0;
+  margin: 0;
 }
 
 .stock-dashboard-header-container p {
   font-family: 'Roboto', sans-serif;
   color: var(--color-beige);
-  font-size: 0.9rem;
-  width: 55%;
-  text-align: center;
-  margin-bottom: 120px;
-  z-index: 1;
+  font-size: 0.8rem;
+  margin: 0 auto;
+  position: relative;
+  top: 10px;
 }
 
 /* Table Styling */
 .stock-table {
-  width: 100%;
-  margin: 50px auto;
+  width: 70%;
+  margin: 150px auto;
   border-collapse: collapse;
   background-color: #f9f9f9;
+  position: relative;
+  top: 50px;
 }
 
 .stock-table th {
@@ -78,15 +80,11 @@
 
 /* Responsiv design för små skärmar */
 @media screen and (max-width: 390px) {
-  .stock-dashboard-header-container {
-    top: 100px;
+  .stock-dashboard-header-container p  {
+    top: 10px;
+    width: 80%;
+    margin-bottom: -20px;
   }
-
-  .stock-dashboard-header-container p {
-    font-size: 0.8rem; 
-    width: 80%; 
-  }
-
   .stock-table th, 
   .stock-table td {
     padding: 8px;
@@ -94,7 +92,6 @@
   }
 
   .stock-table {
-    margin-top: 10px;
     width: 90%; 
   }
 }

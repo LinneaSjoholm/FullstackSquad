@@ -118,19 +118,16 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
     setEditingItem(null);
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
-
   return (
     <div className="admin-menu-container">
       <Navbar />
       <div className="admin-menu-header"></div>
       <div className="admin-menu-left">
         <h1>Menu</h1>
+        <p className='context-header'>Here you can edit the menus displayed on your website. <br />Add, remove, or change the order of menu items and update when you're done.</p>
         <div className="admin-menu-items-container">
           {Object.keys(menuItems).map((category: string) => (
             <div key={category} className="admin-menu-category">
-              <h2>{category}</h2>
               <div className="menu-list">
                 {menuItems[category].map((item: MenuItem) => (
                   <div key={item.id} className="menu-item">
@@ -141,25 +138,27 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
 
                       <h3>{item.name} - ${item.price}</h3>
                       <p>{item.description}</p>
-                      <p><strong>Ingredients:</strong> {item.ingredients.join(', ')}</p> {/* Visa ingredienser */}
+                      <p><strong>Ingredients:</strong> {item.ingredients.join(', ')}</p>
                     </div>
                     <div className="menu-item-actions">
                       <button onClick={() => handleEdit(item.id)}>
-                        <FaPen /> {/* Pennaikon */}
+                        <FaPen /> 
                       </button>
                     </div>
                     {isEditing === item.id && editingItem && (
                       <div className="edit-form">
+                        <label htmlFor="price">Price</label>
                         <input
                           type="number"
                           value={editingItem.price}
                           onChange={(e) => setEditingItem({ ...editingItem, price: parseFloat(e.target.value) })}
                         />
+                        <label htmlFor="description">Description</label>
                         <textarea
                           value={editingItem.description}
                           onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
                         />
-                        {/* Formulär för att redigera ingredienser */}
+                        <label htmlFor="ingredients">Ingredients</label>
                         <textarea
                           value={editingItem.ingredients.join(', ')} // Visa ingredienser som en kommaseparerad sträng
                           onChange={(e) => setEditingItem({ 
@@ -167,10 +166,13 @@ const MenuAdmin: React.FC<MenuAdminProps> = ({ setCart, cart }) => {
                             ingredients: e.target.value.split(',').map(ingredient => ingredient.trim()) // Omvandla till array av ingredienser
                           })}
                         />
-                        <button onClick={() => handleSave(item.id, editingItem.price, editingItem.description, editingItem.ingredients)}>
+                        <div className='edit-buttons'>
+                        <button onClick={() => handleSave(item.id, editingItem.price, editingItem.description, editingItem.ingredients)} 
+                        className='save-button'>
                           Save Changes
                         </button>
                         <button onClick={handleCancel}>Cancel</button>
+                        </div>
                       </div>
                     )}
                   </div>
