@@ -26,6 +26,7 @@ const Header: React.FC = () => {
       <h1>Gusto</h1>
       <p>To go</p>
 
+
       <div className={`sidebar ${menuOpen ? 'open' : ''}`}>
         <ul>
           <li onClick={() => handleNavigation('/')}>Home</li>

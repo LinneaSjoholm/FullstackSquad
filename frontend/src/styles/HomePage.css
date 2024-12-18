@@ -2,56 +2,39 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Source Serif 4', sans-serif;
 }
 
-.tagline1 {
+.homepage-tagline1 {
     font-family: 'Source Serif 4', sans-serif;
     font-size: 2.5rem;
     font-weight: bold;
     color: var(--color-beige);
     text-align: center;
-    top: -210px; 
-    left: 450px;
+    top: -340px;
+    left: 400px;
     z-index: 2;
     position: relative;
     transform: rotate(15deg);
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 1.5);
 }
 
-.tagline2 {
-    font-family: 'Source Serif 4', sans-serif;
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--color-beige);
-    z-index: 2;
-    position: relative;
-    top: -60px;
-    right: 100px;
-    transform: rotate(-10deg);
-    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+.homepage-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
 }
 
-.tagline3 {
-    font-family: 'Source Serif 4', sans-serif;
-    font-size: 3rem;
-    font-weight: bold;
-    color: var(--color-beige);
-    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
+/* -------------"Header"-------------- */
 
-.btn__container {
+.homepage-btn-section {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    width: 20%;
+    top: -200px;
     position: relative;
-    top: -120px;
-    z-index: 1;
 }
-
-button .btn__container, .account-btn, .login-btn {
+.homepage-account-btn, .homepage-login-btn {
     text-align: center;
     background-color: var(--color-beige);
     color: var(--color-blue);
@@ -70,12 +53,26 @@ button .btn__container, .account-btn, .login-btn {
     letter-spacing: 1px;
   }
 
-.account-btn:hover, .login-btn:hover {
+  .homepage-account-btn:hover, .homepage-login-btn:hover {
     background-color: var(--color-light-blue);
     color: var(--color-beige);
   }
 
-.takeaway-btn {
+/* ------------Take-away--------------- */
+
+  .homepage-tagline2 {
+    font-family: 'Source Serif 4', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--color-beige);
+    z-index: 2;
+    position: relative;
+    top: -120px;
+    right: 140px;
+    transform: rotate(-10deg);
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+.homepage-takeaway-btn {
     text-align: center;
     background-color: var(--color-button);
     color: var(--color-beige);
@@ -93,15 +90,177 @@ button .btn__container, .account-btn, .login-btn {
     height: 50px;
     letter-spacing: 1px;
     position: relative;
-    top: -70px;
-    
+    top: -160px;
 }
-
-.takeaway-btn:hover {
+.homepage-takeaway-btn:hover {
     background-color: var(--color-light-blue);
 }
+.homepage-icon {
+    color: var(--color-beige);
+    position: relative;
+    top: -185px;
+    left: 70px;
+    transform: rotate(-20deg);
+    font-size: 2rem;
+    z-index: 2;
+    cursor: pointer;
+}
 
-.menu-btn {
+/* -------------Month-Favorites--------------- */
+
+.homepage-months-favorites p {
+    font-family: 'Roboto', sans-serif;
+    color: var(--color-beige);
+    position: relative;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    top: -80px;
+}
+
+.homepage-header-dishes1 {
+    font-family: 'Source Serif 4', sans-serif;
+    font-size: 1.9rem;
+    font-weight: bold;
+    color: var(--color-beige);
+    text-align: center;
+    position: relative;
+    top: -70px;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    
+}
+.homepage-header-dishes1 h2 {
+    margin: 0;
+}
+
+.homepage-dish {
+    display: flex;
+    flex-direction: column;
+
+}
+.homepage-menu-items .homepage-dish-info {
+    display: flex;
+    justify-content: center;
+    color: var(--color-beige);
+    top: -1px;
+}
+
+.homepage-dish-info {
+    display: flex;
+    justify-content: center;
+    color: var(--color-beige);
+}
+
+/* --------------------------- */
+
+.homepage-menu-items, .homepage-customers-items {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px;
+    margin: 10px;
+    justify-content: center;
+    position: relative;
+    top: -70px;
+  }
+
+.homepage-menu-items img, .homepage-customers-items img {
+    width: 200px; 
+    height: 100%;
+    object-fit: cover; 
+    border-radius: 10px;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2); 
+    transition: transform 0.3s ease;
+}
+
+.homepage-menu-items img:hover, .homepage-customers-items img:hover {
+    transform: scale(1.1);
+}
+.homepage-header-dishes2 {
+    font-family: 'Source Serif 4', sans-serif;
+    font-size: 1.9rem;
+    font-weight: bold;
+    color: var(--color-beige);
+    text-align: center;
+    position: relative;
+    top: -70px;
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+/* --------------------------- */
+
+.homepage-reviews {
+    text-align: center;
+    margin-bottom: -100px;
+    margin-top: -30px;
+  }
+  
+.homepage-reviews h1 {
+    font-family: 'Source Serif 4', sans-serif;
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--color-beige);
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+.homepage-reviews h4 {
+    font-family: 'Roboto', sans-serif;
+    color: var(--color-beige);
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    letter-spacing: 1px;
+    font-weight: 400;
+    margin-bottom: -10px;
+}
+  
+.homepage-reviews-content {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    top: 30px;
+  }
+  
+.homepage-review-card {
+    background-color: var(--color-button);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    width: 200px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
+    color: var(--color-beige);
+  }
+  
+.homepage-review-name {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+.homepage-review-comment {
+    margin-bottom: 10px;
+  }
+  
+.homepage-stars {
+    font-size: 1.5rem;
+    color: rgb(255, 217, 0);
+  }
+
+/* --------------------------- */
+
+.homepage-tagline3 {
+    font-family: 'Source Serif 4', sans-serif;
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--color-beige);
+    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.homepage-menu-btn {
     text-align: center;
     background-color: var(--color-button);
     color: var(--color-beige);
@@ -118,23 +277,10 @@ button .btn__container, .account-btn, .login-btn {
     height: 70px;
     letter-spacing: 1px;
 }
-
-.menu-btn:hover {
+.homepage-menu-btn:hover {
     background-color: var(--color-light-blue);
 }
-
-.icon {
-    color: var(--color-beige);
-    position: relative;
-    top: -105px;
-    left: 70px;
-    transform: rotate(-20deg);
-    font-size: 2rem;
-    z-index: 2;
-    cursor: pointer;
-}
-
-.icon2 {
+.homepage-icon2 {
     color: var(--color-beige);
     font-size: 2rem;
     position: relative;
@@ -142,70 +288,13 @@ button .btn__container, .account-btn, .login-btn {
     left: 100px;
     rotate: -20deg;
 }
-
-.header-dishes1 {
-    font-family: 'Source Serif 4', sans-serif;
-    font-size: 1.9rem;
-    font-weight: bold;
-    color: var(--color-beige);
-    text-align: center;
-    position: relative;
-    top: -70px;
-    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.header-dishes2 {
-    font-family: 'Source Serif 4', sans-serif;
-    font-size: 1.9rem;
-    font-weight: bold;
-    color: var(--color-beige);
-    text-align: center;
-    position: relative;
-    top: -70px;
-    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.menu-items, .customers-items {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 20px;
-    margin: 10px;
-    justify-content: center;
-    position: relative;
-    top: -70px;
-  }
-
-.menu-items img, .customers-items img {
-    width: 200px; 
-    height: 100%;
-    object-fit: cover; 
-    border-radius: 10px;
-    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2); 
-    transition: transform 0.3s ease;
-}
-
-.menu-items img:hover, .customers-items img:hover {
-    transform: scale(1.1);
-}
-
-.months-favorites p {
-    font-family: 'Roboto', sans-serif;
-    color: var(--color-beige);
-    position: relative;
-    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    top: -80px;
-    margin-bottom:40px;
-}
-
-.image-container {
+.homepage-image-container {
     position: relative;
     align-items: center;
     width: 100%;
     top: 50px;
 }
-
-.image-container img {
+.homepage-image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -214,189 +303,108 @@ button .btn__container, .account-btn, .login-btn {
     position: relative;
     top: -50px;
 }
-
-.menu-items .dish-info {
-    display: flex;
-    justify-content: center;
-    color: var(--color-beige);
-    top: -1px;
-}
-
-.dish-info {
-    display: flex;
-    justify-content: center;
-    color: var(--color-beige);
-}
-
-.cta-section {
+.homepage-cta-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     z-index: 2;
     position: relative;
-    top: 500px;
+    top: 400px;
     gap: 20px;
 }
 
-.reviews {
-    text-align: center;
-    margin-bottom: -100px;
-    margin-top: -30px;
-  }
+
   
-.reviews h1 {
-    font-family: 'Source Serif 4', sans-serif;
-    font-size: 3rem;
-    font-weight: bold;
-    color: var(--color-beige);
-    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
+@media screen and (max-width: 430px) {
+    .homepage-tagline1 {
+      font-size: 1rem;
+      top: -185px;
+      left: 100px;
 
-.reviews h4 {
-    font-family: 'Roboto', sans-serif;
-    color: var(--color-beige);
-    text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
-    letter-spacing: 1px;
-    font-weight: 400;
-    margin-bottom: -10px;
-}
+      margin-bottom: 40px;
+    }
   
-.reviews-content {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-    position: relative;
-    top: 30px;
-  }
+    .homepage-btn-section {
+        top: -140px;
+    }
   
-.review-card {
-    background-color: var(--color-button);
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
-    width: 200px;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Roboto', sans-serif;
-    color: var(--color-beige);
-  }
+    .homepage-account-btn, .homepage-login-btn {
+      width: 140px;
+      height: 35px;
+      
+    }
   
-.review-name {
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+    .homepage-tagline2 {
+      font-size: 2rem;
+      transform: rotate(-10deg);
+      top: -100px;
+      right: 30px;
+    }
   
-.review-comment {
-    margin-bottom: 10px;
-  }
+    .homepage-takeaway-btn {
+      width: 160px;
+      height: 50px;
+      font-size: 1rem;
+      top: -90px;
+      margin-bottom: -60px;
+    }
   
-.stars {
-    font-size: 1.5rem;
-    color: rgb(255, 217, 0);
-  }
+    .homepage-icon {
+      font-size: 1.9rem;
+      top: -60px;
+    }
   
-  @media (max-width: 768px) {
-
-    .tagline1 {
-        font-size: 1rem;
-        top: -180px;
-        left: 60px;
-        rotate: -10deg;
-        margin-bottom: 50px;
+    .homepage-cta-section {
+      top: 450px;
     }
-
-    .btn__container {
-        width: 85%;
-        justify-content: center;
-        gap: 15px;
-        top: -115px;
+  
+    .homepage-tagline3 {
+      text-align: center;
+      font-size: 2.5rem;
     }
-
-    .account-btn, .login-btn {
-        width: 130px;
-        height: 30px;
+  
+    .homepage-header-dishes1, .homepage-header-dishes2 {
+      font-size: 1.5rem;
+      top: -35px;
     }
-
-    .tagline2 {
-        left: 5px;
-        font-size: 1.8rem;
-        transform: rotate(-10deg);
-        top: -110px;
-        right: 40px;
+  
+    .homepage-months-favorites p {
+      top: -60px;
     }
-
-    .takeaway-btn {
-        width: 150px;
-        height: 45px;
-        font-size: 1rem;
-        top: -110px;
-        margin-bottom: -70px;
+  
+    .homepage-dish-info {
+        font-size: 14px;
     }
-
-    .dish-info {
-        display: flex;
-        justify-content: center;
-        color: var(--color-beige);
+    .homepage-image-container {
+      width: 100%;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-
-    .icon {
-        font-size: 1.7rem;
-        top: -70px;
+  
+    .homepage-menu-items, .homepage-customers-items {
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 20px 0 0 0;
     }
-
-    .cta-section {
-        top: 420px;
+  
+    .homepage-menu-items img, .homepage-customers-items img {
+      width: 170px;
+      height: 170px;
     }
-
-    .tagline3 {
-        text-align: center;
-        font-size: 2.3rem;
-    }
-
-    .header-dishes1, .header-dishes2 {
-        font-size: 1.3rem;
-        top: -43px;
-    }
-
-    .months-favorites p  {
-        top: -50px;
-    }
-
-    .image-container {
-        width: 100%;
-        height: 450px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .menu-items, .customers-items {
-        flex-wrap: wrap;
-        justify-content: center;
-        margin: 30px auto -20px auto;
-    }
-
-    .menu-items img, .customers-items img {
-        width: 150px;
-        height: 150px;
-    }
-    .reviews {
-        margin-bottom: -220px;
-        margin-top: -20px;
+  
+    .homepage-reviews {
+      margin-bottom: -200px;
+      margin-top: -10px;
     }
     
-    .reviews h1 {
-        font-size: 2.4rem;
+    .homepage-reviews h1 {
+      font-size: 2.6rem;
     }
-
-    .review-card {
-        width: 80%; 
-      }
-}
-
+  
+    .homepage-review-card {
+      width: 90%; 
+    }
+  }
+  
