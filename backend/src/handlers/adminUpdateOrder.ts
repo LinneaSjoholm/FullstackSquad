@@ -3,7 +3,7 @@ import { UpdateCommand, UpdateCommandInput } from '@aws-sdk/lib-dynamodb';
 import { verifyAdmin } from '../middleware/verifyAdmin';
 
 export const adminUpdateOrder = async (event: any): Promise<any> => {
-  // Anropa verifyAdmin och vänta på resultatet
+
   const authResult = await verifyAdmin(event);
 
   // Om authResult inte är giltigt, returnera 401
@@ -57,7 +57,7 @@ export const adminUpdateOrder = async (event: any): Promise<any> => {
     updateExpression.push('#messageToChef = :messageToChef');
     expressionAttributeNames['#messageToChef'] = 'messageToChef';
 
-    updateExpression.push('#locked = :locked');  // Lägg till locked i uttrycket
+    updateExpression.push('#locked = :locked');
     expressionAttributeNames['#locked'] = 'locked';
 
     updateExpression.push('#updatedAt = :updatedAt');
