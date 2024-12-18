@@ -9,7 +9,7 @@ export const adminGetOrders = async (): Promise<any> => {
       throw new Error('No admin token found. Please log in.');
     }
 
-    const response = await fetch(`https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/orders`, {
+    const response = await fetch(`https://ebg3e1dtc3.execute-api.eu-north-1.amazonaws.com/admin/orders`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export const updateOrder = async (orderId: string, newStatus: string, commentToC
       throw new Error('No admin token found. Please log in.');
     }
 
-    const response = await fetch(`https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/order/update/${orderId}`, {
+    const response = await fetch(`https://ebg3e1dtc3.execute-api.eu-north-1.amazonaws.com/admin/order/update/${orderId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export const updateOrder = async (orderId: string, newStatus: string, commentToC
       body: JSON.stringify({
         status: newStatus,
         messageToChef: commentToChef,
-        locked: locked, // Lägger till locked här
+        locked: false, 
       }),
     });
 
@@ -89,13 +89,17 @@ export const lockOrder = async (orderId: string) => {
       throw new Error('No admin token found. Please log in.');
     }
 
-    const response = await fetch(`https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/order/lock/${orderId}`, {
+    const response = await fetch(`https://ebg3e1dtc3.execute-api.eu-north-1.amazonaws.com/admin/order/lock/${orderId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
         'x-api-key': 'bsQFNKDT2O4oIwmBc0FmN3KpwgIFc23L6lpdrrUT',
       },
+      body: JSON.stringify({
+        message: 'Order locked by admin',
+        locked: true, 
+      }),
     });
 
     if (!response.ok) {
@@ -111,13 +115,13 @@ export const lockOrder = async (orderId: string) => {
 
 export const markOrderAsComplete = async (orderId: string) => {
   try {
-    const token = getAdminToken();  // Get the admin token from localStorage
+    const token = getAdminToken();
     
     if (!token) {
       throw new Error('No admin token found. Please log in.');
     }
 
-    const response = await fetch(`https://3uhcgg5udg.execute-api.eu-north-1.amazonaws.com/admin/order/complete/${orderId}`, {
+    const response = await fetch(`https://ebg3e1dtc3.execute-api.eu-north-1.amazonaws.com/admin/order/complete/${orderId}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

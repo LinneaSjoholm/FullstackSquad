@@ -37,17 +37,16 @@
   z-index: 1;
 }
 
-.header p {
-  font-family: Roboto, sans-serif;
+.to-go-header {
+  font-family: 'Roboto', sans-serif;
   font-size: 1.5rem;
   position: relative;
-  top: -265px;
+  top: -240px;
   left: 100px;
   text-transform: uppercase;
   text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
   letter-spacing: 4px;
   z-index: 1;
-
 }
 
 .menu-icon {
@@ -95,22 +94,16 @@
   background-color: var(--color-blue);
 }
 
-
 @media (max-width: 768px) {
-  .header {
-    height: 200px;
-    background-position: center;
-  }
 
   .header h1 {
-    font-size: 8rem;
-    top: 0; 
+    font-size: 12rem;
   }
 
   .header p {
-    font-size: 1rem;
-    top: -40px;
-    left: 60px;
+    font-size: 1.4rem;
+    top: -190px;
+    left: 90px;
     text-align: center;
   }
 

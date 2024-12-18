@@ -11,7 +11,7 @@ body {
     font-weight: bold;
     color: var(--color-beige);
     text-align: center;
-    top: -340px;
+    top: -300px;
     left: 400px;
     z-index: 2;
     position: relative;
@@ -31,7 +31,7 @@ body {
 .homepage-btn-section {
     display: flex;
     justify-content: space-between;
-    top: -200px;
+    top: -150px;
     position: relative;
 }
 .homepage-account-btn, .homepage-login-btn {
@@ -51,6 +51,7 @@ body {
     width: 140px;
     height: 30px;
     letter-spacing: 1px;
+
   }
 
   .homepage-account-btn:hover, .homepage-login-btn:hover {
@@ -67,7 +68,7 @@ body {
     color: var(--color-beige);
     z-index: 2;
     position: relative;
-    top: -120px;
+    top: -40px;
     right: 140px;
     transform: rotate(-10deg);
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
@@ -90,7 +91,7 @@ body {
     height: 50px;
     letter-spacing: 1px;
     position: relative;
-    top: -160px;
+    top: -60px;
 }
 .homepage-takeaway-btn:hover {
     background-color: var(--color-light-blue);
@@ -98,7 +99,7 @@ body {
 .homepage-icon {
     color: var(--color-beige);
     position: relative;
-    top: -185px;
+    top: -90px;
     left: 70px;
     transform: rotate(-20deg);
     font-size: 2rem;
@@ -141,13 +142,15 @@ body {
     display: flex;
     justify-content: center;
     color: var(--color-beige);
-    top: -1px;
+    top: 10px;
 }
 
 .homepage-dish-info {
     display: flex;
     justify-content: center;
     color: var(--color-beige);
+    position: relative;
+    top: 10px;
 }
 
 /* --------------------------- */
@@ -315,43 +318,33 @@ body {
 
 
   
-@media screen and (max-width: 430px) {
+@media screen and (max-width: 390px) {
     .homepage-tagline1 {
-      font-size: 1rem;
-      top: -185px;
-      left: 100px;
-
+      font-size: 1.3rem;
+      top: -320px;
+      left: 20px;
       margin-bottom: 40px;
     }
   
     .homepage-btn-section {
-        top: -140px;
-    }
-  
-    .homepage-account-btn, .homepage-login-btn {
-      width: 140px;
-      height: 35px;
-      
+        gap: 10px;
     }
   
     .homepage-tagline2 {
-      font-size: 2rem;
+      font-size: 1.8rem;
       transform: rotate(-10deg);
-      top: -100px;
+      top: -80px;
       right: 30px;
     }
   
     .homepage-takeaway-btn {
-      width: 160px;
-      height: 50px;
-      font-size: 1rem;
-      top: -90px;
+      top: -80px;
       margin-bottom: -60px;
     }
   
     .homepage-icon {
       font-size: 1.9rem;
-      top: -60px;
+      top: -50px;
     }
   
     .homepage-cta-section {
@@ -367,13 +360,19 @@ body {
       font-size: 1.5rem;
       top: -35px;
     }
-  
-    .homepage-months-favorites p {
-      top: -60px;
+    .homepage-header-dishes1 h2, .homepage-header-dishes2 h2 {
+      font-size: 2.1rem;
     }
   
-    .homepage-dish-info {
-        font-size: 14px;
+    .homepage-months-favorites p {
+      font-size: 0.8rem;
+      top: -40px;
+    }
+  
+    .homepage-dish-info p {
+        font-size: 0.8rem;
+        position: relative;
+        top: -150px;
     }
     .homepage-image-container {
       width: 100%;
@@ -386,7 +385,7 @@ body {
     .homepage-menu-items, .homepage-customers-items {
       flex-wrap: wrap;
       justify-content: center;
-      margin: 20px 0 0 0;
+      margin: 50px 0 -50px 0;
     }
   
     .homepage-menu-items img, .homepage-customers-items img {

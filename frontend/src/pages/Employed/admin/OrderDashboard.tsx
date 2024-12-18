@@ -1,6 +1,5 @@
 import React from 'react';
 import AdminOrderList from '../../../components/AdminOrderList'
-import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../../components/navbar';
 
 const OrderDashboard: React.FC = () => {

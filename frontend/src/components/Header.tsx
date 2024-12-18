@@ -24,7 +24,7 @@ const Header: React.FC = () => {
       </div>
 
       <h1>Gusto</h1>
-      <p>To go</p>
+      <p className='to-go-header'>To go</p>
 
 
       <div className={`sidebar ${menuOpen ? 'open' : ''}`}>

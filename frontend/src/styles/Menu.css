@@ -181,6 +181,11 @@ visibility: hidden;
   padding-bottom: 30px; /* Lägger till lite bottenpadding om du vill ha det */
 }
 
+.menu-list.pasta-style {
+  margin: 0 auto;
+  padding: 0;
+}
+
 
 .menu-item {
   display: flex;
@@ -230,6 +235,7 @@ visibility: hidden;
   .menu-header h1 {
     font-size: 34px; 
     text-align: center; 
+    margin-bottom: -5px;
   }
 
   .menu-header h2 {
