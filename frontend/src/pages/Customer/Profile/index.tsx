@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import pastaImages from "../../../interfaces/pastaImages"; // Import pastaImages
+import "../../../styles/Profile.css";
 
 interface Favorite {
   id: string;
 }
 
-const FavoritesPage = () => {
-  const [favorites, setFavorites] = useState<Favorite[]>([]); // State för att lagra favoriter
-  const [loading, setLoading] = useState<boolean>(true); // State för laddningsstatus
+const ProfilePage = () => {
+  const [favorites, setFavorites] = useState<Favorite[]>([]);
+  const [orderHistory, setOrderHistory] = useState<string[]>([]); // Order history
+  const [loading, setLoading] = useState<boolean>(true);
+  const userName = localStorage.getItem("userName");
   const navigate = useNavigate();
 
   // Map pasta ID to name
@@ -28,7 +31,7 @@ const FavoritesPage = () => {
     return pastaMapping[id] || '';
   };
 
-  // Fetcha favoriter från backend
+  // Fetch favorites from backend
   useEffect(() => {
     const fetchFavorites = async () => {
       const token = localStorage.getItem("userToken");
@@ -46,7 +49,7 @@ const FavoritesPage = () => {
           {
             method: "GET",
             headers: {
-              "Authorization": `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
           }
@@ -59,16 +62,22 @@ const FavoritesPage = () => {
         }
 
         const data = await response.json();
-        setFavorites(data.favorites || []); // Uppdatera favoriter i state
+        setFavorites(data.favorites || []);
       } catch (error) {
         console.error("Error fetching favorites:", error);
       } finally {
-        setLoading(false); // Stäng av laddningsstatus
+        setLoading(false);
       }
     };
 
     fetchFavorites();
   }, [navigate]);
+
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/user/login");
+  };
 
   // Handle ordering a favorite dish again
   const handleOrderAgain = (item: Favorite) => {
@@ -76,106 +85,51 @@ const FavoritesPage = () => {
     navigate("/menu", { state: { pastaName } });
   };
 
-  return (
-<<<<<<< HEAD
-    <div className="favorites-page">
-      <h2>Your Favorite Dishes</h2>
-      {loading ? (
-        <p>Loading your favorites...</p>
-      ) : (
-        <div className="favorites-list">
-          {favorites.length > 0 ? (
-            favorites.map((item: Favorite, index: number) => {
-              const pastaName = getPastaNameById(item.id);
-              const image = pastaImages[pastaName];
+  // Remove favorite handler
+  const removeFavorite = (item: Favorite) => {
+    setFavorites((prevFavorites) =>
+      prevFavorites.filter((favorite) => favorite.id !== item.id)
+    );
+  };
 
-              return (
-                <div key={index} className="favorite-item">
-                  {image ? (
-                    <img src={image} alt={pastaName} className="favorite-item-image" />
-                  ) : (
-                    <p>No image available</p>
-                  )}
-                  <p>{pastaName}</p>
-=======
-    <div className="profile-container">
-      <div className="profile-buttons">
-        <button className="logout-button" onClick={handleLogout}>Log Out</button>
+  return (
+    <div className="profile-page">
+      <div className="profile-container">
+        <div className="profile-buttons">
+          <button className="logout-button" onClick={handleLogout}>
+            Log Out
+          </button>
+        </div>
+        <div className="profile-section">
+          <h2>Welcome, {userName}!</h2>
+        </div>
       </div>
-      <div className="profile-section">
-        <img src={profileIcon} alt="Profile Icon" className="profile-icon" />
-        <h2>Welcome, {userName}!</h2>
+
+      <h3>Order History</h3>
+      <div className="order-list">
+        {orderHistory.length > 0 ? (
+          orderHistory.map((item, index) => (
+            <div key={index} className="order-item">
+              <p>{item}</p>
+              <button className="order-again-btn" onClick={() => handleOrderAgain({ id: item })}>
+                Order Again
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>You have no orders yet.</p>
+        )}
       </div>
-      <div className="profile-content">
-        <div className="profile-header-section">
-          <div className="profile-favorite-section">
-          <h3>Favorites</h3>
-          <img src={favorite} alt="Favorite Icon" className="favorite-icon" />
-          </div>
-          <h3>Order History</h3>
-        </div>
-        <div className="profile-both-list">
-        <div>
-          <div className="profile-favorites-list">
-            {favorites.length > 0 ? (
-              favorites.map((item, index) => {
-                const pastaName = getPastaNameById(item); 
-                const image = pastaImages[pastaName];
-                
-                return (
-                  <div key={index} className="favorite-item">
-                    {image ? (
-                      <img src={image} alt={pastaName} className="favorite-item-image" />
-                    ) : (
-                      <p>No image available</p>
-                    )}
-                    <p>{pastaName}</p>
-                    <button className="order-again-btn" onClick={() => handleOrderAgain(item)}>
-                      Order Again
-                    </button>
-                    <button className="remove-favorite-btn" onClick={() => removeFavorite(item)}>
-                      Remove from Favorites
-                    </button>
-                  </div>
-                );
-              })
-            ) : (
-              <p>You have no favorites yet.</p>
-            )}
-          </div>
-        </div>
-        <div className="orderhistory-section">
-          <div className="order-list">
-            {orderHistory.length > 0 ? (
-              orderHistory.map((item, index) => (
-                <div key={index} className="order-item">
-                  <p>{item}</p>
->>>>>>> Lam
-                  <button className="order-again-btn" onClick={() => handleOrderAgain(item)}>
-                    Order Again
-                  </button>
-                </div>
-              );
-            })
-          ) : (
-            <p>You have no favorites yet.</p>
-          )}
-        </div>
-<<<<<<< HEAD
-      )}
-      <button className="back-btn" onClick={() => navigate("/user/profile")}>
-        Back to Profile
+
+      <button className="favorites-btn" onClick={() => navigate("/user/favorites")}>
+        View Favorites Page
       </button>
-=======
-        </div>
-        
-      </div>
+
       <div className="profile-bottom-text">
-      <p>Need help? Contact us at support@gustotogo.com or call +123 456 789</p>
+        <p>Need help? Contact us at support@gustotogo.com or call +123 456 789</p>
       </div>
->>>>>>> Lam
     </div>
   );
 };
 
-export default FavoritesPage;
+export default ProfilePage;

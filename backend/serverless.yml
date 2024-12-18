@@ -249,7 +249,7 @@ functions:
               - GET
 
   getFavorites:
-    handler: src/handlers/getFavorites.getFavoritesHandler
+    handler: src/handlers/Favorites.getFavoritesHandler
     events:
       - httpApi:
           path: /user/favorites/{id}
