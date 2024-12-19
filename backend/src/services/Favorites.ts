@@ -1,7 +1,6 @@
 import { db } from "./db"; // Din DynamoDB-klient
 import { Favorite } from "../interfaces/favorites";
 
-// Funktion för att spara favoriter
 export const saveFavorites = async (userId: string, items: any[]): Promise<void> => {
   try {
     console.log("Saving favorite items for user:", userId);
@@ -13,27 +12,29 @@ export const saveFavorites = async (userId: string, items: any[]): Promise<void>
       return;
     }
 
-    // Spara varje objekt som en "Favorite"
-    for (const item of validItems) {
-      const favorite: Favorite = {
-        userId: userId, // Lägg till userId här
-        id: item.id.toString(),
-        name: item.name || "", 
-        addedAt: new Date().toISOString(), 
-      };
+    // Skapa den nya favoriter-listan
+    const favoriteItems = validItems.map(item => ({
+      id: item.id.toString(),
+      name: item.name || "",
+      addedAt: new Date().toISOString(),
+    }));
 
-      const params = {
-        TableName: "FavoritesTable",
-        Item: favorite,
-      };
+    // Förbered parameter för att uppdatera användarens favoriter
+    const params = {
+      TableName: "FavoritesTable",
+      Key: { userId },
+      UpdateExpression: "SET favorites = :new_favorites",
+      ExpressionAttributeValues: {
+        ":new_favorites": favoriteItems, // Sätt hela listan av favoriter
+      },
+      ReturnValues: "UPDATED_NEW" as const,
+    };
 
-      console.log("Saving favorite item to database:", params);
+    console.log("Attempting to update favorite items:", params);
 
-      // Kör PutItem för varje favorit
-      await db.put(params);
-    }
-
-    console.log("All favorites saved successfully");
+    // Uppdatera databasen
+    await db.update(params);
+    console.log(`Favorite items saved for user ${userId}`);
   } catch (error) {
     console.error("Error saving favorites:", (error as Error).message);
   }
@@ -58,28 +59,6 @@ export const getFavorites = async (userId: string): Promise<Favorite[]> => {
   } catch (error) {
     console.error("Error fetching favorites:", (error as Error).message);
     return [];
-  }
-};
-
-// Funktion för att uppdatera status på en favorit
-export const updateFavoriteStatus = async (userId: string, itemId: string, status: string) => {
-  try {
-    const params = {
-      TableName: "FavoritesTable",
-      Key: {
-        userId: userId
-      },
-      UpdateExpression: "SET status = :status",
-      ExpressionAttributeValues: {
-        ":status": status,
-      },
-      ReturnValues: "ALL_NEW" as const, // Hämta den uppdaterade posten
-    };
-
-    const result = await db.update(params);
-    return result.Attributes; // Returnera de uppdaterade värdena
-  } catch (error) {
-    console.error("Error updating favorite status:", (error as Error).message);
   }
 };
 

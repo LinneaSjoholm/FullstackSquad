@@ -52,28 +52,34 @@ export const saveFavoritesHandler: APIGatewayProxyHandler = async (event) => {
   }
 };
 
-// Funktion för att ta bort en favorit
 export const deleteFavoriteHandler: APIGatewayProxyHandler = async (event) => {
-  const userId = event.pathParameters?.id; // Hämta användar-ID från URL-parametrar
-  const itemId = event.queryStringParameters?.itemId; // Hämta itemId från query-string
-
-  if (!userId || !itemId) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ message: 'User ID and item ID are required' }),
-    };
-  }
-
-  try {
-    await deleteFavorite(userId, itemId);
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ message: `Favorite item ${itemId} deleted` }),
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: 'Error deleting favorite' }),
-    };
-  }
+    // Hämta userId från path
+    const userId = event.pathParameters?.id; 
+    
+    // Hämta id från queryStringParameters (query string)
+    const id = event.queryStringParameters?.id; 
+  
+    // Kontrollera om userId eller id saknas
+    if (!userId || !id) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'User ID and favorite ID are required' }),
+      };
+    }
+  
+    try {
+      // Anropa deleteFavorite-funktionen och radera favorit
+      await deleteFavorite(userId, id); 
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ message: `Favorite item with ID ${id} deleted` }),
+      };
+    } catch (error) {
+      console.error('Error in deleteFavoriteHandler:', error);
+  
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ message: 'Error deleting favorite', error: (error as Error).message }),
+      };
+    }
 };
