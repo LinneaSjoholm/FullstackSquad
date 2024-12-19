@@ -1,6 +1,6 @@
 import { db } from "../services/db";
 import jwt from "jsonwebtoken";
-import { getFavorites } from "../services/favoriteService";
+import { getFavorites } from "../services/Favorites";
 
 
 export const getProfile = async (event: any) => {

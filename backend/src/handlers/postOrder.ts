@@ -1,6 +1,5 @@
 import { db } from "../services/db";
 import jwt from "jsonwebtoken";
-import { saveFavorites } from "../services/favoriteService";
 
 const API_KEY = process.env.API_KEY;
 
@@ -111,14 +110,6 @@ export const postOrder = async (event: any) => {
   try {
     // Spara ordern i databasen
     await db.put(params);
-
-    // Kontrollera om användaren är inloggad (inte "guest") och spara favoriter
-
-    if (loggedInRole !== "guest") {
-      await saveFavorites(loggedInUserId, items); // Spara favoriter för inloggad användare
-    } else {
-      console.log("User is guest. Skipping saving favorite items.");
-    }
 
     // Returnera framgångsmeddelande
     return {
